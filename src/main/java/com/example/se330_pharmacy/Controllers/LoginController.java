@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -87,5 +88,8 @@ public class LoginController implements Initializable {
         btnLogin.setOnAction(event -> Model.getInstance().getViewFactory().showMenuWindow());
         forgetPane.toBack();
         changePane.toBack();
+    }
+
+    public void passwordFieldKeyTyped(KeyEvent keyEvent) {
     }
 }

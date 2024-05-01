@@ -22,7 +22,7 @@
                   <Image url="@../Images/logoMenu.png" />
                </image>
             </ImageView>
-            <Button id="menu_button" fx:id="btnAccountant" mnemonicParsing="false" onAction="#btnReceptionClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Tiếp nhận">
+            <Button id="menu_button" fx:id="btnSale" mnemonicParsing="false" onAction="#btnSaleClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Bán hàng">
                <font>
                   <Font size="19.0" />
                </font>
@@ -30,13 +30,40 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <MenuButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="51.0" prefWidth="243.0" style="-fx-font-family: Vederna; -fx-font-size: 18; -fx-background-color: E1FDB7; -fx-text-fill: black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" text="Danh mục">
-              <items>
-                <MenuItem fx:id="btnAspirine" mnemonicParsing="false" onAction="#btnAspirineClicked" text="Thuốc" />
-                <MenuItem fx:id="btnDisease" mnemonicParsing="false" onAction="#btnDiseaseClicked" text="Bệnh" />
-              </items>
-            </MenuButton>
-            <Button id="menu_button" fx:id="btnExamination" layoutX="11.0" layoutY="305.0" mnemonicParsing="false" onAction="#btnExaminationClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Khám bệnh">
+            <Button id="menu_button" fx:id="btnProduct" layoutX="11.0" layoutY="305.0" mnemonicParsing="false" onAction="#btnProductCicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Sản phẩm">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button id="menu_button" fx:id="btnImport" layoutX="11.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnImportClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Nhập hàng">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Button>
+            <Button id="menu_button" fx:id="btnExport" layoutX="11.0" layoutY="334.0" mnemonicParsing="false" onAction="#btnExportClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Xuất hàng">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
+            <Button id="menu_button" fx:id="btnEmployee" layoutX="11.0" layoutY="407.0" mnemonicParsing="false" onAction="#btnEmployeeClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Nhân viên">
                <font>
                   <Font size="19.0" />
                </font>
@@ -51,24 +78,16 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
             </Button>
-            <Button id="menu_button" fx:id="btnSetting" layoutX="11.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnSettingClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Thiết lập">
-               <font>
-                  <Font size="19.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="243.0">
+            <MenuButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="51.0" prefWidth="243.0" style="-fx-font-family: Vederna; -fx-font-size: 18; -fx-background-color: E1FDB7; -fx-text-fill: black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" text="Kế toán">
+              <items>
+                <MenuItem fx:id="btnPayslip" mnemonicParsing="false" onAction="#btnPayslipClicked" text="Phiếu lương" />
+                <MenuItem fx:id="btnReceipt" mnemonicParsing="false" onAction="#btnReceiptClicked" text="Hóa đơn" />
+              </items>
+            </MenuButton>
+            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="243.0">
                <children>
-                  <Button id="menu_button" fx:id="btnLogout" layoutY="344.0" mnemonicParsing="false" onAction="#btnLogoutClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Đăng xuất">
+                  <Button id="menu_button" fx:id="btnLogout" layoutY="226.0" mnemonicParsing="false" onAction="#btnLogoutClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Đăng xuất">
                      <font>
                         <Font size="19.0" />
                      </font>

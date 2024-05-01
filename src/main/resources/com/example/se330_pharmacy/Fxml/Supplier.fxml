@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TitledPane animated="false" collapsible="false" layoutX="80.0" layoutY="42.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 6px; -fx-font-size: 14;" text="Thông tin nhà cung cấp">
+        <content>
+          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="190.0" prefWidth="835.0">
+               <children>
+                  <TextField fx:id="tfSupplierID" layoutX="29.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="254.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="14.0" />
+                  <TextField fx:id="tfSuppliierName" layoutX="40.0" layoutY="76.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="254.0" AnchorPane.topAnchor="76.0" />
+                  <TextField fx:id="tfSupplierEmail" layoutX="40.0" layoutY="137.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="254.0" AnchorPane.topAnchor="137.0" />
+                  <Text layoutX="40.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Mã nhà cung cấp" />
+                  <Text layoutX="39.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Tên nhà cung cấp" />
+                  <Text layoutX="40.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Email" />
+                  <TextArea fx:id="taAddress" layoutX="425.0" layoutY="24.0" prefHeight="90.0" prefWidth="303.0" />
+                  <Text layoutX="425.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Địa chỉ" />
+                  <TextField fx:id="tfPhone" layoutX="427.0" layoutY="147.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="298.0" />
+                  <Text layoutX="425.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Số điện thoại liên lạc" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutX="1037.0" layoutY="42.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="223.0" prefWidth="225.0" style="-fx-border-color: black; -fx-border-radius: 6px; -fx-font-size: 14;" text="Công cụ">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="189.0" prefWidth="221.0">
+               <children>
+                  <HBox layoutX="35.0" layoutY="14.0" prefHeight="43.0" prefWidth="151.0" style="-fx-border-color: black;">
+                     <children>
+                        <ImageView fitHeight="44.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="btnAdd" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Thêm" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="36.0" layoutY="73.0" prefHeight="43.0" prefWidth="151.0" style="-fx-border-color: black;">
+                     <children>
+                        <ImageView fitHeight="44.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="btnEdit" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Sửa" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="36.0" layoutY="132.0" prefHeight="43.0" prefWidth="151.0" style="-fx-border-color: black;">
+                     <children>
+                        <ImageView fitHeight="44.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="btnDelete" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Xóa" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutX="80.0" layoutY="281.0" prefHeight="463.0" prefWidth="1182.0" style="-fx-border-color: black; -fx-font-size: 14;" text="Bảng nhà cung cấp">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="437.0" prefWidth="1173.0">
+               <children>
+                  <TableView fx:id="tvSupplierTable" layoutY="-2.0" prefHeight="439.0" prefWidth="1179.0">
+                    <columns>
+                      <TableColumn minWidth="236.0" prefWidth="75.0" text="Mã nhà cung cấp" />
+                      <TableColumn minWidth="236.0" prefWidth="75.0" text="Tên nhà cung cấp" />
+                        <TableColumn minWidth="236.0" prefWidth="75.0" text="Địa chỉ" />
+                        <TableColumn minWidth="236.0" prefWidth="75.0" text="Số điện thoại" />
+                        <TableColumn minWidth="238.0" prefWidth="75.0" text="Email" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+   </children>
+</AnchorPane>

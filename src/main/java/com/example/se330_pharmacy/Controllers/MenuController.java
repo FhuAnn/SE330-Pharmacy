@@ -21,53 +21,54 @@ import java.util.Optional;
 public class MenuController {
 
     @FXML
-    private MenuItem btnAspirine;
+    private Button btnEmployee;
 
     @FXML
-    private MenuItem btnDisease;
+    private Button btnExport;
 
     @FXML
-    private Button btnAccountant;
-
-    @FXML
-    private Button btnCategory;
-
-    @FXML
-    private Button btnExamination;
+    private Button btnImport;
 
     @FXML
     private Button btnLogout;
 
     @FXML
+    private MenuItem btnPayslip;
+
+    @FXML
+    private Button btnProduct;
+
+    @FXML
+    private MenuItem btnReceipt;
+
+    @FXML
     private Button btnReport;
 
     @FXML
-    private Button btnSetting;
+    private Button btnSale;
+
+    @FXML
+    private  Pane mainPane;
 
     @FXML
     private Text titleTextField;
 
     @FXML
-    private Pane mainPane;
-
-    @FXML
-    void btnAspirineClicked(ActionEvent event) throws IOException {
-        mainPane.getChildren().clear();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/privateclinic/Fxml/Category_Aspirine.fxml"));
-        Parent reportSceneRoot = loader.load();
-        mainPane.getChildren().add(reportSceneRoot);
+    void btnEmployeeClicked(ActionEvent event) throws IOException {
+        setMainPane("/com/example/se330_pharmacy/Fxml/Employee.fxml");
+        titleTextField.setText("Employee");
     }
 
     @FXML
-    void btnDiseaseClicked(ActionEvent event) throws IOException {
-        mainPane.getChildren().clear();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/privateclinic/Fxml/Category_Disease.fxml"));
-        Parent reportSceneRoot = loader.load();
-        mainPane.getChildren().add(reportSceneRoot);
+    void btnExportClicked(ActionEvent event) throws IOException {
+        setMainPane("/com/example/se330_pharmacy/Fxml/Export.fxml");
+        titleTextField.setText("Export");
     }
-    @FXML
-    void btnExaminationClicked(ActionEvent event) {
 
+    @FXML
+    void btnImportClicked(ActionEvent event) throws IOException {
+        titleTextField.setText("Import");
+        setMainPane("/com/example/se330_pharmacy/Fxml/Import.fxml");
     }
 
     @FXML
@@ -76,22 +77,36 @@ public class MenuController {
     }
 
     @FXML
-    void btnReceptionClicked(ActionEvent event) throws IOException {
-        Model.getInstance().getViewFactory().showReceptionWindow();
+    void btnPayslipClicked(ActionEvent event) throws IOException {
+        titleTextField.setText("Payslip");
+        setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_PaySlip.fxml");
     }
+
+    @FXML
+    void btnProductCicked(ActionEvent event) throws IOException {
+        titleTextField.setText("Product");
+        setMainPane("/com/example/se330_pharmacy/Fxml/Product.fxml");
+    }
+
+    @FXML
+    void btnReceiptClicked(ActionEvent event) throws IOException {
+        titleTextField.setText("Hóa đơn");
+        setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_Receipt.fxml");
+    }
+
+    @FXML
+    void btnSaleClicked(ActionEvent event) throws IOException {
+        titleTextField.setText("Bán hàng");
+        setMainPane("/com/example/se330_pharmacy/Fxml/Sale.fxml");
+    }
+
 
     @FXML
     void btnReportClicked(ActionEvent event) throws IOException {
-        mainPane.getChildren().clear();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/privateclinic/Fxml/Report.fxml"));
-        Parent reportSceneRoot = loader.load();
-        mainPane.getChildren().add(reportSceneRoot);
+        titleTextField.setText("Báo cáo");
+        setMainPane("/com/example/se330_pharmacy/Fxml/Report.fxml");
     }
 
-    @FXML
-    void btnSettingClicked(ActionEvent event) {
-
-    }
     @FXML
     void closeMenu(MouseEvent event) {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -117,4 +132,10 @@ public class MenuController {
         s.setIconified(true);
     }
 
+    private void setMainPane(String resource) throws IOException {
+        mainPane.getChildren().clear();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        Parent reportSceneRoot = loader.load();
+        mainPane.getChildren().add(reportSceneRoot);
+    }
 }

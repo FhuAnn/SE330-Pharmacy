@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -11,9 +13,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXRadioButton?>
 <HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="816.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.se330_pharmacy.Controllers.LoginController">
    <children>
-      <Pane prefHeight="522.0" prefWidth="403.0">
+      <Pane prefHeight="522.0" prefWidth="403.0" style="-fx-background-color: linear-gradient(to bottom,#4B7813,#8BC634)">
          <children>
             <Text fx:id="textWelcome" layoutX="62.0" layoutY="393.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chào mừng quay trở lại">
                <font>
@@ -82,9 +86,9 @@
                   <HBox layoutX="119.0" layoutY="16.0" prefHeight="33.0" prefWidth="95.0" />
                </children>
             </Pane>
-            <Pane fx:id="loginPane" layoutX="56.0" layoutY="75.0" prefHeight="340.0" prefWidth="332.0" style="-fx-background-color: E9E9E9;">
+            <Pane fx:id="loginPane" layoutX="56.0" layoutY="71.0" prefHeight="340.0" prefWidth="332.0" style="-fx-background-color: E9E9E9;">
                <children>
-                  <Text fill="#0488da" layoutX="43.0" layoutY="283.0" onMouseClicked="#forgotPasswordOnclick" strokeType="OUTSIDE" strokeWidth="0.0" text="Quên mật khẩu?" textAlignment="CENTER">
+                  <Text fill="#0488da" layoutX="43.0" layoutY="297.0" onMouseClicked="#forgotPasswordOnclick" strokeType="OUTSIDE" strokeWidth="0.0" text="Quên mật khẩu?" textAlignment="CENTER">
                      <font>
                         <Font name="Segoe UI Semibold" size="16.0" />
                      </font>
@@ -107,10 +111,10 @@
                               <Insets left="4.0" top="4.0" />
                            </HBox.margin>
                         </ImageView>
-                        <TextField fx:id="tfUsername" prefHeight="32.0" prefWidth="215.0" promptText="Username" style="-fx-font-size: 16; -fx-background-color: FFFFFF;" />
+                        <TextField fx:id="tfUsername_Login" prefHeight="32.0" prefWidth="215.0" promptText="Username" style="-fx-font-size: 16; -fx-background-color: FFFFFF;" />
                      </children>
                   </HBox>
-                  <Button fx:id="btnLogin" layoutX="180.0" layoutY="254.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="112.0" style="-fx-background-color: #8cc835; -fx-font-weight: bold; -fx-font-size: 16; -fx-font-family: segoe UI black;" stylesheets="@../Styles/hover_effect.css" text="Đăng nhập" textFill="WHITE">
+                  <Button fx:id="btnLogin" layoutX="180.0" layoutY="268.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="112.0" style="-fx-background-color: #8cc835; -fx-font-weight: bold; -fx-font-size: 16; -fx-font-family: segoe UI black;" stylesheets="@../Styles/hover_effect.css" text="Đăng nhập" textFill="WHITE">
                      <font>
                         <Font name="Segoe Print Bold" size="12.0" />
                      </font>
@@ -128,36 +132,11 @@
                               <Insets left="4.0" top="4.0" />
                            </HBox.margin>
                         </ImageView>
-                        <TextField fx:id="tfPassword" prefHeight="32.0" prefWidth="215.0" promptText="Password" style="-fx-font-size: 16; -fx-background-color: FFFFFF;" />
+                        <PasswordField fx:id="pfPassword_Login" depthTest="DISABLE" onKeyTyped="#passwordFieldKeyTyped" prefHeight="35.0" prefWidth="211.0" promptText="Password" />
                      </children>
                   </HBox>
-               </children>
-            </Pane>
-            <Pane fx:id="changePane" layoutX="37.0" layoutY="115.0" prefHeight="287.0" prefWidth="361.0" style="-fx-font-size: 18; -fx-background-color: E9E9E9;">
-               <children>
-                  <Text fill="#8cc835" layoutX="40.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thay đổi mật khẩu" textAlignment="CENTER">
-                     <font>
-                        <Font name="Segoe UI Black" size="32.0" />
-                     </font>
-                  </Text>
-                  <HBox layoutX="61.0" layoutY="88.0" prefHeight="33.0" prefWidth="247.0" style="-fx-background-color: ffffff; -fx-background-radius: 10px;">
-                     <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Images/locked.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets left="8.0" top="4.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <TextField fx:id="tfPassword1CP" prefHeight="34.0" prefWidth="205.0" promptText="Password" style="-fx-background-color: #ffffff;">
-                           <HBox.margin>
-                              <Insets left="4.0" />
-                           </HBox.margin>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <Text fill="#0488da" layoutX="61.0" layoutY="241.0" onMouseClicked="#backToLogin" strokeType="OUTSIDE" strokeWidth="0.0" text="Quay lại" textAlignment="CENTER" wrappingWidth="76.0">
+
+                  <Text fx:id="login" fill="#d90404" layoutX="43.0" layoutY="122.0" onMouseClicked="#forgotPasswordOnclick" strokeType="OUTSIDE" strokeWidth="0.0" text="Quên mật khẩu?" textAlignment="CENTER" visible="false">
                      <font>
                         <Font name="Segoe UI Semibold" size="16.0" />
                      </font>
@@ -165,7 +144,32 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Text>
-                  <HBox layoutX="61.0" layoutY="136.0" prefHeight="33.0" prefWidth="247.0" style="-fx-background-color: ffffff; -fx-background-radius: 10px;">
+                  <Text fx:id="tfShownPassword" fill="#979c9f" layoutX="76.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ShownPassword" textAlignment="CENTER">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+                  <Text fx:id="loginMessageLabel" fill="#0488da" layoutX="40.0" layoutY="121.0" onMouseClicked="#forgotPasswordOnclick" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalidate" textAlignment="CENTER" visible="false">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="16.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+               </children>
+            </Pane>
+            <Pane fx:id="changePane" layoutX="37.0" layoutY="108.0" prefHeight="287.0" prefWidth="361.0" style="-fx-font-size: 18; -fx-background-color: E9E9E9;">
+               <children>
+                  <Text fill="#8cc835" layoutX="40.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thay đổi mật khẩu" textAlignment="CENTER">
+                     <font>
+                        <Font name="Segoe UI Black" size="32.0" />
+                     </font>
+                  </Text>
+                  <HBox layoutX="63.0" layoutY="85.0" prefHeight="33.0" prefWidth="247.0" style="-fx-background-color: ffffff; -fx-background-radius: 10px;">
                      <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -175,14 +179,31 @@
                               <Insets left="8.0" top="4.0" />
                            </HBox.margin>
                         </ImageView>
-                        <TextField fx:id="tfPassword2CP" prefHeight="34.0" prefWidth="205.0" promptText="Password" style="-fx-background-color: ffffff;">
-                           <HBox.margin>
-                              <Insets left="4.0" />
-                           </HBox.margin>
-                        </TextField>
+                        <JFXPasswordField fx:id="pfPassword_Login_changepw" onKeyTyped="#passwordFieldKeyTyped" promptText="Password" />
                      </children>
                   </HBox>
-                  <Button fx:id="btnConfirm" layoutX="169.0" layoutY="214.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="138.0" style="-fx-background-color: #8cc835; -fx-font-weight: bold; -fx-font-size: 16; -fx-font-family: segoe UI black;" stylesheets="@../Styles/hover_effect.css" text="Xác nhận" textFill="WHITE">
+                  <Text fill="#0488da" layoutX="61.0" layoutY="253.0" onMouseClicked="#backToLogin" strokeType="OUTSIDE" strokeWidth="0.0" text="Quay lại" textAlignment="CENTER" wrappingWidth="76.0">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="16.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+                  <HBox layoutX="61.0" layoutY="148.0" prefHeight="33.0" prefWidth="247.0" style="-fx-background-color: ffffff; -fx-background-radius: 10px;">
+                     <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/locked.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="8.0" top="4.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <JFXPasswordField fx:id="pfPassword_Login_changeconfirmpw" onKeyTyped="#passwordFieldKeyTyped" promptText="Password" />
+                     </children>
+                  </HBox>
+                  <Button fx:id="btnConfirm" layoutX="169.0" layoutY="226.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="138.0" style="-fx-background-color: #8cc835; -fx-font-weight: bold; -fx-font-size: 16; -fx-font-family: segoe UI black;" stylesheets="@../Styles/hover_effect.css" text="Xác nhận" textFill="WHITE">
                      <font>
                         <Font name="Segoe Print Bold" size="12.0" />
                      </font>
@@ -190,6 +211,47 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
+                  <JFXRadioButton fx:id="radioHideShowChangeLogin" layoutX="138.0" layoutY="193.0" text="Hiển thị mật khẩu" textFill="#0488da">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="16.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXRadioButton>
+                  <Text fx:id="tfShownPassword1" fill="#979c9f" layoutX="164.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ShownPassword" textAlignment="CENTER">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+                  <Text fx:id="tfShownPassword2" fill="#979c9f" layoutX="166.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ShownPassword" textAlignment="CENTER">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+                  <Text fx:id="tfShownPassword11" layoutX="62.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" textAlignment="CENTER">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+                  <Text fx:id="tfShownPassword12" layoutX="61.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ConfirmPassword" textAlignment="CENTER">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+                  <RadioButton fx:id="radioHideShowChange" layoutX="137.0" layoutY="191.0" mnemonicParsing="false" text="Hiển thị mật khẩu" textFill="#0488da" />
                </children>
             </Pane>
             <ImageView fitHeight="43.0" fitWidth="43.0" layoutX="399.0" layoutY="1.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true">

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" >
+   <children>
+      <TitledPane animated="false" collapsible="false" layoutX="28.0" layoutY="21.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="196.0" prefWidth="860.0" style="-fx-border-color: black; -fx-border-radius: 6px; -fx-font-size: 14px;" text="Mẫu xuất" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="21.0">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="tvExportForm" layoutX="-3.0" layoutY="1.0" prefHeight="162.0" prefWidth="860.0">
+                     <columns>
+                        <TableColumn minWidth="172.0" prefWidth="75.0" text="Mã sản phẩm" />
+                        <TableColumn minWidth="172.0" prefWidth="75.0" text="Tên sản phẩm" />
+                        <TableColumn minWidth="172.0" prefWidth="75.0" text="Giá" />
+                        <TableColumn minWidth="172.0" prefWidth="75.0" text="Số lượng" />
+                        <TableColumn minWidth="172.0" prefWidth="75.0" text="Tổng" />
+                     </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutX="927.0" layoutY="16.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="292.0" prefWidth="402.0" style="-fx-border-color: black; -fx-border-radius: 6px; -fx-font-size: 14px;" text="Thông tin sản phẩm" AnchorPane.leftAnchor="927.0">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="tfProductID" layoutX="37.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="224.0" promptText="Mã sản phẩm" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="22.0" />
+                  <Text layoutX="22.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Mã sản phẩm" />
+                  <TextField fx:id="tfProductName" layoutX="22.0" layoutY="90.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="359.0" promptText="Tên sản phẩm" />
+                  <Text layoutX="22.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Tên sản phẩm" />
+                  <TextField fx:id="tfProductPrice" layoutX="22.0" layoutY="151.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="356.0" promptText="Giá" />
+                  <Text layoutX="22.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Giá" />
+                  <TextField fx:id="tfProductQuantities" layoutX="22.0" layoutY="209.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="138.0" promptText="Số lượng" />
+                  <Text layoutX="22.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Số lượng" />
+                  <TextField fx:id="tfProductTotal" layoutX="203.0" layoutY="208.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="181.0" promptText="Tổng tiền" />
+                  <Text layoutX="201.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Tổng tiền" />
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+      <HBox layoutX="28.0" layoutY="232.0" prefHeight="34.0" prefWidth="523.0" style="-fx-border-color: black; -fx-border-radius: 6px;" AnchorPane.topAnchor="232.0">
+         <children>
+            <ImageView fitHeight="34.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" />
+            <TextField fx:id="tfSearch" prefHeight="34.0" prefWidth="489.0" promptText="Tìm sản phẩm bằng tên , mã sản phẩm" />
+         </children>
+      </HBox>
+      <TitledPane animated="false" collapsible="false" layoutX="28.0" layoutY="278.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="860.0" style="-fx-border-color: black; -fx-border-radius: 6px; -fx-font-size: 14px;" text="Bảng sản phẩm">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="tvProductTable" layoutX="-4.0" prefHeight="458.0" prefWidth="860.0">
+                     <columns>
+                        <TableColumn minWidth="122.8" prefWidth="75.0" text="Mã sản phẩm" />
+                        <TableColumn minWidth="122.8" prefWidth="75.0" text="Tên sản phẩm" />
+                        <TableColumn minWidth="122.8" prefWidth="75.0" text="Giá" />
+                        <TableColumn minWidth="122.8" prefWidth="75.0" text="Mô tả" />
+                        <TableColumn minWidth="122.8" prefWidth="75.0" text="Nguồn gốc" />
+                        <TableColumn minWidth="122.8" prefWidth="75.0" text="Đơn vị" />
+                        <TableColumn minWidth="122.8" prefWidth="75.0" text="Loại" />
+                     </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutX="927.0" layoutY="317.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="402.0" style="-fx-border-color: black; -fx-border-radius: 6px; -fx-font-size: 14px;" text="Công cụ">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <HBox layoutX="37.0" layoutY="22.0" prefHeight="62.0" prefWidth="127.0" style="-fx-border-color: black; -fx-border-radius: 6px;" AnchorPane.leftAnchor="52.0">
+                     <children>
+                        <ImageView fitHeight="62.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="btnAdd" mnemonicParsing="false" prefHeight="62.0" prefWidth="87.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Thêm" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="222.0" layoutY="22.0" prefHeight="62.0" prefWidth="127.0" style="-fx-border-color: black; -fx-border-radius: 6px;" AnchorPane.leftAnchor="209.0">
+                     <children>
+                        <ImageView fitHeight="62.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="btnEdit" mnemonicParsing="false" prefHeight="62.0" prefWidth="87.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Sửa" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="63.0" layoutY="107.0" prefHeight="62.0" prefWidth="127.0" style="-fx-border-color: black; -fx-border-radius: 6px;">
+                     <children>
+                        <ImageView fitHeight="62.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="btnDelete" mnemonicParsing="false" prefHeight="62.0" prefWidth="87.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Xóa" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="220.0" layoutY="107.0" prefHeight="62.0" prefWidth="127.0" style="-fx-border-color: black; -fx-border-radius: 6px;">
+                     <children>
+                        <ImageView fitHeight="62.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="btnCancel" mnemonicParsing="false" prefHeight="62.0" prefWidth="87.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Hủy" />
+                     </children>
+                  </HBox>
+                  <Text layoutX="63.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Tổng tiền : " />
+                  <Text layoutX="155.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="100000 VND" />
+                  <TextArea fx:id="taExportReason" layoutX="12.0" layoutY="210.0" prefHeight="105.0" prefWidth="375.0" promptText="Lý do xuất" />
+                  <HBox layoutX="76.0" layoutY="330.0" prefHeight="62.0" prefWidth="247.0" style="-fx-border-color: black; -fx-border-radius: 6px;">
+                     <children>
+                        <ImageView fitHeight="62.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="btnCreateForm" mnemonicParsing="false" prefHeight="62.0" prefWidth="206.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Tạo biểu mẫu" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+   </children>
+</AnchorPane>

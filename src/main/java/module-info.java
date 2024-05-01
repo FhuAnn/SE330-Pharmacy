@@ -10,6 +10,7 @@ module com.example.se330_pharmacy {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.sql;
 
 
     opens com.example.se330_pharmacy to javafx.fxml;
