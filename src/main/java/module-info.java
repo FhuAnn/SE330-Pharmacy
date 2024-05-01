@@ -1,4 +1,4 @@
-module org.example.se330_pharmacy {
+module com.example.se330_pharmacy {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -11,6 +11,10 @@ module org.example.se330_pharmacy {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
 
-    opens org.example.se330_pharmacy to javafx.fxml;
-    exports org.example.se330_pharmacy;
+
+    opens com.example.se330_pharmacy to javafx.fxml;
+    exports com.example.se330_pharmacy;
+    opens com.example.se330_pharmacy.Controllers to javafx.fxml;
+    exports com.example.se330_pharmacy.Models;
+    exports com.example.se330_pharmacy.Views;
 }
