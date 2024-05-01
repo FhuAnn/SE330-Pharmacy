@@ -83,7 +83,7 @@ public class MenuController {
     @FXML
     void btnReportClicked(ActionEvent event) throws IOException {
         mainPane.getChildren().clear();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/privateclinic/Fxml/Report.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/privateclinic/Fxml/Sale.fxml"));
         Parent reportSceneRoot = loader.load();
         mainPane.getChildren().add(reportSceneRoot);
     }
