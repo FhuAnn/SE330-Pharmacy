@@ -90,6 +90,6 @@ public class LoginController implements Initializable {
         changePane.toBack();
     }
 
-    public void passwordFieldKeyTyped(KeyEvent keyEvent) {
+    public void passwordFieldKeyTyped(KeyEvent keyEvent) {;
     }
 }
