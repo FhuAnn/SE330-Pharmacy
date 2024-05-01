@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.privateclinic.Controllers.MenuController">
+   <children>
+      <VBox prefHeight="900.0" prefWidth="240.0" style="-fx-background-color: E1FDB7; -fx-border-color: black; -fx-border-width: 1;">
+         <children>
+            <ImageView fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/logoMenu.png" />
+               </image>
+            </ImageView>
+            <Button id="menu_button" fx:id="btnAccountant" mnemonicParsing="false" onAction="#btnReceptionClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Tiếp nhận">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <MenuButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="51.0" prefWidth="243.0" style="-fx-font-family: Vederna; -fx-font-size: 18; -fx-background-color: E1FDB7; -fx-text-fill: black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" text="Danh mục">
+              <items>
+                <MenuItem fx:id="btnAspirine" mnemonicParsing="false" onAction="#btnAspirineClicked" text="Thuốc" />
+                <MenuItem fx:id="btnDisease" mnemonicParsing="false" onAction="#btnDiseaseClicked" text="Bệnh" />
+              </items>
+            </MenuButton>
+            <Button id="menu_button" fx:id="btnExamination" layoutX="11.0" layoutY="305.0" mnemonicParsing="false" onAction="#btnExaminationClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Khám bệnh">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button id="menu_button" fx:id="btnReport" layoutX="11.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnReportClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Báo cáo">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Button>
+            <Button id="menu_button" fx:id="btnSetting" layoutX="11.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnSettingClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Thiết lập">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="243.0">
+               <children>
+                  <Button id="menu_button" fx:id="btnLogout" layoutY="344.0" mnemonicParsing="false" onAction="#btnLogoutClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Đăng xuất">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <Pane layoutX="245.0" prefHeight="120.0" prefWidth="1356.0" style="-fx-background-color: E1FDB7; -fx-border-color: black;">
+         <children>
+            <Text fx:id="titleTextField" layoutX="68.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+               <font>
+                  <Font name=".VnArial Bold" size="35.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="43.0" fitWidth="46.0" layoutX="1296.0" layoutY="14.0" onMouseClicked="#closeMenu" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/close.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fitHeight="43.0" fitWidth="46.0" layoutX="1250.0" layoutY="12.0" onMouseClicked="#minimizeMenu" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/minimize.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane fx:id="mainPane" layoutX="245.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" stylesheets="@../Styles/hover_effect.css">
+         <children>
+            <ImageView fitHeight="780.0" fitWidth="1356.0" pickOnBounds="true" preserveRatio="true" />
+         </children></Pane>
+   </children>
+</Pane>
