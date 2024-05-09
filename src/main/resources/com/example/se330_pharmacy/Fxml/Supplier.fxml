@@ -11,29 +11,29 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" styleClass="container_overall" stylesheets="@../Styles/Supplier.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TitledPane animated="false" collapsible="false" layoutX="80.0" layoutY="42.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-radius: 6px; -fx-font-size: 14;" text="Thông tin nhà cung cấp">
+      <TitledPane animated="false" collapsible="false" layoutX="80.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0" prefWidth="839.0" text="Thông tin nhà cung cấp">
         <content>
-          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="190.0" prefWidth="835.0">
+          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="235.0" prefWidth="835.0" styleClass="anchor-pane">
                <children>
-                  <TextField fx:id="tfSupplierID" layoutX="29.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="254.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="14.0" />
-                  <TextField fx:id="tfSuppliierName" layoutX="40.0" layoutY="76.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="254.0" AnchorPane.topAnchor="76.0" />
-                  <TextField fx:id="tfSupplierEmail" layoutX="40.0" layoutY="137.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="254.0" AnchorPane.topAnchor="137.0" />
-                  <Text layoutX="40.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Mã nhà cung cấp" />
-                  <Text layoutX="39.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Tên nhà cung cấp" />
-                  <Text layoutX="40.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Email" />
-                  <TextArea fx:id="taAddress" layoutX="425.0" layoutY="24.0" prefHeight="90.0" prefWidth="303.0" />
-                  <Text layoutX="425.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Địa chỉ" />
-                  <TextField fx:id="tfPhone" layoutX="427.0" layoutY="147.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="298.0" />
-                  <Text layoutX="425.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Số điện thoại liên lạc" />
+                  <TextField fx:id="tfSupplierID" disable="true" layoutX="29.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="254.0" promptText="Mã nhà cung cấp (Chỉ đọc)" styleClass="input-field" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="14.0" />
+                  <TextField fx:id="tfSuppliierName" layoutX="40.0" layoutY="92.66666666666667" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="254.0" promptText="Tên nhà cung cấp" styleClass="input-field" />
+                  <TextField fx:id="tfSupplierEmail" layoutX="40.0" layoutY="147.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="254.0" promptText="Email nhà cung cấp " styleClass="input-field" AnchorPane.topAnchor="147.0" />
+                  <Text layoutX="40.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Mã nhà cung cấp" />
+                  <Text layoutX="39.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Tên nhà cung cấp" />
+                  <Text layoutX="40.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Email" />
+                  <TextArea fx:id="taAddress" layoutX="425.0" layoutY="27.0" prefHeight="90.0" prefWidth="303.0" promptText="Địa chỉ" styleClass="input-field" />
+                  <Text layoutX="425.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Địa chỉ" />
+                  <TextField fx:id="tfPhone" layoutX="427.0" layoutY="149.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="298.0" promptText="Số điện thoại liên lạc" styleClass="input-field" />
+                  <Text layoutX="425.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Số điện thoại liên lạc" />
                </children>
             </AnchorPane>
         </content>
       </TitledPane>
-      <TitledPane animated="false" collapsible="false" layoutX="1037.0" layoutY="42.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="223.0" prefWidth="225.0" style="-fx-border-color: black; -fx-border-radius: 6px; -fx-font-size: 14;" text="Công cụ">
+      <TitledPane animated="false" collapsible="false" layoutX="1037.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0" prefWidth="225.0" text="Công cụ">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="189.0" prefWidth="221.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="189.0" prefWidth="221.0" styleClass="anchor-pane">
                <children>
                   <HBox layoutX="35.0" layoutY="14.0" prefHeight="43.0" prefWidth="151.0" style="-fx-border-color: black;">
                      <children>
@@ -44,24 +44,24 @@
                   <HBox layoutX="36.0" layoutY="73.0" prefHeight="43.0" prefWidth="151.0" style="-fx-border-color: black;">
                      <children>
                         <ImageView fitHeight="44.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button fx:id="btnEdit" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Sửa" />
+                        <Button id="orange" fx:id="btnEdit" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" text="Sửa" />
                      </children>
                   </HBox>
                   <HBox layoutX="36.0" layoutY="132.0" prefHeight="43.0" prefWidth="151.0" style="-fx-border-color: black;">
                      <children>
                         <ImageView fitHeight="44.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button fx:id="btnDelete" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Xóa" />
+                        <Button id="red" fx:id="btnDelete" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" text="Xóa" />
                      </children>
                   </HBox>
                </children>
             </AnchorPane>
         </content>
       </TitledPane>
-      <TitledPane animated="false" collapsible="false" layoutX="80.0" layoutY="281.0" prefHeight="463.0" prefWidth="1182.0" style="-fx-border-color: black; -fx-font-size: 14;" text="Bảng nhà cung cấp">
+      <TitledPane animated="false" collapsible="false" layoutX="80.0" layoutY="281.0" prefHeight="482.0" prefWidth="1182.0" text="Bảng nhà cung cấp">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="437.0" prefWidth="1173.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="441.0" prefWidth="1179.0">
                <children>
-                  <TableView fx:id="tvSupplierTable" layoutY="-2.0" prefHeight="439.0" prefWidth="1179.0">
+                  <TableView fx:id="tvSupplierTable" layoutY="-2.0" prefHeight="446.0" prefWidth="1179.0">
                     <columns>
                       <TableColumn minWidth="236.0" prefWidth="75.0" text="Mã nhà cung cấp" />
                       <TableColumn minWidth="236.0" prefWidth="75.0" text="Tên nhà cung cấp" />

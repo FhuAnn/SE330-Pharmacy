@@ -10,35 +10,43 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.se330_pharmacy.Controllers.MenuController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" stylesheets="@../Styles/Menu.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.se330_pharmacy.Controllers.MenuController">
    <children>
-      <VBox prefHeight="900.0" prefWidth="240.0" style="-fx-background-color: E1FDB7; -fx-border-color: black; -fx-border-width: 1;">
+      <VBox prefHeight="900.0" prefWidth="240.0" styleClass="container-left">
          <children>
             <ImageView fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/logoMenu.png" />
                </image>
             </ImageView>
-            <Button id="menu_button" fx:id="btnSale" mnemonicParsing="false" onAction="#btnSaleClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Bán hàng">
+            <Line endX="142.0" startX="-100.0" strokeWidth="0.5" />
+            <Button id="menu_button" fx:id="btnSale" mnemonicParsing="false" onAction="#btnSaleClicked" prefHeight="54.0" prefWidth="243.0" text="Bán hàng">
                <font>
                   <Font size="19.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <VBox.margin>
+                  <Insets top="2.0" />
+               </VBox.margin>
             </Button>
-            <Button id="menu_button" fx:id="btnProduct" layoutX="11.0" layoutY="305.0" mnemonicParsing="false" onAction="#btnProductCicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Sản phẩm">
+            <Button id="menu_button" fx:id="btnProduct" layoutX="11.0" layoutY="305.0" mnemonicParsing="false" onAction="#btnProductCicked" prefHeight="54.0" prefWidth="243.0" text="Sản phẩm">
                <font>
                   <Font size="19.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Button>
-            <Button id="menu_button" fx:id="btnImport" layoutX="11.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnImportClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Nhập hàng">
+            <Button id="menu_button" fx:id="btnImport" layoutX="11.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnImportClicked" prefHeight="54.0" prefWidth="243.0" text="Nhập hàng">
                <font>
                   <Font size="19.0" />
                </font>
@@ -52,7 +60,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <Button id="menu_button" fx:id="btnExport" layoutX="11.0" layoutY="334.0" mnemonicParsing="false" onAction="#btnExportClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Xuất hàng">
+            <Button id="menu_button" fx:id="btnExport" layoutX="11.0" layoutY="334.0" mnemonicParsing="false" onAction="#btnExportClicked" prefHeight="54.0" prefWidth="243.0" text="Xuất hàng">
                <font>
                   <Font size="19.0" />
                </font>
@@ -62,32 +70,44 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Button>
-            <Button id="menu_button" fx:id="btnEmployee" layoutX="11.0" layoutY="407.0" mnemonicParsing="false" onAction="#btnEmployeeClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Nhân viên">
+            <Button id="menu_button" fx:id="btnEmployee" layoutX="11.0" layoutY="407.0" mnemonicParsing="false" onAction="#btnEmployeeClicked" prefHeight="54.0" prefWidth="243.0" text="Nhân viên">
                <font>
                   <Font size="19.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Button>
-            <Button id="menu_button" fx:id="btnReport" layoutX="11.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnReportClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Báo cáo">
+            <Button id="menu_button" fx:id="btnReport" layoutX="11.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnReportClicked" prefHeight="54.0" prefWidth="243.0" text="Báo cáo">
                <font>
                   <Font size="19.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Button>
-            <MenuButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="51.0" prefWidth="243.0" style="-fx-font-family: Vederna; -fx-font-size: 18; -fx-background-color: E1FDB7; -fx-text-fill: black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" text="Kế toán">
+            <MenuButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="51.0" prefWidth="243.0" styleClass="button" text="Kế toán">
               <items>
                 <MenuItem fx:id="btnPayslip" mnemonicParsing="false" onAction="#btnPayslipClicked" text="Phiếu lương" />
                 <MenuItem fx:id="btnReceipt" mnemonicParsing="false" onAction="#btnReceiptClicked" text="Hóa đơn" />
               </items>
+               <VBox.margin>
+                  <Insets top="2.0" />
+               </VBox.margin>
             </MenuButton>
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="243.0">
+            <AnchorPane prefHeight="283.0" prefWidth="244.0">
                <children>
-                  <Button id="menu_button" fx:id="btnLogout" layoutY="226.0" mnemonicParsing="false" onAction="#btnLogoutClicked" prefHeight="54.0" prefWidth="243.0" style="-fx-font-family: Verdana; -fx-font-size: 16; -fx-background-color: E1FDB7; -fx-text-fill: Black; -fx-border-color: black; -fx-border-radius: 5; -fx-font-weight: bold;" stylesheets="@../Styles/hover_effect.css" text="Đăng xuất">
+                  <Button id="logout" fx:id="btnLogout" mnemonicParsing="false" onAction="#btnLogoutClicked" prefHeight="45.0" prefWidth="243.0" text="Đăng xuất" AnchorPane.bottomAnchor="0.0">
                      <font>
                         <Font size="19.0" />
                      </font>
@@ -99,34 +119,50 @@
             </AnchorPane>
          </children>
       </VBox>
-      <Pane layoutX="245.0" prefHeight="120.0" prefWidth="1356.0" style="-fx-background-color: E1FDB7; -fx-border-color: black;">
+      <Pane layoutX="245.0" prefHeight="120.0" prefWidth="1356.0" styleClass="top-container">
          <children>
-            <Text fx:id="titleTextField" layoutX="68.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+            <Text fx:id="titleTextField" layoutX="68.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Home">
                <font>
                   <Font name=".VnArial Bold" size="35.0" />
                </font>
             </Text>
-            <ImageView fitHeight="43.0" fitWidth="46.0" layoutX="1296.0" layoutY="14.0" onMouseClicked="#closeMenu" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/close.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fitHeight="43.0" fitWidth="46.0" layoutX="1250.0" layoutY="12.0" onMouseClicked="#minimizeMenu" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/minimize.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </ImageView>
+            <Pane fx:id="btnClose" layoutX="1312.0" layoutY="1.0"  prefHeight="35.0" prefWidth="43.0" styleClass="pane_close">
+               <children>
+                  <ImageView fitHeight="27.0" fitWidth="25.0" layoutX="9.0" layoutY="5.0"  pickOnBounds="true" preserveRatio="true" styleClass="image_hover">
+                     <image>
+                        <Image url="@../Images/close-white.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="27.0" fitWidth="25.0" layoutX="9.0" layoutY="5.0"  pickOnBounds="true" preserveRatio="true" styleClass="image">
+                     <image>
+                        <Image url="@../Images/close-gray.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane layoutX="1269.0" layoutY="1.0" onMouseClicked="#minimizeMenu" prefHeight="35.0" prefWidth="43.0" styleClass="minimize">
+               <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="9.0" layoutY="5.0" onMouseClicked="#minimizeMenu" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../SE330.1/src/main/resources/com/example/privateclinic/Images/minimize-sign.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
          </children>
       </Pane>
-      <Pane fx:id="mainPane" layoutX="245.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" stylesheets="@../Styles/hover_effect.css">
+      <Pane fx:id="mainPane" layoutX="245.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" >
          <children>
-            <ImageView fitHeight="780.0" fitWidth="1356.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="780.0" fitWidth="1356.0" layoutX="33.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
          </children></Pane>
    </children>
 </Pane>

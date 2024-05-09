@@ -1,0 +1,256 @@
+.container-overall
+{
+    -fx-background-color: #f3faea;
+}
+
+.container-overall .anchor-pane
+{
+    -fx-background-color: #f7fff1;
+}
+.container-overall .button
+{
+    -fx-padding: 5 10 10 10 ;
+    -fx-pref-height: 50;
+    -fx-background-insets: 0, 0 0 2 0 , 0 0 3 0, 0 0 4 0;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-background-color:
+            radial-gradient(center 50% 50%, radius 100%, #629d16, #4a7612);
+    -fx-font-weight: bold;
+    -fx-font-size: 1.08em;
+    -fx-text-fill: white;
+}
+.container-overall .button:hover
+{
+    -fx-background-color: linear-gradient(from 0% 93% to 0% 100% , #67a910 0%, #578a17 100%),
+    #72b40f,
+    #7ac00e,
+    radial-gradient(center 50% 50%, radius 100%, #6f9d2b, #7ccb02);
+    -fx-cursor: hand;
+
+}
+
+.container-overall .button:pressed
+{
+    --fx-padding: 6 10 9 10 ;
+    -fx-background-insets: 1 0 0 0, 1 0 1 0 , 1 0 2 0, 1 0 3 0;
+    -fx-effect: dropshadow(gaussian,rgba(0,0,0,0),4,0,0,1);
+}
+
+/*comboBox*/
+.container-overall .combo-box .text-field
+{
+    -fx-background-radius: 20px;
+}
+.container-overall .combo-box
+{
+    -fx-border-width: 0.5px;
+    -fx-background-radius: 0px 20px 20px 0px;
+    -fx-border-radius: 0px 20px 20px 0px;
+    -fx-border-color: #416c0d;
+    fx-font-weight: 700;
+    -fx-font-size: 15px;
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+
+.container-overall .combo-box:hover {
+    -fx-border-color: green;
+}
+.container-overall .combo-box .arrow-button{
+}
+.container-overall .combo-box .arrow-button .arrow{
+    -fx-background-color: green;
+
+}
+
+.container-overall .combo-box-base:hover {
+    -fx-background-color: #CAEF95;
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+    -fx-cursor: hand;
+}
+.container-overall .combo-box-base:focused {
+    -fx-border-width: 1;
+}
+.container-overall .combo-box-base {
+    -fx-background-color: linear-gradient(to bottom,#ffffff,#C1E293);
+    -fx-border-width: 0.4;
+    -fx-border-color: #4a7612;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+}
+
+.container-overall .combo-box-base:focused
+{
+    -fx-text-fill: #007B24;
+}
+
+.container-overall .combo-box .list-view {  /* phần bên trong cái thả xuống*/
+    -fx-border-width: 0.5;
+    -fx-border-color: #ACACAC;
+    -fx-background-color: #EBFFD1;
+    -fx-padding: 0px;
+    -fx-font-size: 10px;
+    -fx-font-weight: 700;
+}
+
+.container-overall .combo-box .list-view .list-cell:filled {
+
+}
+/*table-view*/
+.container-overall .table-view {
+    -fx-text-fill: #ffffff;
+}
+.container-overall .table-view .table-column
+{
+    -fx-background-color: #5A8F15;
+}
+.container-overall .table-view .column-header-background .label
+{
+    -fx-text-fill: #ffffff;
+    -fx-alignment: center ;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-pref-height: 30;
+}
+.container-overall #tableview-main .column-header-background .label
+{
+    -fx-font-size: 15px;
+}
+.container-overall #tableview-main
+{
+    -fx-border-color: #416c0d;
+
+}
+
+.container-overall .table-view .table-cell
+{
+
+}
+.container-overall .table-row-cell:odd
+{
+
+}
+.container-overall .table-view >.virtual-flow >.scroll-bar:vertical
+{
+
+}
+.container-overall .table-row-cell:selected
+{
+}
+/*titlepane*/
+.container-overall .titled-pane
+{
+    -fx-border-color: #578c16;
+    -fx-border-width: 0.4;
+    -fx-font-size: 16px;
+}
+.container-overall .titled-pane .title
+{
+    -fx-background-color: linear-gradient(to top,#C1E293,#ffffff);
+    -fx-font-family: "Segoe UI Semibold";
+}
+/*inputfield*/
+.container-overall .input-field
+{
+    -fx-border-width: 1 1 1 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-border-color: #9E9DA3;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+}
+
+.container-overall .input-field:hover
+{
+    -fx-border-color: #8BC634;
+    -fx-font-family: "Segoe UI Semibold";
+}
+.container-overall .input-field:focused
+{
+    -fx-border-width: 1 1 1 1;
+    -fx-border-radius: 5;
+    -fx-border-color: #8BC634;
+    -fx-wrap-text: true;
+}
+/*search-input*/
+.container-overall #search-icon
+{
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+}
+
+.container-overall .input-field .search-input
+{
+    -fx-border-width: 0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #9E9DA3;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+}
+.container-overall .input-field
+{
+    -fx-border-width: 1 1 1 1;
+    -fx-border-radius: 5;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #9E9DA3;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+}
+.container-overall #red
+{
+    -fx-padding: 5 10 10 10 ;
+    -fx-background-insets: 0, 0 0 2 0 , 0 0 3 0, 0 0 4 0;
+    -fx-background-radius: 8;
+    -fx-background-color:
+            radial-gradient(center 50% 50%, radius 100%, #f36a6a, #fc4141);
+    -fx-font-weight: bold;
+    -fx-font-size: 1.08em;
+    -fx-text-fill: white;
+}
+.container-overall #red:hover
+{
+    -fx-background-color: linear-gradient(from 0% 93% to 0% 100% , #e34646 0%, #b02525 100%),
+    #c93131,
+    #d23d3d,
+    radial-gradient(center 50% 50%, radius 100%, #f56f6f, #ff0000);
+    -fx-cursor: hand;
+}
+
+.container-overall #red:pressed
+{
+    --fx-padding: 6 10 9 10 ;
+    -fx-background-insets: 1 0 0 0, 1 0 1 0 , 1 0 2 0, 1 0 3 0;
+    -fx-effect: dropshadow(gaussian,rgba(0,0,0,0),1,0,0,1);
+}
+
+.container-overall #orange
+{
+    -fx-padding: 5 10 10 10 ;
+    -fx-background-insets: 0, 0 0 2 0 , 0 0 3 0, 0 0 4 0;
+    -fx-background-radius: 8;
+    -fx-background-color: radial-gradient(center 50% 50%, radius 100%, #f69a0d, #ff8916);
+    -fx-font-weight: bold;
+    -fx-font-size: 1.08em;
+    -fx-text-fill: white;
+}
+.container-overall #orange:hover
+{
+    -fx-background-color: linear-gradient(from 0% 93% to 0% 100% , #da641a 0%, #e15802 100%),
+    #e07939,
+    #ea5c03,
+    radial-gradient(center 50% 50%, radius 100%, #f8a933, #f69e44);
+    -fx-cursor: hand;
+}
+
+.container-overall #orange:pressed
+{
+    --fx-padding: 6 10 9 10 ;
+    -fx-background-insets: 1 0 0 0, 1 0 1 0 , 1 0 2 0, 1 0 3 0;
+    -fx-effect: dropshadow(gaussian,rgba(0,0,0,0),4,0,0,1);
+}

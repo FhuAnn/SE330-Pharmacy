@@ -84,7 +84,7 @@ public class MenuController {
 
     @FXML
     void btnProductCicked(ActionEvent event) throws IOException {
-        titleTextField.setText("Product");
+        titleTextField.setText("Sản phẩm");
         setMainPane("/com/example/se330_pharmacy/Fxml/Product.fxml");
     }
 

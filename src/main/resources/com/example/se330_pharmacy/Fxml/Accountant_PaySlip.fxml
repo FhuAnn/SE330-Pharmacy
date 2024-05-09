@@ -5,22 +5,15 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="780.0" prefWidth="1356.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane prefHeight="780.0" prefWidth="1356.0" stylesheets="@../Styles/Accountant_PaySlip.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text fx:id="lbAllPaySlip" layoutX="50.0" layoutY="51.0" strokeLineCap="BUTT" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16px;" text="Tất cả phiếu lương">
-         <effect>
-            <DropShadow />
-         </effect>
-      </Text>
-      <Text fx:id="lbFilterPaySlip" layoutX="216.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16px;" text="Lọc" />
+      <Text fx:id="lbFilterPaySlip" layoutX="271.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Lọc" />
       <DatePicker fx:id="dateTimePicker" layoutX="283.0" layoutY="27.0" style="-fx-font-size: 16px;" />
-      <ComboBox fx:id="cbbStatus" layoutX="574.0" layoutY="29.0" prefWidth="150.0" style="-fx-font-size: 16px;" />
-      <Button fx:id="btnAdd" layoutX="1047.0" layoutY="16.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="108.0" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Thêm" />
+      <ComboBox fx:id="cbbStatus" layoutX="574.0" layoutY="27.0" prefWidth="150.0" style="-fx-font-size: 16px;" />
+      <Button fx:id="btnAdd" layoutX="1052.0" layoutY="16.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="108.0" text="Thêm" />
       <TableView fx:id="tbvPaySlip" layoutX="45.0" layoutY="78.0" prefHeight="668.0" prefWidth="1255.0">
         <columns>
           <TableColumn minWidth="209.0" prefWidth="75.0" style="-fx-font-size: 16px;" text="Mã phiếu lương" />
@@ -31,6 +24,7 @@
             <TableColumn minWidth="209.0" prefWidth="75.0" style="-fx-font-size: 16px;" text="Ngày lập" />
         </columns>
       </TableView>
-      <Button fx:id="btnEdit" layoutX="1183.0" layoutY="16.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="108.0" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Sửa" />
+      <Button id="orange" fx:id="btnEdit" layoutX="1188.0" layoutY="16.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="108.0" text="Sửa" />
+      <Text fx:id="lbFilterPaySlip1" layoutX="45.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Tất cả phiếu lương" />
    </children>
 </AnchorPane>

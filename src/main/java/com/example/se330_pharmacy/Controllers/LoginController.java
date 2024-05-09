@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -17,6 +19,10 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
+    public Text loginMessageLabel;
+    public TextField tfUsername_Login;
+    public PasswordField pfPassword_Login;
+    public RadioButton radioHideShow_CP;
     @FXML
     private Button btnChange;
 
@@ -75,14 +81,10 @@ public class LoginController implements Initializable {
     @FXML
     void close(MouseEvent event) {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        s.close();
+        Model.getInstance().getViewFactory().closeStage(s);
     }
 
-    @FXML
-    void minimize(MouseEvent event) {
-        Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        s.setIconified(true);
-    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         btnLogin.setOnAction(event -> Model.getInstance().getViewFactory().showMenuWindow());

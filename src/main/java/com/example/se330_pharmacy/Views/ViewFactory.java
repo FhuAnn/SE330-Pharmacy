@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class ViewFactory {
+
+    Stage stageSetting = null;
+    Stage stageMenu = null;
     public ViewFactory(){}
 
     public void showLoginWindow() {
@@ -39,5 +42,10 @@ public class ViewFactory {
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
         stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+    }
+    public void closeStage(Stage stage)
+    {
+        stage.close();
+        //khi 1 stage nào đó đóng thì cập nhật tình hình các stage khác
     }
 }
