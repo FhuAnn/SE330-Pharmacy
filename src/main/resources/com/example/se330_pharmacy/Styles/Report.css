@@ -1,0 +1,155 @@
+.container-overall
+{
+    -fx-background-color: #f3faea;
+}
+.container-overall .anchor-pane
+{
+    -fx-background-color: #f7fff1;
+}
+.container-overall .button
+{
+    -fx-padding: 5 10 10 10 ;
+    -fx-pref-height: 50;
+    -fx-background-insets: 0, 0 0 2 0 , 0 0 3 0, 0 0 4 0;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-background-color:
+            radial-gradient(center 50% 50%, radius 100%, #629d16, #4a7612);
+    -fx-font-weight: bold;
+    -fx-font-size: 1.08em;
+    -fx-text-fill: white;
+}
+.container-overall .button:hover
+{
+    -fx-background-color: linear-gradient(from 0% 93% to 0% 100% , #67a910 0%, #578a17 100%),
+    #72b40f,
+    #7ac00e,
+    radial-gradient(center 50% 50%, radius 100%, #6f9d2b, #7ccb02);
+    -fx-cursor: hand;
+
+}
+
+.container-overall .button:pressed
+{
+    --fx-padding: 6 10 9 10 ;
+    -fx-background-insets: 1 0 0 0, 1 0 1 0 , 1 0 2 0, 1 0 3 0;
+    -fx-effect: dropshadow(gaussian,rgba(0,0,0,0),4,0,0,1);
+}
+
+/**table-view*!*/
+.table-view {
+    -fx-text-fill: #ffffff;
+}
+.table-view .table-column
+{
+    -fx-background-color: #5A8F15;
+}
+ .table-view .column-header-background .label
+{
+    -fx-text-fill: #ffffff;
+    -fx-alignment: center ;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-pref-height: 30;
+}
+/*tabpane*/
+.tab-pane
+{
+    -fx-background-color: #e7f8d4;
+    -fx-border-color: #c9c9cc;
+    -fx-border-width: 1;
+}
+.tab-pane .tab .tab-label
+{
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+}
+
+.tab-pane .tab{
+    -fx-background-color: #f6ffec;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 10px;
+}
+.tab-pane .tab:selected
+{
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-border-width:3 0 0 0;
+    -fx-border-color: #5A8F15;
+    -fx-background-color: linear-gradient(to top, #ecfade,#cfefac);
+}
+.tab:selected .focus-indicator
+{
+    -fx-focus-color: transparent;
+    -fx-border-color: transparent;
+}
+.tab:focused
+{
+    -fx-focus-color: transparent;
+}
+.tab-pane .tab-header-background
+{
+    -fx-background-color: transparent;
+}
+
+
+/**titlepane*/
+.titled-pane {
+    -fx-border-color: #578c16;
+    -fx-border-width: 0.4;
+    -fx-font-size: 16px;
+}
+.titled-pane .title
+{
+    -fx-background-color: linear-gradient(to top,#C1E293,#ffffff);
+    -fx-font-family: "Segoe UI Semibold";
+}
+/*inputfield*/
+.input-field
+{
+    -fx-border-width: 1 1 1 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-border-color: #9E9DA3;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+}
+
+.input-field:hover
+{
+    -fx-border-color: #8BC634;
+    -fx-font-family: "Segoe UI Semibold";
+}
+.input-field:focused
+{
+    -fx-border-width: 1 1 1 1;
+    -fx-border-radius: 5;
+    -fx-border-color: #8BC634;
+    -fx-wrap-text: true;
+}
+/*search-input*/
+#search-icon
+{
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+}
+
+.input-field .search-input
+{
+    -fx-border-width: 0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #9E9DA3;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+}
+ .input-field
+{
+    -fx-border-width: 1 1 1 1;
+    -fx-border-radius: 5;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #9E9DA3;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+}

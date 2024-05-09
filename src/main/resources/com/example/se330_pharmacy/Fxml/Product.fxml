@@ -16,7 +16,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" styleClass="container-overall" stylesheets="@../Styles/Product.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TitledPane animated="false" collapsible="false" layoutX="47.0" layoutY="12.0" prefHeight="322.0" prefWidth="726.0" text="Thông tin sản phẩm">
+      <TitledPane animated="false" collapsible="false" graphicTextGap="0.0" layoutX="47.0" layoutY="12.0" prefHeight="322.0" prefWidth="726.0" text="Thông tin sản phẩm">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="289.0" prefWidth="743.0" styleClass="anchor-pane">
                <children>
@@ -119,7 +119,7 @@
             <Font name="Segoe UI Semibold" size="14.0" />
          </font>
       </TitledPane>
-      <TitledPane animated="false" collapsible="false" layoutX="794.0" layoutY="9.0" prefHeight="329.0" prefWidth="181.0" text="Tuỳ chọn">
+      <TitledPane animated="false" collapsible="false" graphicTextGap="0.0" layoutX="794.0" layoutY="9.0" prefHeight="329.0" prefWidth="181.0" text="Tuỳ chọn">
          <content>
             <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="285.0" prefWidth="273.0" styleClass="anchor-pane">
                <children>

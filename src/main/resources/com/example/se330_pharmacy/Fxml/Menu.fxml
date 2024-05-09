@@ -107,7 +107,7 @@
             </MenuButton>
             <AnchorPane prefHeight="283.0" prefWidth="244.0">
                <children>
-                  <Button id="logout" fx:id="btnLogout" mnemonicParsing="false" onAction="#btnLogoutClicked" prefHeight="45.0" prefWidth="243.0" text="Đăng xuất" AnchorPane.bottomAnchor="0.0">
+                  <Button id="logout" fx:id="btnLogout" mnemonicParsing="false"  onMouseClicked="#btnLogoutClicked" prefHeight="45.0" prefWidth="243.0" text="Đăng xuất" AnchorPane.bottomAnchor="0.0">
                      <font>
                         <Font size="19.0" />
                      </font>
@@ -121,14 +121,14 @@
       </VBox>
       <Pane layoutX="245.0" prefHeight="120.0" prefWidth="1356.0" styleClass="top-container">
          <children>
-            <Text fx:id="titleTextField" layoutX="68.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Home">
+            <Text fx:id="titleTextField" layoutX="68.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="tlt" text="Home">
                <font>
                   <Font name=".VnArial Bold" size="35.0" />
                </font>
             </Text>
-            <Pane fx:id="btnClose" layoutX="1312.0" layoutY="1.0"  prefHeight="35.0" prefWidth="43.0" styleClass="pane_close">
+            <Pane fx:id="btnClose" layoutX="1312.0" layoutY="1.0" onMouseClicked="#closeMenu" prefHeight="35.0" prefWidth="43.0" styleClass="pane_close">
                <children>
-                  <ImageView fitHeight="27.0" fitWidth="25.0" layoutX="9.0" layoutY="5.0"  pickOnBounds="true" preserveRatio="true" styleClass="image_hover">
+                  <ImageView fitHeight="27.0" fitWidth="25.0" layoutX="9.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" styleClass="image_hover">
                      <image>
                         <Image url="@../Images/close-white.png" />
                      </image>
@@ -136,7 +136,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitHeight="27.0" fitWidth="25.0" layoutX="9.0" layoutY="5.0"  pickOnBounds="true" preserveRatio="true" styleClass="image">
+                  <ImageView fitHeight="27.0" fitWidth="25.0" layoutX="9.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" styleClass="image">
                      <image>
                         <Image url="@../Images/close-gray.png" />
                      </image>
@@ -160,7 +160,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="mainPane" layoutX="245.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" >
+      <Pane fx:id="mainPane" layoutX="245.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0">
          <children>
             <ImageView fitHeight="780.0" fitWidth="1356.0" layoutX="33.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
          </children></Pane>

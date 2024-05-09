@@ -1,4 +1,7 @@
-
+.container_overall
+{
+    -fx-background-color: #f3faea;
+}
 
 .container_button .button
 {

@@ -1,4 +1,4 @@
-package com.example.se330_pharmacy.Controllers;
+package com.example.se330_pharmacy.Models;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

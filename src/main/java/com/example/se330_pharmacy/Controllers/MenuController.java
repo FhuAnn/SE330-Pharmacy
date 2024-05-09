@@ -72,8 +72,8 @@ public class MenuController {
     }
 
     @FXML
-    void btnLogoutClicked(ActionEvent event) {
-
+    void btnLogoutClicked(MouseEvent event) {
+        closeMenu(event);
     }
 
     @FXML
@@ -122,7 +122,7 @@ public class MenuController {
         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
         if (result.isPresent() && result.get() == okButton) {
-            s.close();
+            Model.getInstance().getViewFactory().closeStage(s);
         }
     }
 

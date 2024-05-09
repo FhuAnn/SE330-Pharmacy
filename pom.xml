@@ -21,7 +21,11 @@
             <version>9.0.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.gluonhq/charm-glisten -->
-
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.3</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>

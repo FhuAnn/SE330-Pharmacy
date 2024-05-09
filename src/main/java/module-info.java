@@ -18,4 +18,5 @@ module com.example.se330_pharmacy {
     opens com.example.se330_pharmacy.Controllers to javafx.fxml;
     exports com.example.se330_pharmacy.Models;
     exports com.example.se330_pharmacy.Views;
+    opens com.example.se330_pharmacy.Models to javafx.fxml;
 }

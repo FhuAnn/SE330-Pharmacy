@@ -9,15 +9,15 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="780.0" prefWidth="1356.0" stylesheets="@../Styles/Accountant_Receipt.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="780.0" prefWidth="1356.0" styleClass="container_overall" stylesheets="@../Styles/Accountant_Receipt.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane layoutX="1026.0" layoutY="8.0" prefHeight="67.0" prefWidth="275.0" styleClass="container_button">
+      <Pane layoutX="1024.0" layoutY="8.0" prefHeight="67.0" prefWidth="275.0" styleClass="container_button">
          <children>
             <Button fx:id="btnAdd" layoutX="16.0" layoutY="9.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="108.0" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Thêm" />
             <Button id="orange" fx:id="btnEdit" layoutX="152.0" layoutY="9.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="108.0" text="Sửa" />
          </children>
       </Pane>
-      <Text fx:id="lbFilterReceipt" layoutX="216.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Lọc" />
+      <Text fx:id="lbFilterReceipt" layoutX="239.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Lọc" />
       <DatePicker fx:id="dateTimePickerReceipt" layoutX="283.0" layoutY="27.0" style="-fx-font-size: 16px;" />
       <ComboBox fx:id="cbbStatusReceipt" layoutX="574.0" layoutY="28.0" prefWidth="150.0" style="-fx-font-size: 16px;" />
       <TableView fx:id="tbvReceipt" layoutX="45.0" layoutY="78.0" prefHeight="668.0" prefWidth="1255.0">
