@@ -50,7 +50,7 @@
                </font>
             </TextField>
             <Button layoutX="182.0" layoutY="59.0" mnemonicParsing="false" text="Tìm kiếm" />
-            <Button layoutX="267.0" layoutY="59.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="81.0" text="Làm mới" />
+            <Button layoutX="267.0" layoutY="59.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="74.0" text="Làm mới" />
             <Button layoutX="6.0" layoutY="97.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="169.0" text="Gọi bệnh nhân" />
             <RadioButton layoutX="3.0" layoutY="7.0" mnemonicParsing="false" text="Danh sách bệnh nhân chờ">
                <toggleGroup>

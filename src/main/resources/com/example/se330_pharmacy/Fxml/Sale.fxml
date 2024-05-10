@@ -99,12 +99,12 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnAdd" layoutX="567.0" layoutY="21.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" text="Thêm" textFill="WHITE">
+                  <Button id="add" fx:id="btnAdd" layoutX="567.0" layoutY="9.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" text="Thêm" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Semibold" size="18.0" />
                      </font>
                   </Button>
-                  <Button id="red" fx:id="btnDelete" layoutX="567.0" layoutY="69.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" text="Xoá" textFill="WHITE">
+                  <Button id="delete" fx:id="btnDelete" layoutX="567.0" layoutY="65.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" text="Xoá" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Semibold" size="18.0" />
                      </font>
@@ -130,42 +130,42 @@
          <content>
             <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="197.0" prefWidth="501.0" styleClass="anchor-pane">
                <children>
-                  <Text layoutX="53.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên khách hàng">
+                  <Text layoutX="53.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên khách hàng">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <Text layoutX="55.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số điện thoại">
+                  <Text layoutX="55.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số điện thoại">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="tfPhoneNumber" layoutX="193.0" layoutY="64.0" prefHeight="37.0" prefWidth="233.0" promptText="Số điện thoại" styleClass="input-field">
+                  <TextField fx:id="tfPhoneNumber" layoutX="193.0" layoutY="59.0" prefHeight="37.0" prefWidth="233.0" promptText="Số điện thoại" styleClass="input-field">
                      <font>
                         <Font name="Segoe UI" size="14.0" />
                      </font>
                   </TextField>
-                  <Text layoutX="53.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tổng hoá đơn">
+                  <Text layoutX="53.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tổng hoá đơn">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <Text fill="#1e9dfb" layoutX="193.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0 VND">
+                  <Text fill="#1e9dfb" layoutX="193.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0 VND">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <Button fx:id="btnCreateBill" layoutX="281.0" layoutY="142.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="145.0" text="Xuất hoá đơn" textFill="WHITE">
+                  <Button id="create" fx:id="btnCreateBill" layoutX="277.0" layoutY="127.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="177.0" text="Xuất hoá đơn" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Semibold" size="18.0" />
                      </font>
                   </Button>
-                  <Button id="red" fx:id="btnCancel" layoutX="193.0" layoutY="142.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" text="Huỷ" textFill="WHITE">
+                  <Button id="cancel" fx:id="btnCancel" layoutX="165.0" layoutY="135.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="87.0" text="Huỷ" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Semibold" size="18.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="tfCustomName" layoutX="192.0" layoutY="19.0" prefHeight="37.0" prefWidth="234.0" promptText="Tên khách hàng" styleClass="input-field">
+                  <TextField fx:id="tfCustomName" layoutX="192.0" layoutY="14.0" prefHeight="37.0" prefWidth="234.0" promptText="Tên khách hàng" styleClass="input-field">
                      <font>
                         <Font name="Segoe UI Italic" size="14.0" />
                      </font>
@@ -220,7 +220,7 @@
             </Tab>
          </tabs>
       </TabPane>
-      <Button fx:id="btnSelling" layoutX="612.0" layoutY="26.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="196.0" text="Bán hàng" textFill="WHITE">
+      <Button fx:id="btnSelling" layoutX="612.0" layoutY="26.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="203.0" text="Bán hàng" textFill="WHITE">
          <font>
             <Font name="Segoe UI Semibold" size="18.0" />
          </font>

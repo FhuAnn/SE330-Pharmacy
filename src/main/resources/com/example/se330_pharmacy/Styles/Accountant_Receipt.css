@@ -3,37 +3,99 @@
     -fx-background-color: #f3faea;
 }
 
-.container_button .button
-{
-    -fx-padding: 5 10 10 10 ;
+#add {
+    -fx-padding: 5 10 10 10;
+    -fx-background-insets: 0, 0 0 2 0, 0 0 3 0, 0 0 4 0;
+    -fx-border-radius: 20;
+    -fx-border-width: 2;
+    -fx-background-radius: 20;
+    -fx-pref-width: 100;
     -fx-pref-height: 50;
-    -fx-background-insets: 0, 0 0 2 0 , 0 0 3 0, 0 0 4 0;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-background-color:
-            radial-gradient(center 50% 50%, radius 100%, #629d16, #4a7612);
+    -fx-text-fill: #67A10AFF;
+    -fx-font-family: "Segoe UI black";
+    -fx-background-color: transparent;
+    -fx-border-color: #74b60c;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-font-family: "Verdana";
-    -fx-font-size: 16px;
+    -fx-font-size: 18px;
 }
-.container_button .button:hover
-{
-    -fx-background-color: linear-gradient(from 0% 93% to 0% 100% , #67a910 0%, #578a17 100%),
-    #72b40f,
-    #7ac00e,
-    radial-gradient(center 50% 50%, radius 100%, #6f9d2b, #7ccb02);
+#add:hover {
+    -fx-border-width: 0;
+    -fx-background-color: linear-gradient(from 0% 93% to 0% 100% , #78b713 0%, #67a10a 100%),
+    #6faf0a,
+    #7cc40c,
+    linear-gradient(to right, #adea4e, #7abe0d);
+    -fx-text-fill: #ffffff;
     -fx-cursor: hand;
-
 }
 
-.container_button .button:pressed
+#add:pressed
 {
     --fx-padding: 6 10 9 10 ;
     -fx-background-insets: 1 0 0 0, 1 0 1 0 , 1 0 2 0, 1 0 3 0;
     -fx-effect: dropshadow(gaussian,rgba(0,0,0,0),4,0,0,1);
 }
+#delete {
+    -fx-padding: 5 10 10 10;
+    -fx-background-insets: 0, 0 0 2 0, 0 0 3 0, 0 0 4 0;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-width: 2;
+    -fx-pref-width: 100;
+    -fx-pref-height: 50;
+    -fx-text-fill: #ff0000;
+    -fx-font-family: "Segoe UI black";
+    -fx-background-color: transparent;
+    -fx-border-color: #ff0000;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+}
+#delete:hover {
+    -fx-border-width: 0;
+    -fx-background-color: linear-gradient(from 0% 93% to 0% 100% , #ab0202 0%, #a10303 100%),
+    #da0909,
+    #f62121,
+    linear-gradient(to right, #ff7979, #ff0000);
+    -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
+}
 
+#delete:pressed
+{
+    --fx-padding: 6 10 9 10 ;
+    -fx-background-insets: 1 0 0 0, 1 0 1 0 , 1 0 2 0, 1 0 3 0;
+    -fx-effect: dropshadow(gaussian,rgba(0,0,0,0),4,0,0,1);
+}
+#edit {
+    -fx-padding: 5 10 10 10;
+    -fx-background-insets: 0, 0 0 2 0, 0 0 3 0, 0 0 4 0;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-width: 2;
+    -fx-pref-width: 100;
+    -fx-pref-height: 50;
+    -fx-text-fill: #ff9100;
+    -fx-font-family: "Segoe UI black";
+    -fx-background-color: transparent;
+    -fx-border-color: #ff9100;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+}
+#edit:hover {
+    -fx-border-width: 0;
+    -fx-background-color: linear-gradient(from 0% 93% to 0% 100% , #ea8a07 0%, #d27700 100%),
+    #dc820d,
+    #ea8f1d,
+    linear-gradient(to right, #ffc57e, #ea8400);
+    -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
+}
+
+#edit:pressed
+{
+    --fx-padding: 6 10 9 10 ;
+    -fx-background-insets: 1 0 0 0, 1 0 1 0 , 1 0 2 0, 1 0 3 0;
+    -fx-effect: dropshadow(gaussian,rgba(0,0,0,0),4,0,0,1);
+}
 /*comboBox*/
 .combo-box .text-field
 {

@@ -6,9 +6,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" styleClass="container_overall" stylesheets="@../Styles/Supplier.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
@@ -35,24 +33,9 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="189.0" prefWidth="221.0" styleClass="anchor-pane">
                <children>
-                  <HBox layoutX="35.0" layoutY="14.0" prefHeight="43.0" prefWidth="151.0" style="-fx-border-color: black;">
-                     <children>
-                        <ImageView fitHeight="44.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button fx:id="btnAdd" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Thêm" />
-                     </children>
-                  </HBox>
-                  <HBox layoutX="36.0" layoutY="73.0" prefHeight="43.0" prefWidth="151.0" style="-fx-border-color: black;">
-                     <children>
-                        <ImageView fitHeight="44.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button id="orange" fx:id="btnEdit" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" text="Sửa" />
-                     </children>
-                  </HBox>
-                  <HBox layoutX="36.0" layoutY="132.0" prefHeight="43.0" prefWidth="151.0" style="-fx-border-color: black;">
-                     <children>
-                        <ImageView fitHeight="44.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button id="red" fx:id="btnDelete" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" text="Xóa" />
-                     </children>
-                  </HBox>
+                  <Button id="add" fx:id="btnAdd" layoutX="55.0" layoutY="14.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" text="Thêm" />
+                  <Button id="edit" fx:id="btnEdit" layoutX="55.0" layoutY="85.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" text="Sửa" />
+                  <Button id="delete" fx:id="btnDelete" layoutX="55.0" layoutY="156.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" text="Xóa" />
                </children>
             </AnchorPane>
         </content>
