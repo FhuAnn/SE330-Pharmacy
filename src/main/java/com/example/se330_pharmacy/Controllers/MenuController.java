@@ -99,8 +99,7 @@ public class MenuController {
         titleTextField.setText("Bán hàng");
         setMainPane("/com/example/se330_pharmacy/Fxml/Sale.fxml");
     }
-
-
+    
     @FXML
     void btnReportClicked(ActionEvent event) throws IOException {
         titleTextField.setText("Báo cáo");
