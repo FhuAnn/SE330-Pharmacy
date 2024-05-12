@@ -11,6 +11,7 @@ module com.example.se330_pharmacy {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.sql;
+    requires java.desktop;
 
 
     opens com.example.se330_pharmacy to javafx.fxml;

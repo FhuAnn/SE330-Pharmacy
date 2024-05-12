@@ -1,6 +1,6 @@
 package com.example.se330_pharmacy.Controllers;
 
-import com.example.se330_pharmacy.Models.DatabaseConnection;
+import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Model;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -114,10 +114,10 @@ public class LoginController implements Initializable {
     }
 
     private void ValidateLogin() {
-        DatabaseConnection connectionNow = new DatabaseConnection();
+        ConnectDB connectionNow = new ConnectDB();
         Connection connectionDB= connectionNow.getConnection();
         //Nhập username: "ngocanh0058", password: "abc"
-        String verifyLogin = "SELECT COUNT(1) FROM \"NHANVIEN\" WHERE \"TK\" ='"+tfUsername_Login.getText().toString()+"' AND \"MK\" ='"+pfPassword_Login.getText().toString()+"'";
+        String verifyLogin = "SELECT COUNT(1) FROM \"employee\" WHERE \"username\" ='"+tfUsername_Login.getText().toString()+"' AND \"password\" ='"+pfPassword_Login.getText().toString()+"'";
         try {
             Statement statement = connectionDB.createStatement();
             ResultSet queryResult = statement.executeQuery(verifyLogin);
