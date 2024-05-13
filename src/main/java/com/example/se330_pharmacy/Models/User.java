@@ -11,15 +11,103 @@ import java.util.PropertyPermission;
 import java.util.Queue;
 
 public class User {
-    public String Username;
-    public String Password;
+    public String Username ;
+    public User()
+    {}
+    public User(String username, String password, String employee_id, String employName, String citizen_id, String email, String phoneNumber, String position, String address) {
+        Username = username;
+        Password = password;
+        Employee_id = employee_id;
+        EmployName = employName;
+        Citizen_id = citizen_id;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        Position = position;
+        Address = address;
+    }
+
+    public String Password ;
     public String Employee_id;
     public String EmployName;
     public String Citizen_id;
-    public String Address;
     public String Email;
     public String PhoneNumber;
     public String Position;
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+
+
+    public String getCitizen_id() {
+        return Citizen_id;
+    }
+
+    public void setCitizen_id(String citizen_id) {
+        Citizen_id = citizen_id;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    public String Address;
+
+    public String getUsername() {
+        return Username;
+    }
+
+    public void setUsername(String username) {
+        Username = username;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
+    }
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+    public String getEmployee_id() {
+        return Employee_id;
+    }
+
+    public void setEmployee_id(String employee_id) {
+        Employee_id = employee_id;
+    }
+
+    public String getEmployName() {
+        return EmployName;
+    }
+
+    public void setEmployName(String employName) {
+        EmployName = employName;
+    }
+
+    public String getPosition() {
+        return Position;
+    }
+
+    public void setPosition(String position) {
+        Position = position;
+    }
+
+
 
 
     public String GetHash(String plainText) {
@@ -63,6 +151,8 @@ public class User {
                 if (resultSet.getString("defaultpassword")!=null && resultSet.getString("defaultpassword").equals(password))
                     return 1;//mật khẩu mặc định
                 else {
+                    //fill data
+                    filldata(resultSet);
                     return 2; // mật khẩu chính
                 }
             } else {
@@ -74,9 +164,21 @@ public class User {
             e.printStackTrace();
             return -1;
         }
-
     }
-    public String UserID(String username,String password) throws SQLException
+
+    private void filldata(ResultSet resultSet) throws SQLException {
+        setEmployee_id(resultSet.getString("employee_id").toString());
+        setEmployName(resultSet.getString("employname").toString());
+        setUsername(resultSet.getString("username").toString());
+        setPosition(resultSet.getString("position").toString());
+        setAddress(resultSet.getString("address").toString());
+        setCitizen_id(resultSet.getString("citizen_id").toString());
+        setEmail(resultSet.getString("email").toString());
+        setPhoneNumber(resultSet.getString("phonenumber").toString());
+        setPassword(resultSet.getString("password").toString());
+    }
+
+    /*public String UserID(String username,String password) throws SQLException
     {
             ConnectDB connect = new ConnectDB();
             String query = "SELECT employee_id FROM employee WHERE username = '" + username + "' AND password = '" + password + "'";
@@ -99,8 +201,8 @@ public class User {
             username = resultSet.getString("username");
         }
         return username;
-    }
-    public String getPosition(String username,String password) throws SQLException
+    }*/
+   /* public String getPosition(String username,String password) throws SQLException
     {
             ConnectDB connect = new ConnectDB();
             String query = "SELECT position FROM employee WHERE username = '" + username + "' AND password = '" + password + "'";
@@ -119,7 +221,7 @@ public class User {
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
     public ResultSet LoadListEmployee () throws SQLException {
         ConnectDB connect = new ConnectDB();
         String query = "SELECT employee_id as \"ID\", employname as \"Họ và tên\",citizen_id as \"CCCD\",address as \"Địa chỉ\",phonenumber as \"Số điện thoại\",email as \"Email\",position as \"Vai trò\",username as \"Username\"  FROM employee ";
@@ -207,7 +309,7 @@ public class User {
             }
             return false;
     }
-    public ResultSet SearchData (String search) throws SQLException //search id or search name
+    public ResultSet SearchData(String search) throws SQLException //search id or search name
     {
         ConnectDB connect = new ConnectDB();
         String query = STR."SELECT employee_id as \"ID\", employname as \"Họ và tên\",citizen_id as \"CCCD\",address as \"Địa chỉ\",phonenumber as \"Số điện thoại\",email as \"Email\",position as \"Vai trò\",username as \"Username\"  FROM employee WHERE (Employee_id like '\{search}%' or EmployName like N'% \{search}%')";

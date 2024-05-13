@@ -1,25 +1,25 @@
 package com.example.se330_pharmacy.Controllers;
 
 import com.example.se330_pharmacy.Models.Model;
+import com.example.se330_pharmacy.Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.Optional;
 
 public class MenuController {
 
+    private User user;
     @FXML
     private Button btnEmployee;
 
@@ -52,6 +52,11 @@ public class MenuController {
 
     @FXML
     private Text titleTextField;
+
+    public MenuController()
+    {
+        this.user = new User();
+    }
 
     @FXML
     void btnEmployeeClicked(ActionEvent event) throws IOException {
@@ -130,11 +135,22 @@ public class MenuController {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
         s.setIconified(true);
     }
-
     private void setMainPane(String resource) throws IOException {
         mainPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Parent reportSceneRoot = loader.load();
         mainPane.getChildren().add(reportSceneRoot);
+    }
+    public void initData(User _user)
+    {
+        this.user=_user;
+    }
+
+    public void ProfileEmploy_Clicked(MouseEvent mouseEvent) {
+            String id = this.user.Employee_id;
+            String name = this.user.getEmployName();
+            String username = this.user.getUsername();
+            String pos = this.user.getPosition();
+            Model.getInstance().getViewFactory().showProfileWindow(id,name,username,pos);
     }
 }

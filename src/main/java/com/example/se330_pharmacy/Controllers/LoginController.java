@@ -91,27 +91,21 @@ public class LoginController implements Initializable {
             forgetPane.toBack();
             pfPassword_Login.setText("");
         }
+        else {
+            showAlert("Invalid this username + '"+tf_username_forgot.getText().toString()+"'+!");
+        }
     }
 
     private boolean check_otp_username() {
-        try{
-            String username_result = user.getUsername(tf_username_forgot.getText().toString());
-            if(username_result==null)
-            {
-                showAlert("Invalid this username + '"+tf_username_forgot.getText().toString()+"'+!");
-                return false;
-            }
-            //otp
-
-
-            //thoã mãn otp và tồn tại username
-            return true;
-        }
-        catch (SQLException e )
+        String username_result = user.getUsername();
+        if(username_result==null)
         {
-            e.printStackTrace();
             return false;
         }
+        //otp
+
+        //thoã mãn otp và tồn tại username
+        return true;
     }
 
     public void btnConfirm_clicked(MouseEvent mouseEvent) throws SQLException {
@@ -156,8 +150,6 @@ public class LoginController implements Initializable {
       Login(tfUsername_Login.getText().toString(),pfPassword_Login.getText().toString());
     }
 
-
-
     private void Login(String username,String password) {
         int valid = user.CheckValidate(username,password);
         if(valid==1)
@@ -171,8 +163,8 @@ public class LoginController implements Initializable {
             showAlert("Login successfully!");
             pfPassword_Login.setText("");
             Stage stage = (Stage) btnLogin.getScene().getWindow(); //get login-screen
-            Model.getInstance().getViewFactory().closeStage(stage); //close login-screen
-            Model.getInstance().getViewFactory().showMenuWindow(); //open menu-screen
+            Model.getInstance().getViewFactory().closeStage(stage);//close login-screen
+            Model.getInstance().getViewFactory().showMenuWindow(user);//mở menu-screen
         }
         else
             showAlert("Fail to login! Check your Username and Password again");
@@ -251,5 +243,8 @@ public class LoginController implements Initializable {
         tf_username_forgot.setText("");
         textFieldOTP.setText("");
     }
-
+    public  void showLogin()
+    {
+        Model.getInstance().getViewFactory().showLoginWindow();
+    }
 }
