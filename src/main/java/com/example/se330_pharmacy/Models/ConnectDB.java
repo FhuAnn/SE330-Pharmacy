@@ -46,10 +46,18 @@ public class ConnectDB {
         }
     }
 
-    public ResultSet getData(String sqlQuery) throws SQLException {
-        PreparedStatement preparedStatement = databaseLink.prepareStatement(sqlQuery);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return resultSet;
+    public ResultSet getData(String sqlQuery)  {
+        try
+        {
+            PreparedStatement preparedStatement = databaseLink.prepareStatement(sqlQuery);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public boolean handleData(PreparedStatement preparedStatement) throws SQLException {

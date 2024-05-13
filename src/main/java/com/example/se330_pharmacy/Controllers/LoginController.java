@@ -2,6 +2,7 @@ package com.example.se330_pharmacy.Controllers;
 
 import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Model;
+import com.example.se330_pharmacy.Models.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -11,15 +12,22 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import net.synedra.validatorfx.Check;
 
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
+    public TextField tf_username_forgot;
+    public PasswordField tfPassword1_change;
+    public PasswordField tfPassword2_change;
+    User user;
+    private int index ;
     public Text loginMessageLabel;
     public TextField tfUsername_Login;
     public PasswordField pfPassword_Login;
@@ -51,20 +59,19 @@ public class LoginController implements Initializable {
     @FXML
     private Text textWelcome;
 
-    @FXML
-    private TextField tfPassword1CP;
 
-    @FXML
-    private TextField tfPassword2CP;
 
     @FXML
     void backToLogin(MouseEvent event) {
+        index =0;
+        ResetTextField();
         forgetPane.toBack();
         changePane.toBack();
     }
 
     @FXML
     void forgotPasswordOnclick(MouseEvent event) {
+        index = 1;
         loginPane.toBack();
         changePane.toBack();
     }
@@ -75,10 +82,59 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    void btnChangePassword(MouseEvent event) {
-        loginPane.toBack();
-        forgetPane.toBack();
+    void btnContinue_clicked(MouseEvent event) throws InterruptedException {
+        CheckForFill();
+        if(check_otp_username())
+        {
+            index =2;
+            loginPane.toBack();
+            forgetPane.toBack();
+            pfPassword_Login.setText("");
+        }
     }
+
+    private boolean check_otp_username() {
+        try{
+            String username_result = user.getUsername(tf_username_forgot.getText().toString());
+            if(username_result==null)
+            {
+                showAlert("Invalid this username + '"+tf_username_forgot.getText().toString()+"'+!");
+                return false;
+            }
+            //otp
+
+
+            //thoã mãn otp và tồn tại username
+            return true;
+        }
+        catch (SQLException e )
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void btnConfirm_clicked(MouseEvent mouseEvent) throws SQLException {
+        CheckForFill();
+        if(UpdatePassword(index))
+        {
+            showAlert("Password is now changed!");
+            index = 0;
+            ResetTextField();
+            changePane.toBack();
+            forgetPane.toBack();
+        }
+        else showAlert("Error!");
+
+    }
+    private boolean UpdatePassword(int index) throws SQLException{
+        if(index==0)// yêu cầu đổi mật khẩu mặc định
+        {
+            return user.UpdatePassword(tfUsername_Login.getText().toString(),tfPassword2_change.getText().toString(),index);
+        }
+        return user.UpdatePassword(tf_username_forgot.getText().toString(),tfPassword2_change.getText().toString(),index);
+    }
+
     @FXML
     void close(MouseEvent event) {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -91,61 +147,79 @@ public class LoginController implements Initializable {
         btnLogin.setOnAction(event -> loginButtonOnAction());
         forgetPane.toBack();
         changePane.toBack();
+        user = new User();
+        index=0;
     }
 
-    private void loginButtonOnAction() {
-        if((!tfUsername_Login.getText().isBlank()) && !pfPassword_Login.getText().isBlank())
-        {
-            ValidateLogin();
+    private void loginButtonOnAction()  {
+      CheckForFill();
+      Login(tfUsername_Login.getText().toString(),pfPassword_Login.getText().toString());
+    }
 
-        } else {
-            showAlert("Please enter username and password");
-            tfUsername_Login.setText("");
+
+
+    private void Login(String username,String password) {
+        int valid = user.CheckValidate(username,password);
+        if(valid==1)
+        {
+            showAlert("Welcome! Please change your password");
+            loginPane.toBack();
+            forgetPane.toBack();
+        }
+        else if(valid == 2)
+        {
+            showAlert("Login successfully!");
             pfPassword_Login.setText("");
+            Stage stage = (Stage) btnLogin.getScene().getWindow(); //get login-screen
+            Model.getInstance().getViewFactory().closeStage(stage); //close login-screen
+            Model.getInstance().getViewFactory().showMenuWindow(); //open menu-screen
         }
-    }
-
-    private void showAlert(String  string) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setHeaderText(null);
-        alert.setContentText(string);
-        alert.showAndWait();
-    }
-
-    private void ValidateLogin() {
-        ConnectDB connectionNow = new ConnectDB();
-        Connection connectionDB= connectionNow.getConnection();
-        //Nhập username: "ngocanh0058", password: "abc"
-        String verifyLogin = "SELECT COUNT(1) FROM \"employee\" WHERE \"username\" ='"+tfUsername_Login.getText().toString()+"' AND \"password\" ='"+pfPassword_Login.getText().toString()+"'";
-        try {
-            Statement statement = connectionDB.createStatement();
-            ResultSet queryResult = statement.executeQuery(verifyLogin);
-            while(queryResult.next())
-            {
-                if(queryResult.getInt(1)==1){
-                    //loginMessageLabel.setText("Congratulations!");
-                    Stage stage = (Stage) btnLogin.getScene().getWindow(); //get login-screen
-                    Model.getInstance().getViewFactory().closeStage(stage); //close login-screen
-                    Model.getInstance().getViewFactory().showMenuWindow(); //open menu-screen
-                    pfPassword_Login.setText("");
-                }
-                else {
-                    showAlert("Invalid login. PLease try login again.");
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            e.getCause();
-        }
+        else
+            showAlert("Fail to login! Check your Username and Password again");
     }
 
     public void passwordFieldKeyTyped(KeyEvent keyEvent) {;
         checkValidate20characters(keyEvent);
     }
 
+    private void CheckForFill ()
+    {
+        if(index == 0) // đang ở màn login
+        {
+            if((tfUsername_Login.getText().isBlank()) && pfPassword_Login.getText().isBlank())
+            {
+                showAlert("Please enter username and password");
+                tfUsername_Login.setText("");
+                pfPassword_Login.setText("");
+                return;
+            }
+        }else
+        if(index == 1) // đang ở màn forgotpassword
+        {
+            if(tf_username_forgot.getText().isBlank()){
+                showAlert("You must fill the username!");
+                return;
+            }
+        }
+        else // đang ở màn change
+        {
+            if(tfPassword1_change.getText().isBlank())
+            {
+                showAlert("You must fill new password");
+                return;
+            }
+            if(tfPassword2_change.getText().isBlank())
+            {
+                showAlert("You must fill confirm new password");
+                return;
+            }
+            if(!tfPassword2_change.equals(tfPassword1_change))
+            {
+                showAlert("Wrong password re-entered, please check again");
+            }
+
+        }
+    }
     private void checkValidate20characters(KeyEvent keyEvent) {
         if (pfPassword_Login.getText().length() >= 20) {
             // Hiển thị thông báo khi độ dài vượt quá 20 ký tự
@@ -161,4 +235,21 @@ public class LoginController implements Initializable {
             pfPassword_Login.deleteText(caretPos - 1, caretPos);
         }
     }
+    private void showAlert(String  string) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText(null);
+        alert.setContentText(string);
+        alert.showAndWait();
+    }
+    private void ResetTextField()
+    {
+        tfUsername_Login.setText("");
+        pfPassword_Login.setText("");
+        tfPassword1_change.setText("");
+        tfPassword2_change.setText("");
+        tf_username_forgot.setText("");
+        textFieldOTP.setText("");
+    }
+
 }
