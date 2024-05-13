@@ -14,18 +14,6 @@ public class User {
     public String Username ;
     public User()
     {}
-    public User(String username, String password, String employee_id, String employName, String citizen_id, String email, String phoneNumber, String position, String address) {
-        Username = username;
-        Password = password;
-        Employee_id = employee_id;
-        EmployName = employName;
-        Citizen_id = citizen_id;
-        Email = email;
-        PhoneNumber = phoneNumber;
-        Position = position;
-        Address = address;
-    }
-
     public String Password ;
     public String Employee_id;
     public String EmployName;
@@ -68,7 +56,26 @@ public class User {
     public String getUsername() {
         return Username;
     }
-
+    public String getUsername(String _username)
+    {
+        String username =null;
+        ConnectDB connect = new ConnectDB();
+        String query = "SELECT username FROM employee WHERE username = '" + _username +"'";
+        ResultSet resultSet = connect.getData(query);
+        try
+        {
+            if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không
+            {
+                username = resultSet.getString("username");
+            }
+            return username;
+        }
+        catch (SQLException e )
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void setUsername(String username) {
         Username = username;
     }

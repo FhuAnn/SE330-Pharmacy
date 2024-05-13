@@ -97,7 +97,7 @@ public class LoginController implements Initializable {
     }
 
     private boolean check_otp_username() {
-        String username_result = user.getUsername();
+        String username_result = user.getUsername(tf_username_forgot.getText().toString());
         if(username_result==null)
         {
             return false;
@@ -205,7 +205,7 @@ public class LoginController implements Initializable {
                 showAlert("You must fill confirm new password");
                 return;
             }
-            if(!tfPassword2_change.equals(tfPassword1_change))
+            if(!tfPassword2_change.getText().equals(tfPassword1_change.getText()))
             {
                 showAlert("Wrong password re-entered, please check again");
             }

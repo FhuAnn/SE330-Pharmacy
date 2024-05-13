@@ -38,7 +38,7 @@
             <Text layoutX="67.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="txt" text="Thông tin nhân viên" />
             <ImageView fitHeight="51.0" fitWidth="68.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Images/Green Pharmacy.png" />
+                  <Image url="@../Images/logoMenu.png" />
                </image>
             </ImageView>
          </children>
