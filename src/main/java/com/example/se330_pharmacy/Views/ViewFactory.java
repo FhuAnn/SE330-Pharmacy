@@ -48,4 +48,6 @@ public class ViewFactory {
         stage.close();
         //khi 1 stage nào đó đóng thì cập nhật tình hình các stage khác
     }
+
+
 }
