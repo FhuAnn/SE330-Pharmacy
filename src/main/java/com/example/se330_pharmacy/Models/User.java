@@ -1,5 +1,6 @@
 package com.example.se330_pharmacy.Models;
 
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -350,3 +351,4 @@ public class User {
             return false;
     }
 }
+
