@@ -12,6 +12,7 @@ module com.example.se330_pharmacy {
     requires com.almasb.fxgl.all;
     requires java.sql;
     requires java.desktop;
+    requires java.mail;
 
 
     opens com.example.se330_pharmacy to javafx.fxml;
