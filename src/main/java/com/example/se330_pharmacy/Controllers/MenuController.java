@@ -129,7 +129,17 @@ public class MenuController {
             Model.getInstance().getViewFactory().closeStage(s);
         }
     }
-
+    public void initData(User _user)
+    {
+        this.user=_user;
+    }
+    public void ProfileEmploy_Clicked(MouseEvent mouseEvent) {
+        String id = this.user.Employee_id;
+        String name = this.user.getEmployName();
+        String username = this.user.getUsername();
+        String pos = this.user.getPosition();
+        Model.getInstance().getViewFactory().showProfileWindow(id,name,username,pos);
+    }
     @FXML
     void minimizeMenu(MouseEvent event) {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -141,16 +151,5 @@ public class MenuController {
         Parent reportSceneRoot = loader.load();
         mainPane.getChildren().add(reportSceneRoot);
     }
-    public void initData(User _user)
-    {
-        this.user=_user;
-    }
 
-    public void ProfileEmploy_Clicked(MouseEvent mouseEvent) {
-            String id = this.user.Employee_id;
-            String name = this.user.getEmployName();
-            String username = this.user.getUsername();
-            String pos = this.user.getPosition();
-            Model.getInstance().getViewFactory().showProfileWindow(id,name,username,pos);
-    }
 }

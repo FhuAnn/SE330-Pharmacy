@@ -30,14 +30,13 @@ public class ProfileController {
         employname_lbl.setText(_name);
         username_lbl.setText(_username);
         position_lbl.setText(_pos);
-        stage = (Stage) employee_id_lbl.getScene().getWindow();
     }
 
     public void  closeProfileView(MouseEvent mouseEvent) {
-        Model.getInstance().getViewFactory().closeStage(stage);
+        Model.getInstance().getViewFactory().closeStage((Stage) employee_id_lbl.getScene().getWindow());
     }
 
     public void minimizeProfile(MouseEvent mouseEvent) {
-        Model.getInstance().getViewFactory().minimizeStage(stage);
+        Model.getInstance().getViewFactory().minimizeStage((Stage) employee_id_lbl.getScene().getWindow());
     }
 }
