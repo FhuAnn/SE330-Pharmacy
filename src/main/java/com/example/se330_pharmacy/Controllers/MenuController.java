@@ -1,5 +1,6 @@
 package com.example.se330_pharmacy.Controllers;
 
+import com.example.se330_pharmacy.Models.Employee;
 import com.example.se330_pharmacy.Models.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,7 +53,11 @@ public class MenuController {
 
     @FXML
     private Text titleTextField;
+    Employee employee ;
 
+    public void initData(Employee _employee) {
+        employee=_employee;
+    }
     @FXML
     void btnEmployeeClicked(ActionEvent event) throws IOException {
         setMainPane("/com/example/se330_pharmacy/Fxml/Employee.fxml");
@@ -137,4 +142,6 @@ public class MenuController {
         Parent reportSceneRoot = loader.load();
         mainPane.getChildren().add(reportSceneRoot);
     }
+
+
 }

@@ -1,5 +1,7 @@
 package com.example.se330_pharmacy.Views;
 
+import com.example.se330_pharmacy.Controllers.MenuController;
+import com.example.se330_pharmacy.Models.Employee;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
@@ -18,9 +20,11 @@ public class ViewFactory {
         createStage(loader);
     }
 
-    public void showMenuWindow() {
+    public void showMenuWindow(Employee employee) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/se330_pharmacy/Fxml/Menu.fxml"));
         createStage(loader);
+        MenuController menuController = loader.getController();
+        menuController.initData(employee);
     }
 
     public void showReceptionWindow() {

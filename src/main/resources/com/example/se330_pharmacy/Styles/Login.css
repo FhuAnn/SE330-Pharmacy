@@ -116,5 +116,16 @@
     -fx-opacity: 0;
 }
 
-
-
+.pane_progress {
+    -fx-background-color: rgb(170, 170, 170,0.5);
+}
+#otp
+{
+    -fx-background-color:#FFFFFF;
+    -fx-text-fill: #383838;
+    -fx-border-color: #9E9DA3;
+    -fx-background-radius: 8;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-border-radius: 8;
+    -fx-font-size: 14;
+}
