@@ -67,7 +67,6 @@ public class EmployeeDAO {
                     employee.setPhoneNumber(resultSet.getString("phonenumber"));
                     employee.setPosition(resultSet.getString("position"));
                     employee.setUsername(resultSet.getString("username"));
-                    employee.setUsername(resultSet.getString("username"));
                     return 2; // mật khẩu chính
                 }
             } else {
@@ -162,5 +161,23 @@ public class EmployeeDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    public boolean checkID(int id)
+    {
+        ConnectDB connect = new ConnectDB();
+        String query = "SELECT * FROM employee WHERE employee_id = '" + id +"'";
+        ResultSet resultSet = connect.getData(query);
+        try
+        {
+            if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không
+            {
+                return true;
+            }
+        }
+        catch (SQLException e )
+        {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
