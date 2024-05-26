@@ -201,7 +201,7 @@ public class SaleController implements Initializable {
     private TableColumn<DetailBill, Integer> tcDetailProductName;
 
     @FXML
-    private TableColumn<DetailBill, > tcDetailProductPrice;
+    private TableColumn<DetailBill, Float> tcDetailProductPrice;
 
     @FXML
     private TableColumn<DetailBill, String> tcDetailProductQuan;
