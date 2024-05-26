@@ -1,9 +1,10 @@
 package com.example.se330_pharmacy.Controllers;
 
-import com.example.se330_pharmacy.DataAcessObject.BillDAO;
-import com.example.se330_pharmacy.DataAcessObject.DetailBillDAO;
-import com.example.se330_pharmacy.DataAcessObject.ProductDAO;
+import com.example.se330_pharmacy.DataAccessObject.BillDAO;
+import com.example.se330_pharmacy.DataAccessObject.DetailBillDAO;
+import com.example.se330_pharmacy.DataAccessObject.ProductDAO;
 import com.example.se330_pharmacy.Models.*;
+import com.itextpdf.text.pdf.BaseFont;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,11 +14,15 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.converter.IntegerStringConverter;
 import com.itextpdf.text.Document;
@@ -29,19 +34,29 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import java.awt.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class SaleController implements Initializable {
 
+    private Employee employee;
+    public void initData(Employee _employee) {
+        employee=_employee;
+    }
     private final ProductDAO productDAO = new ProductDAO();
 
     @FXML
@@ -170,9 +185,8 @@ public class SaleController implements Initializable {
     private CartItem cartItemSelected;
     @FXML
     private TabPane tabPane;
-    private BillDAO billDAO = new BillDAO() ;
-    private String employeeId;
-    private DetailBillDAO detailBillDAO = new DetailBillDAO();
+    private final BillDAO billDAO = new BillDAO() ;
+    private final DetailBillDAO detailBillDAO = new DetailBillDAO();
     private String bigQuantity;
     private String smallQuantity;
     private String message;
@@ -186,25 +200,22 @@ public class SaleController implements Initializable {
     private TableColumn<Bill, String> tcBillCusNumber;
 
     @FXML
-    private TableColumn<Bill, String> tcBillDate;
+    private TableColumn<Bill, Date> tcBillDate;
 
     @FXML
     private TableColumn<Bill, Integer> tcBillId;
 
     @FXML
     private TableColumn<Bill, Float> tcBillValue;
-/*    private int billId;
-    private int productId;
-    private float presentPrice;
-    private int quantity;*/
+
     @FXML
-    private TableColumn<DetailBill, Integer> tcDetailProductName;
+    private TableColumn<DetailBill, String> tcDetailProductName;
 
     @FXML
     private TableColumn<DetailBill, Float> tcDetailProductPrice;
 
     @FXML
-    private TableColumn<DetailBill, String> tcDetailProductQuan;
+    private TableColumn<DetailBill, Integer> tcDetailProductQuan;
 
     @FXML
     private TableColumn<DetailBill, String> tcDetailProductUnit;
@@ -215,9 +226,13 @@ public class SaleController implements Initializable {
         tabCart.setDisable(false);
         tabInvoiceList.setDisable(true);
         tabDetailInvoice.setDisable(true);
+        btnSelling.setDisable(true);
+        btnAllBill.setDisable(false);
         tabPane.getSelectionModel().select(tabProduct);
         tabPaneCart.getSelectionModel().select(tabCart);
         tfSearchByIdAndName.setPromptText("Tìm theo tên hoặc theo mã");
+        tfPhoneNumber.setDisable(false);
+        tfCustomName.setDisable(false);
     }
     @FXML
     void btnViewAllBillClicked(MouseEvent event) {
@@ -225,15 +240,30 @@ public class SaleController implements Initializable {
         tabCart.setDisable(true);
         tabInvoiceList.setDisable(false);
         tabDetailInvoice.setDisable(false);
+        btnAdd.setDisable(true);
+        btnDelete.setDisable(true);
+        btnCancel.setDisable(true);
+        btnCreateBill.setDisable(true);
+        btnSelling.setDisable(false);
+        btnAllBill.setDisable(true);
+        tfPhoneNumber.setDisable(true);
+        tfCustomName.setDisable(true);
         tabPane.getSelectionModel().select(tabInvoiceList);
-        getBillData();
+        new Thread(() -> {
+            Platform.runLater(() -> {
+                getBillData();
+            });
+        }).start();
         tfSearchByIdAndName.setPromptText("Tìm theo tên hoặc theo số điện thoại");
         tabPaneCart.getSelectionModel().select(tabDetailInvoice);
     }
 
     private void getBillData() {
+        bindBillData();
         tvInvoiceList.setItems(billDAO.getBillData());
     }
+
+
 
     @FXML
     void btnCancelClicked(MouseEvent event) {
@@ -272,7 +302,7 @@ public class SaleController implements Initializable {
 
     }
     @FXML
-    void btnCreateBillClicked(MouseEvent event) throws SQLException {
+    void btnCreateBillClicked(MouseEvent event) throws SQLException, IOException {
 
         if(!tvCart.getItems().isEmpty()) {
 
@@ -312,12 +342,12 @@ public class SaleController implements Initializable {
 
     private boolean addBillToDB() throws SQLException {
         boolean add = false;
-        String id = billDAO.addBill(employeeId,tfCustomName.getText(),tfPhoneNumber.getText(),textTotalInvoice.getText().split(" ")[0]);
+        String id = billDAO.addBill(String.valueOf(employee.getEmloyeeId()),tfCustomName.getText(),tfPhoneNumber.getText(),textTotalInvoice.getText().split(" ")[0]);
 
         //auto create receipt
         String contentReceipts = "Bill ID: " + id;
         String status = "Completed";
-        billDAO.autoCreateReceipts(employeeId,contentReceipts,textTotalInvoice.getText().split(" ")[0],status,"");
+        billDAO.autoCreateReceipts(String.valueOf(employee.getEmloyeeId()),contentReceipts,textTotalInvoice.getText().split(" ")[0],status,"");
         //end
 
         if(!tvCart.getItems().isEmpty()) {
@@ -333,8 +363,8 @@ public class SaleController implements Initializable {
                     } else if (cartItem.getProductUnit().equals(units.getFirst().getBigUnit())){
                         whatUnit = "big_unit";
                     }
-                    bigQuantity = billDAO.getBigQuan(STR."\{cartItem.getProductId()}");
-                    smallQuantity = billDAO.getSmallQuan(STR."\{cartItem.getProductId()}");
+                    bigQuantity = STR."\{billDAO.getBigQuan(cartItem.getProductId())}";
+                    smallQuantity = STR."\{billDAO.getSmallQuan(cartItem.getProductId())}";
                     calculateUpdateData(STR."\{cartItem.getProductId()}",STR."\{cartItem.getProductQuantities()}",whatUnit);
 
                     billDAO.updateProduct(STR."\{cartItem.getProductId()}",bigQuantity,smallQuantity);
@@ -352,7 +382,7 @@ public class SaleController implements Initializable {
     }
 
     public void calculateUpdateData(String id,String quantity, String unit) throws SQLException {
-        String _coef = billDAO.getCoef(id);
+        String _coef = STR."\{billDAO.getCoef(Integer.parseInt(id))}";
         if(unit=="lv1")// Nếu bán Box/Bottle
         {
             bigQuantity = STR."\{Integer.parseInt(bigQuantity) - Integer.parseInt(quantity)}";//Box= box -a
@@ -432,7 +462,11 @@ public class SaleController implements Initializable {
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     billSelected = row.getItem();
                     bindDetailBillData();
-                    tvDetailInvoice.setItems(detailBillDAO.getDetailBill(String.valueOf(billSelected.getBillId())).sorted());
+                    new Thread(() -> {
+                        Platform.runLater(() -> {
+                            tvDetailInvoice.setItems(detailBillDAO.getDetailBill(String.valueOf(billSelected.getBillId())).sorted());
+                        });
+                    }).start();
                 }
             });
             return row;
@@ -440,10 +474,18 @@ public class SaleController implements Initializable {
     }
 
     private void bindDetailBillData() {
-        tcDetailProductUnit.setCellValueFactory(new PropertyValueFactory<>("pr"));
+        tcDetailProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        tcDetailProductQuan.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        tcDetailProductUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        tcDetailProductPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
     private void bindBillData() {
+        tcBillId.setCellValueFactory(new PropertyValueFactory<>("billId"));
+        tcBillCusName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        tcBillCusNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        tcBillValue.setCellValueFactory(new PropertyValueFactory<>("billValue"));
+        tcBillDate.setCellValueFactory(new PropertyValueFactory<>("dateBill"));
     }
 
     private void validatePhoneNumberInput() {
@@ -467,20 +509,35 @@ public class SaleController implements Initializable {
             }
         });
     }
+    public static String removeAccentsAndSpaces(String input) {
+        // Chuẩn hóa chuỗi, loại bỏ các dấu
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        String noAccents = pattern.matcher(normalized).replaceAll("");
 
-    private void printBill() {
+        // Loại bỏ các khoảng trắng thừa
+        String noSpaces = noAccents.replaceAll("\\s+", "");
+
+        return noSpaces;
+    }
+
+    private void printBill() throws IOException {
         Document document = new Document();
 
+        String path = STR."\{removeAccentsAndSpaces(tfCustomName.getText())}.pdf";
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("invoice.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream(path));
             document.open();
 
-            Font boldFont = new Font(Font.FontFamily.COURIER, 18, Font.BOLD);
-            Font regularFont = new Font(Font.FontFamily.COURIER, 12);
+            String fontPath = "notosans-regular.ttf";
+            BaseFont baseFont = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+            Font boldFont = new Font(baseFont, 18, Font.BOLD);
+            Font regularFont = new Font(baseFont, 12);
 
             document.add(new Paragraph("Green Pharmacy", boldFont));
             document.add(new Paragraph("Address: 136, Linh Trung, Thủ Đức, TP Thủ Đức", regularFont));
-            document.add(new Paragraph("Phone: 1900 1555           Employee: " + employeeId, regularFont));
+            document.add(new Paragraph("Phone: 1900 1555           Employee: " + String.valueOf(employee.getEmloyeeId()), regularFont));
             document.add(new Paragraph("RETAIL BILL", boldFont));
 
             document.add(new Paragraph("Customer: " + tfCustomName.getText(), boldFont));
@@ -521,6 +578,8 @@ public class SaleController implements Initializable {
         } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
         } finally {
+            File file = new File(path);
+            Desktop.getDesktop().open(file);
             document.close();
         }
     }
@@ -530,7 +589,29 @@ public class SaleController implements Initializable {
             if (newTab == tabProduct) {
                 setUpProductSearch();
             } else if (newTab == tabInvoiceList) {
-//                setUpOtherSearch();
+                setUpBillSearch();
+            }
+        });
+    }
+
+    private void setUpBillSearch() {
+        ObservableList<Bill> allBills = billDAO.getBillData();
+        FilteredList<Bill> filteredList = new FilteredList<>(allBills);
+
+        tfSearchByIdAndName.textProperty().addListener((observable, oldValue, newValue) -> {
+            String searchText = newValue.trim().toLowerCase();
+
+            if (searchText.isEmpty()) {
+                // Nếu SearchField trống, hiển thị lại tất cả sản phẩm
+                tvInvoiceList.setItems(allBills);
+            } else {
+                // Nếu có nội dung trong SearchField, lọc danh sách sản phẩm
+                filteredList.setPredicate(bill -> {
+                    String lowerCaseFilter = searchText.toLowerCase();
+                    return String.valueOf(bill.getCustomerName()).contains(lowerCaseFilter) ||
+                            bill.getPhoneNumber().toLowerCase().contains(lowerCaseFilter);
+                });
+                tvInvoiceList.setItems(filteredList);
             }
         });
     }
@@ -900,7 +981,6 @@ public class SaleController implements Initializable {
 
             cartList.addAll(itemsToAdd);
             tvCart.setItems(FXCollections.observableList(cartList));
-//            tvCart.refresh();
         }
 
         return add;

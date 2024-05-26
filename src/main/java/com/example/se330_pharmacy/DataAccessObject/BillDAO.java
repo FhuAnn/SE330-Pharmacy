@@ -1,4 +1,4 @@
-package com.example.se330_pharmacy.DataAcessObject;
+package com.example.se330_pharmacy.DataAccessObject;
 
 import com.example.se330_pharmacy.Models.Bill;
 import com.example.se330_pharmacy.Models.ConnectDB;
@@ -12,10 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BillDAO {
-    private ConnectDB connectDB;
+    private ConnectDB connectDB = ConnectDB.getInstance();
 
     public BillDAO() {
-        connectDB = new ConnectDB();
     }
 
     public String addBill(String employeeId, String cusName,String phoneNumber,String billValue) {
@@ -94,37 +93,37 @@ public class BillDAO {
         return units;
     }
 
-    public String getCoef(String id) throws SQLException {
+    public int getCoef(int id) throws SQLException {
         String sqlQuery = "SELECT uni.Value  FROM Product pro, Unit uni WHERE uni.Unit_id = pro.Unit_id AND pro.Product_id = ?";
         PreparedStatement stmt = connectDB.getPreparedStatement(sqlQuery);
-        stmt.setString(1, id);
+        stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
-            return rs.getString("Value");
+            return rs.getInt("Value");
         }
-        return null;
+        return -1;
     }
 
-    public String getBigQuan(String id) throws SQLException {
+    public int getBigQuan(int id) throws SQLException {
         String sqlQuery = "SELECT big_unit FROM Product WHERE Product_id = ?";
         PreparedStatement stmt = connectDB.getPreparedStatement(sqlQuery);
-        stmt.setString(1, id);
+        stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
-            return rs.getString("big_unit");
+            return rs.getInt("big_unit");
         }
-        return null;
+        return -1;
     }
 
-    public String getSmallQuan(String id) throws SQLException {
+    public int getSmallQuan(int id) throws SQLException {
         String sqlQuery = "SELECT small_unit FROM Product WHERE Product_id = ?";
         PreparedStatement stmt = connectDB.getPreparedStatement(sqlQuery);
-        stmt.setString(1, id);
+        stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
-            return rs.getString("small_unit");
+            return rs.getInt("small_unit");
         }
-        return null;
+        return -1;
     }
 
     public boolean updateProduct(String id, String bigQuantity, String smallQuantity) {
@@ -150,13 +149,13 @@ public class BillDAO {
         ObservableList<Bill> billList = FXCollections.observableArrayList();
         String sqlQuery = "SELECT Bill_id, Cus_Name AS Customer, PhoneNumber AS Phone, BillValue AS Value, DateBill AS Date FROM Bill";
 
-        try (Connection conn = connectDB.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlQuery)) {
+        try (Statement stmt = connectDB.databaseLink.createStatement(); ResultSet rs = stmt.executeQuery(sqlQuery)) {
             while (rs.next()) {
                 int billId = rs.getInt("Bill_id");
                 String customerName = rs.getString("Customer");
                 String phoneNumber = rs.getString("Phone");
-                float billValue = rs.getFloat("Value");
-                String dateBill = rs.getString("Date");
+                int billValue = rs.getInt("Value");
+                Date dateBill = rs.getDate("Date");
 
                 Bill bill = new Bill(billId, customerName, phoneNumber, billValue, dateBill);
                 billList.add(bill);

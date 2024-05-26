@@ -99,5 +99,25 @@ public class ConnectDB {
     }
 
 
+    public PreparedStatement getPreparedStatement(String sqlQuery) throws SQLException {
+        // Check if the connection is null or closed
+        if (databaseLink == null || databaseLink.isClosed()) {
+            // Handle the case when connection is not available or closed
+            // Maybe throw an exception or handle it according to your application logic
+            throw new SQLException("Connection is not available or closed.");
+        }
 
+        PreparedStatement preparedStatement = null;
+        try {
+            // Create the PreparedStatement object using the connection and SQL query
+            preparedStatement = databaseLink.prepareStatement(sqlQuery);
+        } catch (SQLException e) {
+            // Handle SQL exception
+            // Maybe log the error or throw it further
+            e.printStackTrace();
+            throw e; // Rethrow the exception to be handled by the caller
+        }
+
+        return preparedStatement;
+    }
 }

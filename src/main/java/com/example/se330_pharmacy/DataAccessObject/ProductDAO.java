@@ -1,4 +1,4 @@
-package com.example.se330_pharmacy.DataAcessObject;
+package com.example.se330_pharmacy.DataAccessObject;
 
 import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Product;
@@ -9,9 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class ProductDAO {
-    private final ConnectDB connectDB;
+    private final ConnectDB connectDB = ConnectDB.getInstance();
     public ProductDAO() {
-        this.connectDB = ConnectDB.getInstance();
     }
 
     public ObservableList<Product> getAllProduct() {

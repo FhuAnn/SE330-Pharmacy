@@ -1,4 +1,4 @@
-package com.example.se330_pharmacy.DataAcessObject;
+package com.example.se330_pharmacy.DataAccessObject;
 
 import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.DetailBill;
@@ -11,11 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DetailBillDAO {
-    private ConnectDB connectDB;
-
-
+    private ConnectDB connectDB = ConnectDB.getInstance();
     public DetailBillDAO() {
-        connectDB = new ConnectDB();
     }
     public boolean addDetailData(String billId, String productId, String price, String quantity, String unit) {
         String sql = "INSERT INTO DetailBill (Bill_id, Product_id, Quantities, Unit_Name, Price) VALUES (?, ?, ?, ?, ?)";
@@ -37,7 +34,7 @@ public class DetailBillDAO {
     }
     public ObservableList<DetailBill> getDetailBill(String billId) {
         ObservableList<DetailBill> detailBillList = FXCollections.observableArrayList();
-        String sqlQuery = "SELECT Bill_id as BillID, pro.ProductName as 'Product Name', Quantities, Unit_Name as Unit, pro.Price " +
+        String sqlQuery = "SELECT Bill_id as BillID, pro.ProductName as \"Product Name\", Quantities, Unit_Name as Unit, dtl.Price " +
                 "FROM DetailBill dtl, Product pro " +
                 "WHERE Bill_id =" + billId + " AND pro.Product_id = dtl.Product_id";
 

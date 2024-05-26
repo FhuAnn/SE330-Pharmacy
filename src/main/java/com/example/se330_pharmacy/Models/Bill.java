@@ -1,21 +1,38 @@
 package com.example.se330_pharmacy.Models;
 
+import java.sql.Date;
+
 public class Bill {
     private int billId;
     private int employeeId;
     private String customerName;
     private String phoneNumber;
-    private float billValue;
+    private int billValue;
     private int productId;
     private String productName;
-    private float price;
+    private int price;
     private int quantities;
     private String unitName;
 
-    public Bill(int billId, String customerName, String phoneNumber, float billValue, String dateBill) {
+    public Date getDateBill() {
+        return dateBill;
     }
 
-    public Bill(int billId, int employeeId, String customerName, String phoneNumber, float billValue, int productId, String productName, float price, int quantities, String unitName) {
+    public void setDateBill(Date dateBill) {
+        this.dateBill = dateBill;
+    }
+
+    private Date dateBill;
+
+    public Bill(int billId, String customerName, String phoneNumber, int billValue, Date dateBill) {
+        this.billId = billId;
+        this.customerName = customerName;
+        this.phoneNumber  = phoneNumber;
+        this.billValue = billValue;
+        this.dateBill = dateBill;
+    }
+
+    public Bill(int billId, int employeeId, String customerName, String phoneNumber, int billValue, int productId, String productName, int price, int quantities, String unitName) {
         this.billId = billId;
         this.employeeId = employeeId;
         this.customerName = customerName;
@@ -64,7 +81,7 @@ public class Bill {
         return billValue;
     }
 
-    public void setBillValue(float billValue) {
+    public void setBillValue(int billValue) {
         this.billValue = billValue;
     }
 
@@ -88,7 +105,7 @@ public class Bill {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
