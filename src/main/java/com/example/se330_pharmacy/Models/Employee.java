@@ -1,82 +1,94 @@
 package com.example.se330_pharmacy.Models;
 
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.PropertyPermission;
-import java.util.Queue;
 
-public class User {
-    public String Username;
-    public String Password;
-    public String Employee_id;
-    public String EmployName;
-    public String Citizen_id;
-    public String Address;
-    public String Email;
-    public String PhoneNumber;
-    public String Position;
+public class Employee {
+    public int emloyeeId;
+    public String employName;
+    public String citizenId;
+    public String address;
+    public String phoneNumber;
+    public String email;
+    public String position;
+    public String username;
+    public String password;
+    public String defaultpassword;
 
-
-    public String GetHash(String plainText) {
-        try {
-            // Khởi tạo đối tượng MessageDigest với thuật toán MD5
-            MessageDigest md = MessageDigest.getInstance("MD5");
-
-            // Chuyển đổi chuỗi thành mảng bytes và băm bằng MD5
-            byte[] messageDigest = md.digest(plainText.getBytes());
-
-            // Chuyển đổi mảng bytes thành chuỗi hex để hiển thị kết quả
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : messageDigest) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-            return hexString.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            System.err.println("Thuật toán MD5 không được hỗ trợ.");
-            e.printStackTrace();
-            return null;
-        }
+    public int getEmloyeeId() {
+        return emloyeeId;
     }
 
-    public int CheckValidate(String username, String password) {
-
-            ConnectDB connectDB = new ConnectDB();
-            password = GetHash(password);
-            String query = "SELECT * FROM employee WHERE username = '"+username+"' AND (defaultpassword = '"+password+"' OR password ='"+password+"')";
-        try
-        {
-            //thực thi truy vấn và lấy kết qua
-            ResultSet resultSet = connectDB.getData(query);
-            //kiểm tra kq trả về
-            if (resultSet.next()) {
-                //tìm thấy người dùng có user và password khớp
-                if (resultSet.getString("defaultpassword")!=null && resultSet.getString("defaultpassword").equals(password))
-                    return 1;//mật khẩu mặc định
-                else {
-                    return 2; // mật khẩu chính
-                }
-            } else {
-                return 0; // không tìm thấy
-            }
-        }
-        catch (SQLException e )
-        {
-            e.printStackTrace();
-            return -1;
-        }
-
+    public void setEmloyeeId(int emloyeeId) {
+        this.emloyeeId = emloyeeId;
     }
+
+    public String getEmployName() {
+        return employName;
+    }
+
+    public void setEmployName(String employName) {
+        this.employName = employName;
+    }
+
+    public String getCitizenId() {
+        return citizenId;
+    }
+
+    public void setCitizenId(String citizenId) {
+        this.citizenId = citizenId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String UserID(String username,String password) throws SQLException
     {
             ConnectDB connect = new ConnectDB();
@@ -127,31 +139,8 @@ public class User {
         return connect.getData(query);
     }
 
-    final String LOWER_CASE = "abcdefghijklmnopqursuvwxyz";
-    final String  UPPER_CASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    final String  NUMBERS = "123456789";
-    final String  SPECIALS = "!@£$%^&*()#€";
 
-    public String GeneratePassword(boolean useLowercase, boolean useUppercase, boolean useNumbers, boolean useSpecial, int passwordSize)
-    {
-        char[] _password = new char[passwordSize];
-        String charSet = "";
-        SecureRandom random = new SecureRandom();
-        int counter= 0;
-        if (useLowercase) charSet += LOWER_CASE;
-
-        if (useUppercase) charSet += UPPER_CASE;
-        if (useNumbers) charSet += NUMBERS;
-
-        if (useSpecial) charSet += SPECIALS;
-
-        for (counter = 0; counter < passwordSize; counter++) {
-            _password[counter] = charSet.charAt(random.nextInt(charSet.length()));
-        }
-
-        return new String(_password);
-    }
-    public Boolean AddEmployee(String name, String citizen_id, String address, String phone, String email, String position) throws SQLException
+   /* public Boolean AddEmployee(String name, String citizen_id, String address, String phone, String email, String position) throws SQLException
     {
          ConnectDB connectDB = new ConnectDB();
             String _pass = GeneratePassword(true, true, true, false, 6);
@@ -214,32 +203,6 @@ public class User {
         String query = STR."SELECT employee_id as \"ID\", employname as \"Họ và tên\",citizen_id as \"CCCD\",address as \"Địa chỉ\",phonenumber as \"Số điện thoại\",email as \"Email\",position as \"Vai trò\",username as \"Username\"  FROM employee WHERE (Employee_id like '\{search}%' or EmployName like N'% \{search}%')";
         return connect.getData(query);
     }
-    public boolean UpdatePassword(String username,String newPassword, int index) throws SQLException
-    {
-        newPassword = GetHash(newPassword);
-        String querry;
-        ConnectDB connect = new ConnectDB();
-        PreparedStatement preparedStatement = null;
-        if (index == 0)
-        {
-            querry = "UPDATE Employee SET Password = ?, DefaultPassword = NULL  WHERE Username = ? ";
-            preparedStatement = connect.getConnection().prepareStatement(querry);
-            preparedStatement.setString(1,newPassword);
-            preparedStatement.setString(2,username);
-        }
-        else
-        {
-            querry = "UPDATE Employee SET Password = ? WHERE Username = ? ";
-            preparedStatement = connect.getConnection().prepareStatement(querry);
-            preparedStatement.setString(1,newPassword);
-            preparedStatement.setString(2,username);
-        }
-        if (connect.handleData(preparedStatement))
-        {
-            return true;
-        }
-        else
-            return false;
-    }
+*/
 }
 

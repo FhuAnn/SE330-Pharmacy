@@ -1,5 +1,6 @@
 package com.example.se330_pharmacy.Controllers;
 
+import com.example.se330_pharmacy.Models.Employee;
 import com.example.se330_pharmacy.Models.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,7 +53,11 @@ public class MenuController {
 
     @FXML
     private Text titleTextField;
+    Employee employee ;
 
+    public void initData(Employee _employee) {
+        employee=_employee;
+    }
     @FXML
     void btnEmployeeClicked(ActionEvent event) throws IOException {
         setMainPane("/com/example/se330_pharmacy/Fxml/Employee.fxml");
@@ -79,7 +84,9 @@ public class MenuController {
     @FXML
     void btnPayslipClicked(ActionEvent event) throws IOException {
         titleTextField.setText("Payslip");
-        setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_PaySlip.fxml");
+        FXMLLoader loader= setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_PaySlip.fxml");
+        PaySlipController paySlipController = loader.getController();
+        paySlipController.initData(employee);
     }
 
     @FXML
@@ -131,10 +138,13 @@ public class MenuController {
         s.setIconified(true);
     }
 
-    private void setMainPane(String resource) throws IOException {
+    private FXMLLoader setMainPane(String resource) throws IOException {
         mainPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Parent reportSceneRoot = loader.load();
         mainPane.getChildren().add(reportSceneRoot);
+        return loader;
     }
+
+
 }

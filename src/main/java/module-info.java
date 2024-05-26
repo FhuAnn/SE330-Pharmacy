@@ -14,6 +14,7 @@ module com.example.se330_pharmacy {
     requires java.desktop;
     requires annotations;
     requires itextpdf;
+    requires java.mail;
 
 
     opens com.example.se330_pharmacy to javafx.fxml;
