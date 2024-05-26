@@ -12,6 +12,8 @@ module com.example.se330_pharmacy {
     requires com.almasb.fxgl.all;
     requires java.sql;
     requires java.desktop;
+    requires annotations;
+    requires itextpdf;
 
 
     opens com.example.se330_pharmacy to javafx.fxml;

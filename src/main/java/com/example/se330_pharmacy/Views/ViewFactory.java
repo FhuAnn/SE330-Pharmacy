@@ -21,6 +21,7 @@ public class ViewFactory {
     public void showMenuWindow() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/se330_pharmacy/Fxml/Menu.fxml"));
         createStage(loader);
+
     }
 
     public void showReceptionWindow() {
