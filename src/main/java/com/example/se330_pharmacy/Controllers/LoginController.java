@@ -1,6 +1,7 @@
 package com.example.se330_pharmacy.Controllers;
 
 import com.example.se330_pharmacy.DataAccessObject.EmployeeDAO;
+import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Model;
 import com.example.se330_pharmacy.Models.Employee;
 import javafx.animation.KeyFrame;
@@ -70,7 +71,8 @@ public class LoginController implements Initializable {
     private String storedOTP;
     private int time_remaining = 50;
     private Timeline timeline;
-    EmployeeDAO employeeDAO;
+    private final EmployeeDAO employeeDAO = new EmployeeDAO();
+    public ConnectDB connectDB = ConnectDB.getInstance();
 
     @FXML
     void backToLogin(MouseEvent event) {
@@ -238,7 +240,6 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //set initialize
-        employeeDAO = new EmployeeDAO();
         radioHideShow.setOnAction(event -> showPassword());
         radioHideShowChange.setOnAction(event -> showPassword());
         btnLogin.setOnAction(event -> loginButtonOnAction());

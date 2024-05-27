@@ -13,6 +13,8 @@ import java.sql.SQLException;
 public class EmployeeDAO {
     Employee employee = new Employee();
 
+    ConnectDB connectDB = ConnectDB.getInstance();
+
     public Employee getEmployee() {
         return employee;
     }
@@ -47,7 +49,6 @@ public class EmployeeDAO {
         }
     }
     public int CheckValidate(String username, String password) {
-        ConnectDB connectDB = new ConnectDB();
         password = GetHash(password);
         String query = "SELECT * FROM employee WHERE username = '"+username+"' AND (defaultpassword = '"+password+"' OR password ='"+password+"')";
         try
@@ -81,9 +82,8 @@ public class EmployeeDAO {
     }
     public String getEmail(String username) throws SQLException {
         String username_result =null;
-        ConnectDB connect = new ConnectDB();
         String query = "SELECT email FROM employee WHERE username = '" + username +"'";
-        ResultSet resultSet = connect.getData(query);
+        ResultSet resultSet = connectDB.getData(query);
         if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không
         {
             username_result = resultSet.getString("email");
@@ -94,23 +94,22 @@ public class EmployeeDAO {
     {
         newPassword = GetHash(newPassword);
         String querry;
-        ConnectDB connect = new ConnectDB();
         PreparedStatement preparedStatement = null;
         if (index == 0)
         {
             querry = "UPDATE Employee SET Password = ?, DefaultPassword = NULL  WHERE Username = ? ";
-            preparedStatement = connect.getConnection().prepareStatement(querry);
+            preparedStatement = connectDB.getConnection().prepareStatement(querry);
             preparedStatement.setString(1,newPassword);
             preparedStatement.setString(2,username);
         }
         else
         {
             querry = "UPDATE Employee SET Password = ? WHERE Username = ? ";
-            preparedStatement = connect.getConnection().prepareStatement(querry);
+            preparedStatement = connectDB.getConnection().prepareStatement(querry);
             preparedStatement.setString(1,newPassword);
             preparedStatement.setString(2,username);
         }
-        if (connect.handleData(preparedStatement))
+        if (connectDB.handleData(preparedStatement))
         {
             return true;
         }
@@ -145,9 +144,8 @@ public class EmployeeDAO {
     public String getUsername(String _username)
     {
         String username =null;
-        ConnectDB connect = new ConnectDB();
         String query = "SELECT username FROM employee WHERE username = '" + _username +"'";
-        ResultSet resultSet = connect.getData(query);
+        ResultSet resultSet = connectDB.getData(query);
         try
         {
             if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không
@@ -164,9 +162,8 @@ public class EmployeeDAO {
     }
     public boolean checkID(int id)
     {
-        ConnectDB connect = new ConnectDB();
         String query = "SELECT * FROM employee WHERE employee_id = '" + id +"'";
-        ResultSet resultSet = connect.getData(query);
+        ResultSet resultSet = connectDB.getData(query);
         try
         {
             if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không

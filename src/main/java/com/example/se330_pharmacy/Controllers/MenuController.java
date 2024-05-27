@@ -1,5 +1,6 @@
 package com.example.se330_pharmacy.Controllers;
 
+import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Employee;
 import com.example.se330_pharmacy.Models.Model;
 import javafx.event.ActionEvent;
@@ -53,11 +54,12 @@ public class MenuController {
 
     @FXML
     private Text titleTextField;
-    Employee employee ;
+    public Employee employee ;
 
     public void initData(Employee _employee) {
         employee=_employee;
     }
+
     @FXML
     void btnEmployeeClicked(ActionEvent event) throws IOException {
         setMainPane("/com/example/se330_pharmacy/Fxml/Employee.fxml");
@@ -104,7 +106,9 @@ public class MenuController {
     @FXML
     void btnSaleClicked(ActionEvent event) throws IOException {
         titleTextField.setText("Bán hàng");
-        setMainPane("/com/example/se330_pharmacy/Fxml/Sale.fxml");
+        FXMLLoader loader = setMainPane("/com/example/se330_pharmacy/Fxml/Sale.fxml");
+        SaleController saleController = loader.getController();
+        saleController.initData(employee);
     }
     
     @FXML

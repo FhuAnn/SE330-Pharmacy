@@ -2,6 +2,7 @@ package com.example.se330_pharmacy.Views;
 
 import com.example.se330_pharmacy.Controllers.*;
 import com.example.se330_pharmacy.DataAccessObject.PayslipDAO;
+import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Employee;
 import com.example.se330_pharmacy.Models.Payslip;
 import javafx.geometry.Rectangle2D;
