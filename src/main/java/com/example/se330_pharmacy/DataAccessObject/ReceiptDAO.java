@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ReceiptDAO {
+    ConnectDB connectDB = ConnectDB.getInstance();
+
     public ObservableList<Receipt> GetReceiptsData()
     {
         ObservableList<Receipt> receipts = FXCollections.observableArrayList();
@@ -18,7 +20,6 @@ public class ReceiptDAO {
                 "FROM Receipt rp " +
                 "JOIN Employee emp1 ON rp.personcharge_id = emp1.employee_id " +
                 "JOIN Employee emp2 ON rp.employee_id = emp2.employee_id;";
-        ConnectDB connectDB = new ConnectDB();
         try (ResultSet resultSet = connectDB.getData(query))
         {
             while (resultSet.next())
@@ -47,12 +48,11 @@ public class ReceiptDAO {
     public ObservableList<Receipt> GetReceiptsToday(Date date)
     {
         ObservableList<Receipt> receipts = FXCollections.observableArrayList();
-        ConnectDB connect = new ConnectDB();
         String query = "SELECT rp.*, emp1.employname AS chargername, emp2.employname AS employname FROM receipt rp " +
                 "JOIN employee emp1 ON rp.personcharge_id = emp1.employee_id " +
                 "JOIN employee emp2 ON rp.employee_id = emp2.employee_id " +
                 "WHERE rp.createdate= ? ";
-        try (PreparedStatement statement = connect.getConnection().prepareStatement(query))
+        try (PreparedStatement statement = connectDB.databaseLink.prepareStatement(query))
         {
             statement.setDate(1,date);
             try (ResultSet resultSet = statement.executeQuery())
@@ -84,9 +84,8 @@ public class ReceiptDAO {
     public int AddReceiptToDB(Receipt receipt)
     {
         String query ="INSERT INTO receipt (content,createdate,totalpay,note,status,personcharge_id,payslip_id,employee_id) VALUES(?,?,?,?,?,?,?,?) RETURNING receipt_id";
-        ConnectDB connectDB = new ConnectDB();
         int receipt_id = -1;
-        try (PreparedStatement statement = connectDB.getConnection().prepareStatement(query)) {
+        try (PreparedStatement statement = connectDB.databaseLink.prepareStatement(query)) {
             statement.setString(1,receipt.getContent());
             statement.setDate(2,receipt.getCreateDate());
             statement.setDouble(3,receipt.getTotalPay());
