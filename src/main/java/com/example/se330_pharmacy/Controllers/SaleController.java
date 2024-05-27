@@ -532,8 +532,8 @@ public class SaleController implements Initializable {
             String fontPath = "notosans-regular.ttf";
             BaseFont baseFont = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
-            Font boldFont = new Font(baseFont, 18, Font.BOLD);
-            Font regularFont = new Font(baseFont, 12);
+            Font boldFont = new Font(baseFont, 15, Font.BOLD);
+            Font regularFont = new Font(baseFont, 13,Font.BOLD);
 
             document.add(new Paragraph("Green Pharmacy", boldFont));
             document.add(new Paragraph("Address: 136, Linh Trung, Thủ Đức, TP Thủ Đức", regularFont));
@@ -737,7 +737,6 @@ public class SaleController implements Initializable {
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     Product productSelected = row.getItem();
-
                     //lay gia tri ti le de so sanh
                     _coef = productSelected.getProductCoef() + "";
                     // Khi lay duoc thong tin se enable cac component

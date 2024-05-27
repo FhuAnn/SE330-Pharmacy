@@ -28,7 +28,7 @@ public class ConnectDB {
         String databaseUser ="postgres";
         String databasePassword="phuan03042004";
         String urlPostgres="jdbc:postgresql://localhost:5432/"+databaseName;*/
-        String urlNeon_DB = "jdbc:postgresql://ep-jolly-block-a52e1a3c.us-east-2.aws.neon.tech/PharmacyDB2705?user=PharmacyDB_owner&password=xKkZe1NrSpq7&sslmode=require";
+        String urlNeon_DB = "jdbc:postgresql://ep-jolly-block-a52e1a3c.us-east-2.aws.neon.tech/PharmacyDB?user=PharmacyDB_owner&password=xKkZe1NrSpq7&sslmode=require";
         Connection connection = null;
         try {
             if (isInternetAvailable()) {
