@@ -80,6 +80,7 @@ public class LoginController implements Initializable {
         ResetTextField();
         forgetPane.toBack();
         changePane.toBack();
+        radioHideShow.setSelected(false);
     }
 
     @FXML
@@ -188,7 +189,9 @@ public class LoginController implements Initializable {
         }
     }
     public void btnConfirm_clicked(MouseEvent mouseEvent) throws SQLException {
+        if(isLess6characters(pfPassword1_change)) return;
         if(isLess6characters(pfPassword2_change)) return;// kiem tra co duoi 6 character hay khong ?
+        if(!CheckForFill()) return;
         paneProgress.setVisible(true);
         paneProgress.toFront();
         new Thread(() -> {
@@ -202,6 +205,7 @@ public class LoginController implements Initializable {
                             ResetTextField();
                             changePane.toBack();
                             forgetPane.toBack();
+                            radioHideShow.setSelected(false);
                         } else {
                             showAlert("Warning", "Failed to update password. Please try again.");
                         }
@@ -246,6 +250,24 @@ public class LoginController implements Initializable {
         forgetPane.toBack();
         changePane.toBack();
         index=0;
+        tfShowPasswordLogin.textProperty().addListener((observable,oldValue, newValue )-> {
+            pfPassword_Login.setText(newValue);
+        } );
+        pfPassword_Login.textProperty().addListener((observable,oldValue, newValue )-> {
+            tfShowPasswordLogin.setText(newValue);
+        } );
+        tfShowPasswordCP1.textProperty().addListener((observable,oldValue, newValue )-> {
+            pfPassword1_change.setText(newValue);
+        } );
+        tfShowPasswordCP2.textProperty().addListener((observable,oldValue, newValue )-> {
+            pfPassword2_change.setText(newValue);
+        } );
+        pfPassword1_change.textProperty().addListener((observable,oldValue, newValue )-> {
+            tfShowPasswordCP1.setText(newValue);
+        } );
+        pfPassword2_change.textProperty().addListener((observable,oldValue, newValue )-> {
+            tfShowPasswordCP2.setText(newValue);
+        } );
     }
 
     private void showPassword() {
@@ -254,13 +276,7 @@ public class LoginController implements Initializable {
             //show password va an password field
             tfShowPasswordLogin.setVisible(true);
             pfPassword_Login.setVisible(false);
-            tfShowPasswordLogin.setText(pfPassword_Login.getText());
-
         } else if (index == 0 && !radioHideShow.isSelected()) {
-
-            // set lai matkhau da hien vao passwordfield
-            pfPassword_Login.setText(tfShowPasswordLogin.getText());
-
             //an textfield va show lai passwordfield
             pfPassword_Login.setVisible(true);
             tfShowPasswordLogin.setVisible(false);
@@ -270,16 +286,10 @@ public class LoginController implements Initializable {
             // show password va an passwordfield
             tfShowPasswordCP1.setVisible(true);
             pfPassword1_change.setVisible(false);
-            tfShowPasswordCP1.setText(pfPassword1_change.getText());
             tfShowPasswordCP2.setVisible(true);
             pfPassword2_change.setVisible(false);
-            tfShowPasswordCP2.setText(pfPassword2_change.getText());
 
         } else if (index == 2 && !radioHideShowChange.isSelected()) {
-
-            //set lai mat khau da hien vao passwordfield
-            pfPassword1_change.setText(tfShowPasswordCP1.getText());
-            pfPassword2_change.setText(tfShowPasswordCP2.getText());
 
             //an textfield va show lai passwordfield
             tfShowPasswordCP1.setVisible(false);
@@ -290,8 +300,7 @@ public class LoginController implements Initializable {
     }
 
     private void loginButtonOnAction()  {
-      CheckForFill();
-      Login(tfUsername_Login.getText().toString(),pfPassword_Login.getText().toString());
+      if(CheckForFill()) Login(tfUsername_Login.getText().toString(),pfPassword_Login.getText().toString());
     }
 
 
@@ -329,6 +338,7 @@ public class LoginController implements Initializable {
                 pfPassword_Login.setText("");
                 return false;
             }
+            if(isLess6characters(pfPassword_Login)) return false;
         } else if (index == 1) // đang ở màn forgotpassword
         {
             if (tf_username_forgot.getText().isBlank()) {
@@ -375,7 +385,7 @@ public class LoginController implements Initializable {
     }
     private boolean isLess6characters(TextField tf) {
         if (tf.getText().length() <6) {
-            // Hiển thị thông báo khi độ dài vượt quá 15 ký tự
+            // Hiển thị thông báo khi độ dài ít hơn 6 ký tự
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setHeaderText(null);

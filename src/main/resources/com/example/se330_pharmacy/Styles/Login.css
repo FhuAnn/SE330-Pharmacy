@@ -10,10 +10,17 @@
     -fx-font-size: 35;
 
 }
-.lbl
-{
-    -fx-font-size: 16;
+.lbl{
+    -fx-text-fill: #0488da;
+    -fx-font-size: 16px;
     -fx-font-family: "Segoe UI Semibold";
+}
+.lbl:hover{
+    -fx-font-size: 17px;
+    -fx-text-fill: #4eb4f5;
+}
+.lbl:pressed{
+    -fx-font-size: 16px;
 }
 .login_logo_container
 {

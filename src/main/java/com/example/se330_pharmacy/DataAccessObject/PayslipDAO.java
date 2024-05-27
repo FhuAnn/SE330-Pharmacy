@@ -12,12 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PayslipDAO {
-    EmployeeDAO employeeDAO = new EmployeeDAO();
+    ConnectDB connectDB = ConnectDB.getInstance();
+
     public ObservableList<Payslip> GetPaySlipData()
     {
         ObservableList<Payslip> payslips = FXCollections.observableArrayList();
         String query = "SELECT * FROM payslip pl, Employee emp  WHERE pl.employee_id = emp.employee_id";
-        ConnectDB connectDB = new ConnectDB();
         try (ResultSet resultSet = connectDB.getData(query))
         {
             while (resultSet.next())
@@ -46,8 +46,7 @@ public class PayslipDAO {
     public boolean UpdatePayslipCompleted(int _id)
     {
         String query = "UPDATE payslip SET status = 'Completed' WHERE payslip_id = ?";
-        ConnectDB connectDB = new ConnectDB();
-        try(PreparedStatement statement = connectDB.getConnection().prepareStatement(query)) {
+        try(PreparedStatement statement = connectDB.databaseLink.prepareStatement(query)) {
             statement.setInt(1,_id);
             int affRow = statement.executeUpdate();
             if(affRow ==0 ) return false;
@@ -61,8 +60,7 @@ public class PayslipDAO {
     {
         String query = "INSERT INTO payslip (employee_id,content,createdate,totalpay,note,status)" +
                 " VALUES (?,?,?,?,?,?)";
-        ConnectDB connectDB = new ConnectDB();
-        try(PreparedStatement statement = connectDB.getConnection().prepareStatement(query)) {
+        try(PreparedStatement statement = connectDB.databaseLink.prepareStatement(query)) {
             statement.setInt(1,payslip.getEmployee_id());
             statement.setString(2,payslip.getContent());
             statement.setDate(3,payslip.getCreateDate());
@@ -80,8 +78,7 @@ public class PayslipDAO {
     public boolean UpdatePaySlip(Payslip payslip)
     {
         String query = "UPDATE payslip SET employee_id = ? , content = ?, createdate = ?,totalpay = ?,note =? ,status = ? WHERE payslip_id = ?";
-        ConnectDB connectDB = new ConnectDB();
-        try(PreparedStatement statement = connectDB.getConnection().prepareStatement(query)) {
+        try(PreparedStatement statement = connectDB.databaseLink.prepareStatement(query)) {
             statement.setInt(1,payslip.getEmployee_id());
             statement.setString(2,payslip.getContent());
             statement.setDate(3,payslip.getCreateDate());

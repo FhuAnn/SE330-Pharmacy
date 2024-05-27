@@ -24,17 +24,17 @@ public class ConnectDB {
     }
 
     public Connection getConnection() {
-       /* String databaseName ="ClinicDB";
+        /*String databaseName ="PharmacyNeon";
         String databaseUser ="postgres";
         String databasePassword="phuan03042004";
         String urlPostgres="jdbc:postgresql://localhost:5432/"+databaseName;*/
-        String urlNeon_DB = "jdbc:postgresql://ep-jolly-block-a52e1a3c.us-east-2.aws.neon.tech/PharmacyDB?user=PharmacyDB_owner&password=xKkZe1NrSpq7&sslmode=require";
+        String urlNeon_DB = "jdbc:postgresql://ep-jolly-block-a52e1a3c.us-east-2.aws.neon.tech/PharmacyDB2705?user=PharmacyDB_owner&password=xKkZe1NrSpq7&sslmode=require";
         Connection connection = null;
         try {
             if (isInternetAvailable()) {
                 //Class.forName("com.mysql.cj.jdbc.Driver");
                 Class.forName("org.postgresql.Driver");
-                /*databaseLink= DriverManager.getConnection(urlPostgres,databaseUser,databasePassword);*/
+                //databaseLink= DriverManager.getConnection(urlPostgres,databaseUser,databasePassword);
                 connection = DriverManager.getConnection(urlNeon_DB);
                 if (connection != null) System.out.println("Connection Established");
                 else System.out.println("Connection Failed");
