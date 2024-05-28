@@ -12,6 +12,7 @@ public class ConnectDB {
         databaseLink = getConnection();
     }
 
+
     public static ConnectDB getInstance() {
         if (instance == null) {
             synchronized (ConnectDB.class) {
