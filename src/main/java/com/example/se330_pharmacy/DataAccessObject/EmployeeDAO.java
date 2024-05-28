@@ -14,6 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAO {
+    private String name;
+    private String citizenId;
+    private String address;
+    private String phoneNum;
+    private String email;
+    private String position;
+    private String username;
     Employee employee = new Employee(name, citizenId, address, phoneNum, email, position, username);
 
     ConnectDB connectDB = ConnectDB.getInstance();
