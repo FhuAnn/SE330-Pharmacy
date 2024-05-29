@@ -107,7 +107,7 @@
             </MenuButton>
             <AnchorPane prefHeight="283.0" prefWidth="244.0">
                <children>
-                  <Button id="logout" fx:id="btnLogout" mnemonicParsing="false"  onMouseClicked="#btnLogoutClicked" prefHeight="45.0" prefWidth="243.0" text="Đăng xuất" AnchorPane.bottomAnchor="0.0">
+                  <Button id="logout" fx:id="btnLogout" mnemonicParsing="false" onMouseClicked="#btnLogoutClicked" prefHeight="45.0" prefWidth="243.0" text="Đăng xuất" AnchorPane.bottomAnchor="0.0">
                      <font>
                         <Font size="19.0" />
                      </font>

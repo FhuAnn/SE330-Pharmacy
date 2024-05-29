@@ -15,6 +15,7 @@ module com.example.se330_pharmacy {
     requires annotations;
     requires itextpdf;
     requires java.mail;
+    requires org.postgresql.jdbc;
 
 
     opens com.example.se330_pharmacy to javafx.fxml;

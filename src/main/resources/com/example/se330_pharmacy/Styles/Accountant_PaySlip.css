@@ -150,16 +150,31 @@
 
 .combo-box .list-view {  /* phần bên trong cái thả xuống*/
     -fx-border-width: 0.5;
-    -fx-border-color: #ACACAC;
+    -fx-border-color: #a6de4e;
     -fx-background-color: #EBFFD1;
     -fx-padding: 0px;
     -fx-font-size: 10px;
     -fx-font-weight: 700;
+    -fx-pref-width: 120;
+}
+.combo-box .list-view .list-cell {
+
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+    -fx-text-fill: #3d3c3c;
+    -fx-background-color: #ffffff;
+}
+.combo-box .list-view .list-cell:hover {
+
+    -fx-background-color: #6fa62f;
+    -fx-text-fill: #ffffff;
+}
+.combo-box .list-view .list-cell:pressed {
+
+    -fx-background-color: #6fa62f;
+    -fx-text-fill: #ffffff;
 }
 
-.combo-box .list-view .list-cell:filled {
-
-}
 .table-view {
     -fx-text-fill: #ffffff;
     -fx-alignment: center ;

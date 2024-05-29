@@ -332,7 +332,7 @@ public class LoginController implements Initializable {
     {
         if (index == 0) // đang ở màn login
         {
-            if ((tfUsername_Login.getText().isBlank()) && pfPassword_Login.getText().isBlank()) {
+            if ((tfUsername_Login.getText().isBlank()) || pfPassword_Login.getText().isBlank()) {
                 showAlert("Warning","Please enter username and password");
                 tfUsername_Login.setText("");
                 pfPassword_Login.setText("");
