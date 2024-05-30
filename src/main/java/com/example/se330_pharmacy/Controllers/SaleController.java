@@ -246,6 +246,7 @@ public class SaleController implements Initializable {
         btnCreateBill.setDisable(true);
         btnSelling.setDisable(false);
         btnAllBill.setDisable(true);
+
         tfPhoneNumber.setDisable(true);
         tfCustomName.setDisable(true);
         tabPane.getSelectionModel().select(tabInvoiceList);
@@ -276,6 +277,7 @@ public class SaleController implements Initializable {
     @FXML
     void btnAddClicked(MouseEvent event) {
         btnCancel.setDisable(false);
+        btnCreateBill.setDisable(false);
         paneSmallUnit.setVisible(true);
 
         if(addProductToTvCart()) {
@@ -365,6 +367,7 @@ public class SaleController implements Initializable {
                     }
                     bigQuantity = STR."\{billDAO.getBigQuan(cartItem.getProductId())}";
                     smallQuantity = STR."\{billDAO.getSmallQuan(cartItem.getProductId())}";
+
                     calculateUpdateData(STR."\{cartItem.getProductId()}",STR."\{cartItem.getProductQuantities()}",whatUnit);
 
                     billDAO.updateProduct(STR."\{cartItem.getProductId()}",bigQuantity,smallQuantity);
@@ -383,7 +386,7 @@ public class SaleController implements Initializable {
 
     public void calculateUpdateData(String id,String quantity, String unit) throws SQLException {
         String _coef = STR."\{billDAO.getCoef(Integer.parseInt(id))}";
-        if(unit=="lv1")// Nếu bán Box/Bottle
+        if(unit.equals("big_unit"))// Nếu bán Box/Bottle
         {
             bigQuantity = STR."\{Integer.parseInt(bigQuantity) - Integer.parseInt(quantity)}";//Box= box -a
         }
@@ -524,7 +527,7 @@ public class SaleController implements Initializable {
     private void printBill() throws IOException {
         Document document = new Document();
 
-        String path = STR."\{removeAccentsAndSpaces(tfCustomName.getText())}.pdf";
+        String path = STR."Bill/\{removeAccentsAndSpaces(tfCustomName.getText())}.pdf";
         try {
             PdfWriter.getInstance(document, new FileOutputStream(path));
             document.open();
@@ -543,12 +546,12 @@ public class SaleController implements Initializable {
             document.add(new Paragraph("Customer: " + tfCustomName.getText(), boldFont));
             document.add(new Paragraph("Phone: " + tfPhoneNumber.getText(), regularFont));
 
-            PdfPTable table = new PdfPTable(3);
+            PdfPTable table = new PdfPTable(4);
             table.setWidthPercentage(100);
             table.setSpacingBefore(10f);
             table.setSpacingAfter(10f);
 
-            float[] columnWidths = {1f, 1f, 1f};
+            float[] columnWidths = {2f, 1f, 1f, 1f};
             table.setWidths(columnWidths);
 
             PdfPCell cell = new PdfPCell(new Paragraph("Product", boldFont));
@@ -559,14 +562,36 @@ public class SaleController implements Initializable {
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             table.addCell(cell);
 
+            cell = new PdfPCell(new Paragraph("Unit", boldFont));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
             cell = new PdfPCell(new Paragraph("Unit Price", boldFont));
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             table.addCell(cell);
 
             for (CartItem product : tvCart.getItems()) {
-                table.addCell(new Paragraph(product.getProductName(), regularFont));
-                table.addCell(new Paragraph(String.valueOf(product.getProductQuantities()), regularFont));
-                table.addCell(new Paragraph(String.valueOf(product.getProductPrice()), regularFont));
+
+                PdfPCell cellProductName = new PdfPCell(new Paragraph(product.getProductName(), regularFont));
+                cellProductName.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cellProductName.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                PdfPCell cellProductQuantities = new PdfPCell(new Paragraph(String.valueOf(product.getProductQuantities()), regularFont));
+                cellProductQuantities.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cellProductQuantities.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                PdfPCell cellProductUnit = new PdfPCell(new Paragraph(String.valueOf(product.getProductUnit()), regularFont));
+                cellProductUnit.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cellProductUnit.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                PdfPCell cellProductPrice = new PdfPCell(new Paragraph(String.valueOf(product.getProductPrice()), regularFont));
+                cellProductPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cellProductPrice.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                table.addCell(cellProductName);
+                table.addCell(cellProductQuantities);
+                table.addCell(cellProductUnit);
+                table.addCell(cellProductPrice);
             }
 
             document.add(table);
@@ -608,7 +633,7 @@ public class SaleController implements Initializable {
                 // Nếu có nội dung trong SearchField, lọc danh sách sản phẩm
                 filteredList.setPredicate(bill -> {
                     String lowerCaseFilter = searchText.toLowerCase();
-                    return String.valueOf(bill.getCustomerName()).contains(lowerCaseFilter) ||
+                    return bill.getCustomerName().toLowerCase().contains(lowerCaseFilter) ||
                             bill.getPhoneNumber().toLowerCase().contains(lowerCaseFilter);
                 });
                 tvInvoiceList.setItems(filteredList);
@@ -902,14 +927,9 @@ public class SaleController implements Initializable {
             return false;
         }
         // neu cart dang trong thi them ngay
-        else if(cartList.isEmpty()) {
-            cartList.add(cartItem);
-            tvCart.setItems(FXCollections.observableList(cartList));
-            add = true;
-        } else {
+        else {
             // tao bien foundItem de check item da co trong cart chua
             boolean foundItem = false;
-
             // duyet cart
             for (CartItem item : cartList) {
 
@@ -947,10 +967,6 @@ public class SaleController implements Initializable {
                         item.setProductQuantities(_smallQuantities);
 
                         // neu sau xu ly co quantity = 0 thi se remove
-                        if(item.getProductQuantities()==0) {
-                            cartList.remove(item);
-//                            tvCart.refresh();
-                        }
 
                         // tao bien found de kiem tra item don vi lon co trong cart chua
                         boolean found = false;
@@ -960,11 +976,12 @@ public class SaleController implements Initializable {
                                     item1.getProductUnit().equals(cartItem.getProductUnit()) &&
                                     cartItem.getProductUnit().equals(bigUnit)) {
                                 item1.setProductQuantities(STR."\{item1.getProductQuantities() + cartItem.getProductQuantities()}");
-//                                tvCart.refresh();
+                                tvCart.refresh();
                                 found = true;
                                 break;
                             }
                         }
+
                         // khong co thi se them moi
                         if (!found) {
                             itemsToAdd.add(cartItem);
@@ -972,14 +989,60 @@ public class SaleController implements Initializable {
                     }
                 }
             }
+
             // neu khong co item co san trong cart thi se them moi
             if(!foundItem) {
-                itemsToAdd.add(cartItem);
-                add = true;
+
+                if(cartItem.getProductQuantities()>= Integer.parseInt(_coef)) {
+
+                    _bigQuantities = STR."\{cartItem.getProductQuantities() / Integer.parseInt(_coef)}";
+                    _smallQuantities = STR."\{cartItem.getProductQuantities() % Integer.parseInt(_coef)}";
+
+                    CartItem smallUnitItem = new CartItem();
+                    smallUnitItem.setProductId(cartItem.getProductId());
+                    smallUnitItem.setProductUnit(smallUnit);
+                    smallUnitItem.setProductPrice(STR."\{Integer.parseInt(productBigPrice) / Integer.parseInt(_coef)}");
+                    smallUnitItem.setProductQuantities(_smallQuantities);
+                    smallUnitItem.setProductName(cartItem.getProductName());
+
+                    cartItem.setProductUnit(bigUnit);
+                    cartItem.setProductQuantities(_bigQuantities);
+                    cartItem.setProductPrice(productBigPrice);
+
+
+
+                    if(smallUnitItem.getProductQuantities() != 0 ){
+                        cartList.add(smallUnitItem);
+                        add = true;
+                    }
+
+                    boolean toAdd = true;
+                    for (CartItem item : cartList) {
+                        if(item.getProductId()==cartItem.getProductId() &&
+                                item.getProductUnit().equals(cartItem.getProductUnit())){
+                            item.setProductQuantities(STR."\{item.getProductQuantities() + cartItem.getProductQuantities()}");
+                            tvCart.refresh();
+                            toAdd = false;
+                            add = true;
+                        }
+                    }
+                    if(toAdd){
+                        cartList.add(cartItem);
+                    }
+                } else {
+                    itemsToAdd.add(cartItem);
+                    add = true;
+                }
             }
 
             cartList.addAll(itemsToAdd);
+            for (CartItem item : cartList) {
+                if(item.getProductQuantities() == 0) {
+                    cartList.remove(item);
+                }
+            }
             tvCart.setItems(FXCollections.observableList(cartList));
+
         }
 
         return add;

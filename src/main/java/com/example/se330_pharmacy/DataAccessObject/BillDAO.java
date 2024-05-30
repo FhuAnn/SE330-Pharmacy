@@ -75,7 +75,7 @@ public class BillDAO {
     public List<Unit> getUnit(String id) {
         List<Unit> units = new ArrayList<>();
 
-        String sqlQuery = STR."SELECT pro.big_unit, pro.small_unit  FROM Product pro, Unit uni WHERE pro.Product_id = '\{id}' AND pro.Unit_id = uni.Unit_id";
+        String sqlQuery = STR."SELECT uni.big_unit, uni.small_unit FROM detailbill dtl, Unit uni, Product pro WHERE dtl.Product_id = pro.product_id AND pro.Unit_id = uni.Unit_id AND dtl.bill_id = \{id}";
 
         try (Statement statement = connectDB.databaseLink.createStatement();
              ResultSet resultSet = statement.executeQuery(sqlQuery)) {
@@ -132,8 +132,8 @@ public class BillDAO {
         // Update lv1 and lv2
         query = "UPDATE Product SET big_unit = ?, small_unit = ? WHERE Product_id = ?";
         try (PreparedStatement preparedStatement = connectDB.databaseLink.prepareStatement(query)) {
-            preparedStatement.setInt(1, Integer.parseInt(smallQuantity));
-            preparedStatement.setInt(2, Integer.parseInt(bigQuantity));
+            preparedStatement.setInt(1, Integer.parseInt(bigQuantity));
+            preparedStatement.setInt(2, Integer.parseInt(smallQuantity));
             preparedStatement.setInt(3, Integer.parseInt(id));
 
             int rowsAffected = preparedStatement.executeUpdate();
