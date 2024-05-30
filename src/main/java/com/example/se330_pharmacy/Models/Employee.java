@@ -1,76 +1,100 @@
 package com.example.se330_pharmacy.Models;
 
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Employee {
-    public int emloyeeId;
-    public String employName;
-    public String citizenId;
-    public String address;
-    public String phoneNumber;
-    public String email;
-    public String position;
+    public int employeeId;
+    public String employeeName;
+    public String employeeCitizenId;
+    public String employeeAddress;
+    public String employeePhoneNumber;
+    public String employeeEmail;
+    public String employeePosition;
     public String username;
-    public String password;
+    public String employeeUsername;
+    public String employeePassword;
     public String defaultpassword;
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employeeId=" + employeeId + '\'' +
+                ", employeeName='" + employeeName + '\'' +
+                ", employeeCitizenId='" + employeeCitizenId + '\'' +
+                ", employeeAddress='" + employeeAddress + '\'' +
+                ", employeePhoneNumber=" + employeePhoneNumber +
+                ", employeeEmail='" + employeeEmail + '\'' +
+                ", employeePosition=" + employeePosition + '\'' +
+                ", employeeUsername=" + employeeUsername +
+                '}';
+    }
+
+    public Employee(String name, String citizenId, String address, String phoneNum, String email, String position, String username) {
+        this.employeeName = employeeName;
+        this.employeeCitizenId = employeeCitizenId;
+        this.employeeAddress = employeeAddress;
+        this.employeePhoneNumber = employeePhoneNumber;
+        this.employeeEmail = employeeEmail;
+        this.employeePosition = employeePosition;
+        this.employeeUsername = employeeUsername;
+    }
+
     public int getEmloyeeId() {
-        return emloyeeId;
+        return employeeId;
     }
 
     public void setEmloyeeId(int emloyeeId) {
-        this.emloyeeId = emloyeeId;
+        this.employeeId = emloyeeId;
     }
 
     public String getEmployName() {
-        return employName;
+        return employeeName;
     }
 
     public void setEmployName(String employName) {
-        this.employName = employName;
+        this.employeeName = employName;
     }
 
     public String getCitizenId() {
-        return citizenId;
+        return employeeCitizenId;
     }
 
     public void setCitizenId(String citizenId) {
-        this.citizenId = citizenId;
+        this.employeeCitizenId = citizenId;
     }
 
     public String getAddress() {
-        return address;
+        return employeeAddress;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.employeeAddress = address;
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return employeePhoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.employeePhoneNumber = phoneNumber;
     }
 
     public String getEmail() {
-        return email;
+        return employeeEmail;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.employeeEmail = email;
     }
 
     public String getPosition() {
-        return position;
+        return employeePosition;
     }
 
     public void setPosition(String position) {
-        this.position = position;
+        this.employeePosition = position;
     }
 
     public String getUsername() {
@@ -82,11 +106,11 @@ public class Employee {
     }
 
     public String getPassword() {
-        return password;
+        return employeePassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.employeePassword = password;
     }
 
     public String UserID(String username,String password) throws SQLException
