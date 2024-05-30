@@ -12,6 +12,7 @@ public class ConnectDB {
         databaseLink = getConnection();
     }
 
+
     public static ConnectDB getInstance() {
         if (instance == null) {
             synchronized (ConnectDB.class) {
@@ -32,7 +33,6 @@ public class ConnectDB {
         Connection connection = null;
         try {
             if (isInternetAvailable()) {
-                //Class.forName("com.mysql.cj.jdbc.Driver");
                 Class.forName("org.postgresql.Driver");
                 //databaseLink= DriverManager.getConnection(urlPostgres,databaseUser,databasePassword);
                 connection = DriverManager.getConnection(urlNeon_DB);

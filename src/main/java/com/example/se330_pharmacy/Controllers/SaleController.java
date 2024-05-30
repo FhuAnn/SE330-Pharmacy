@@ -344,12 +344,12 @@ public class SaleController implements Initializable {
 
     private boolean addBillToDB() throws SQLException {
         boolean add = false;
-        String id = billDAO.addBill(String.valueOf(employee.getEmloyeeId()),tfCustomName.getText(),tfPhoneNumber.getText(),textTotalInvoice.getText().split(" ")[0]);
+        String id = billDAO.addBill(String.valueOf(employee.getEmployeeId()),tfCustomName.getText(),tfPhoneNumber.getText(),textTotalInvoice.getText().split(" ")[0]);
 
         //auto create receipt
         String contentReceipts = "Bill ID: " + id;
         String status = "Completed";
-        billDAO.autoCreateReceipts(String.valueOf(employee.getEmloyeeId()),contentReceipts,textTotalInvoice.getText().split(" ")[0],status,"");
+        billDAO.autoCreateReceipts(String.valueOf(employee.getEmployeeId()),contentReceipts,textTotalInvoice.getText().split(" ")[0],status,"");
         //end
 
         if(!tvCart.getItems().isEmpty()) {
@@ -535,12 +535,12 @@ public class SaleController implements Initializable {
             String fontPath = "notosans-regular.ttf";
             BaseFont baseFont = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
-            Font boldFont = new Font(baseFont, 18, Font.BOLD);
-            Font regularFont = new Font(baseFont, 12);
+            Font boldFont = new Font(baseFont, 15, Font.BOLD);
+            Font regularFont = new Font(baseFont, 13,Font.BOLD);
 
             document.add(new Paragraph("Green Pharmacy", boldFont));
             document.add(new Paragraph("Address: 136, Linh Trung, Thủ Đức, TP Thủ Đức", regularFont));
-            document.add(new Paragraph("Phone: 1900 1555           Employee: " + String.valueOf(employee.getEmloyeeId()), regularFont));
+            document.add(new Paragraph("Phone: 1900 1555           Employee: " + String.valueOf(employee.getEmployeeId()), regularFont));
             document.add(new Paragraph("RETAIL BILL", boldFont));
 
             document.add(new Paragraph("Customer: " + tfCustomName.getText(), boldFont));
@@ -658,6 +658,7 @@ public class SaleController implements Initializable {
                         return String.valueOf(product.getProductId()).contains(lowerCaseFilter) ||
                                 product.getProductName().toLowerCase().contains(lowerCaseFilter);
                     });
+
                     tvProduct.setItems(filteredList);
                 }
             });
@@ -762,7 +763,6 @@ public class SaleController implements Initializable {
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     Product productSelected = row.getItem();
-
                     //lay gia tri ti le de so sanh
                     _coef = productSelected.getProductCoef() + "";
                     // Khi lay duoc thong tin se enable cac component
@@ -1043,10 +1043,9 @@ public class SaleController implements Initializable {
                 }
             }
             tvCart.setItems(FXCollections.observableList(cartList));
-
         }
-
         return add;
     }
 
 }
+

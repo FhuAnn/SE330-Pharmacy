@@ -30,6 +30,7 @@ public class ReceiptController implements Initializable {
     public TableColumn<Receipt,String> col_nguoiTra;
     public TableColumn<Receipt, String> col_tenNhanVien;
     public Button btnTatCa;
+    public Button btnEdit;
     ReceiptDAO receiptDAO;
     ObservableList<Receipt> receipts;
     
@@ -74,6 +75,15 @@ public class ReceiptController implements Initializable {
                 FilterByStatus();
             }
         });
+        btnEdit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Receipt receipt = tblReceipt.getSelectionModel().getSelectedItem();
+                if(receipt!=null && !receipt.getStatus().equals("Completed")) {
+                    Model.getInstance().getViewFactory().showAddReceiptWindow(null,0,null,null,null,ReceiptController.this,receipt);
+                }
+            }
+        });
     }
 
     private void FilterByStatus() {
@@ -104,8 +114,8 @@ public class ReceiptController implements Initializable {
         ObservableList<Receipt> filtered = FXCollections.observableArrayList();
         tblReceipt.setItems(FXCollections.observableArrayList());
         for (Receipt receipt : receipts) {
-            if (receipt.getCreateDate().toLocalDate().getYear() <= dateTimePickerReceipt.getValue().getYear()) {
-                if(receipt.getCreateDate().toLocalDate().getMonthValue() == dateTimePickerReceipt.getValue().getMonthValue())
+            if (receipt.getCreateDate().toLocalDate().getYear() == dateTimePickerReceipt.getValue().getYear()) {
+                if(receipt.getCreateDate().toLocalDate().getMonthValue() <= dateTimePickerReceipt.getValue().getMonthValue())
                     filtered.add(receipt);
             }
         }

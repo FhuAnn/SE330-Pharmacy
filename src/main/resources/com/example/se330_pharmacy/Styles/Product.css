@@ -120,8 +120,7 @@
 .container-overall .combo-box:hover {
     -fx-border-color: green;
 }
-.container-overall .combo-box .arrow-button{
-}
+
 .container-overall .combo-box .arrow-button .arrow{
     -fx-background-color: green;
 
@@ -155,13 +154,28 @@
     -fx-border-width: 0.5;
     -fx-border-color: #ACACAC;
     -fx-background-color: #EBFFD1;
+    -fx-pref-width: 120;
     -fx-padding: 0px;
     -fx-font-size: 10px;
     -fx-font-weight: 700;
 }
 
-.container-overall .combo-box .list-view .list-cell:filled {
+.container-overall .combo-box .list-view .list-cell {
 
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+    -fx-text-fill: #3d3c3c;
+    -fx-background-color: #ffffff;
+}
+.container-overall .combo-box .list-view .list-cell:hover {
+
+    -fx-background-color: #6fa62f;
+    -fx-text-fill: #ffffff;
+}
+.container-overall .combo-box .list-view .list-cell:pressed {
+
+    -fx-background-color: #6fa62f;
+    -fx-text-fill: #ffffff;
 }
 /*table-view*/
 .container-overall .table-view {
@@ -189,21 +203,6 @@
 
 }
 
-.container-overall .table-view .table-cell
-{
-
-}
-.container-overall .table-row-cell:odd
-{
-
-}
-.container-overall .table-view >.virtual-flow >.scroll-bar:vertical
-{
-
-}
-.container-overall .table-row-cell:selected
-{
-}
 /*titlepane*/
 .container-overall .titled-pane
 {

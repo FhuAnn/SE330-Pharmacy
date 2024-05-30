@@ -96,6 +96,22 @@
     -fx-border-width: 0 0 0.4 0;
 }
 /*minimized*/
+.menu-button   * {
+    -fx-primary-color: #66a611;
+    -fx-secondary-color: #497309;
+    -fx-font-size: 1.1em;
+}
+.menu-button .menu-item {
+    -fx-text-fill: -fx-secondary-color;
+}
+.menu-button .menu-item:hover {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: -fx-primary-color;
+}
+.menu-button .menu-item:focused {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: -fx-secondary-color;
+}
 
 .minimize
 {
