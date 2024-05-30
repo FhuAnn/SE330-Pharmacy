@@ -75,7 +75,7 @@ public class PaySlipController implements Initializable {
                 if(!tblPaySlip.getSelectionModel().isEmpty())  {
                     Payslip payslip = tblPaySlip.getSelectionModel().getSelectedItem();
                     if(payslip.getStatus().equals("InComplete")) {
-                        Model.getInstance().getViewFactory().showAddReceiptWindow(payslip,employee.getEmloyeeId(),employee.getEmployName(),employee.getPosition(),PaySlipController.this,null,null);
+                        Model.getInstance().getViewFactory().showAddReceiptWindow(payslip,employee.getEmployeeId(),employee.getEmployeeName(),employee.getEmployeePosition(),PaySlipController.this,null,null);
                         LoadListPayslip();
                     }
                     else {

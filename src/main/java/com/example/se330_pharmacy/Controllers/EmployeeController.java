@@ -6,36 +6,40 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import javax.swing.*;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.replaceAll;
 
 public class EmployeeController implements Initializable {
     public Button btnDeleteEmployee;
     public Button btnAddEmployee;
     public Button btnEditEmployee;
+    public Button btnCancel;
+    public ComboBox<String> cb_position;
     @FXML
     private TextField tfEmployee;
     @FXML
-    private TextField addName;
+    private TextField tf_addName;
     @FXML
-    private TextField addcitizenId;
+    private TextField tf_addcitizenId;
     @FXML
-    private TextField addAddress;
+    private TextField tf_addAddress;
     @FXML
-    private TextField addPhoneNum;
+    private TextField tf_addPhoneNum;
     @FXML
-    private TextField addEmail;
+    private TextField tf_addEmail;
     @FXML
-    private TextField addPosition;
+    private TextField tf_addPosition;
+    public TextField tf_maNV;
     @FXML
     private TableView<Employee> employeeTableView;
     @FXML
@@ -66,41 +70,61 @@ public class EmployeeController implements Initializable {
         btnDeleteEmployee.setOnAction(event -> handleDeleteAction());
         btnAddEmployee.setOnAction(event -> handleAddAction());
         btnEditEmployee.setOnAction(event -> handleEditAction()); // Add this line to handle edit action
+        btnCancel.setOnAction(event -> handleCancel());
         tfEmployee.setOnKeyPressed(event -> handleSearchKeyPressed(event));
+        ObservableList<String> statusList = FXCollections.observableArrayList("Bán hàng", "Kế toán","Quản lí kho");
+        cb_position.setItems(statusList);
         addSelectionListener(); // Add this line to handle selection changes
+        SetTextChanged();
+    }
+
+    private void SetTextChanged() {
+        tf_addPhoneNum.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                tf_addPhoneNum.setText(newValue.replaceAll("[^\\d]", oldValue));
+                showAlert("Warning","Chỉ được nhập số");
+            } else {
+                if (!newValue.isEmpty() && newValue.charAt(0) != '0') tf_addPhoneNum.setText(oldValue);
+            }
+
+        });
+        tf_addcitizenId.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                tf_addcitizenId.setText(newValue.replaceAll("[^\\d]", ""));
+                showAlert("Warning", "Chỉ được nhập số");
+            }
+        });
     }
 
     private void setOnOffAddDeleteBtn() {
         btnDeleteEmployee.setDisable(true); // Bắt đầu bằng việc vô hiệu hóa nút Delete
-        employeeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            btnDeleteEmployee.setDisable(newValue == null); // Nếu không có mục nào được chọn, vô hiệu hóa nút Delete
-        });
+
     }
 
     private void configureTableColumns() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        citizenIdColumn.setCellValueFactory(new PropertyValueFactory<>("citizenId"));
-        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-        phoneNumColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-        positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
-        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
+        citizenIdColumn.setCellValueFactory(new PropertyValueFactory<>("employeeCitizenId"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("employeeAddress"));
+        phoneNumColumn.setCellValueFactory(new PropertyValueFactory<>("employeePhoneNumber"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("employeeEmail"));
+        positionColumn.setCellValueFactory(new PropertyValueFactory<>("employeePosition"));
+        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("employeeUsername"));
     }
 
     private void loadEmployeeData() {
-        employees = FXCollections.observableArrayList(employeeDAO.getAllEmployees());
+        employees = employeeDAO.getAllEmployees();
         employeeTableView.setItems(employees);
     }
 
     @FXML
     private void handleSearchAction() {
-        String searchText = tfEmployee.getText().trim().toLowerCase();
+        String searchText = normalizeString(tfEmployee.getText().trim().toLowerCase());
         if (!searchText.isEmpty()) {
             ObservableList<Employee> filteredEmployees = FXCollections.observableArrayList(
                     employees.stream()
-                            .filter(emp -> String.valueOf(emp.getEmloyeeId()).toLowerCase().contains(searchText)
-                                    || emp.getEmployName().toLowerCase().contains(searchText))
+                            .filter(emp -> normalizeString(String.valueOf(emp.getEmployeeId()).toLowerCase()).startsWith(searchText)
+                                    || normalizeString(emp.getEmployeeName().toLowerCase()).contains(searchText))
                             .collect(Collectors.toList())
             );
             employeeTableView.setItems(filteredEmployees);
@@ -109,12 +133,16 @@ public class EmployeeController implements Initializable {
         }
     }
 
-    @FXML
     private void handleDeleteAction() {
         Employee selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
         if (selectedEmployee != null) {
-            employeeDAO.deleteEmployee(selectedEmployee.getEmloyeeId());
-            employees.remove(selectedEmployee);
+            int sequence = ShowYesNoAlert("xoá "+selectedEmployee.getEmployeeName()+"");
+            if(sequence==JOptionPane.YES_OPTION) {
+                if (employeeDAO.deleteEmployee(selectedEmployee.getEmployeeId()))  {
+                    employees.remove(selectedEmployee);
+                    loadEmployeeData();
+                }
+            } else {}
         }
     }
 
@@ -125,76 +153,137 @@ public class EmployeeController implements Initializable {
         }
     }
 
-    @FXML
     private void handleAddAction() {
-        String name = addName.getText();
-        String citizenId = addcitizenId.getText();
-        String address = addAddress.getText();
-        String phoneNum = addPhoneNum.getText();
-        String email = addEmail.getText();
-        String position = addPosition.getText();
-        String username = addEmail.getText();
-
-        if (!name.isEmpty() && !citizenId.isEmpty() && !address.isEmpty() && !phoneNum.isEmpty() && !email.isEmpty() && !position.isEmpty()) {
-            Employee newEmployee = new Employee(name, citizenId, address, phoneNum, email, position, username);
-            employeeDAO.addEmployee(newEmployee);
-            employees.add(newEmployee);
-            clearAddEmployeeFields();
-        }
-    }
-
-    @FXML
-    private void handleEditAction() {
-        Employee selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
-        if (selectedEmployee != null) {
-            String name = addName.getText();
-            String citizenId = addcitizenId.getText();
-            String address = addAddress.getText();
-            String phoneNum = addPhoneNum.getText();
-            String email = addEmail.getText();
-            String position = addPosition.getText();
-            String username = addEmail.getText();
+        if(btnAddEmployee.getText().equals("Lưu")) {
+            int id = Integer.parseInt(tf_maNV.getText());
+            String name = tf_addName.getText();
+            String citizenId = tf_addcitizenId.getText();
+            String address = tf_addAddress.getText();
+            String phoneNum = tf_addPhoneNum.getText();
+            String email = tf_addEmail.getText();
+            String position = tf_addPosition.getText();
+            String username = tf_addEmail.getText();
 
             if (!name.isEmpty() && !citizenId.isEmpty() && !address.isEmpty() && !phoneNum.isEmpty() && !email.isEmpty() && !position.isEmpty()) {
-                selectedEmployee.setEmployName(name);
-                selectedEmployee.setCitizenId(citizenId);
-                selectedEmployee.setAddress(address);
-                selectedEmployee.setPhoneNumber(phoneNum);
-                selectedEmployee.setEmail(email);
-                selectedEmployee.setPosition(position);
-                selectedEmployee.setUsername(username);
+                int sequence = ShowYesNoAlert("lưu "+name+"");
+                if(sequence==JOptionPane.YES_OPTION) {
+                    Employee employee = new Employee(id,name, citizenId, address, phoneNum, email, position, username);
+                    if (employeeDAO.updateEmployee(employee)) {
+                        btnAddEmployee.setText("Thêm");
+                        cb_position.setVisible(false);
+                        tf_addPosition.setVisible(true);
+                        loadEmployeeData();
+                        clearAddEmployeeFields();
+                    } else {
+                        showAlert("Warning", "Error!");
+                    }
+                } else {}
+            }
+        } else {
+            String name = tf_addName.getText();
+            String citizenId = tf_addcitizenId.getText();
+            String address = tf_addAddress.getText();
+            String phoneNum = tf_addPhoneNum.getText();
+            String email = tf_addEmail.getText();
+            String position = cb_position.getValue();
+            String username = tf_addEmail.getText();
 
-                employeeDAO.updateEmployee(selectedEmployee);
-                employeeTableView.refresh();
-                clearAddEmployeeFields();
+            if (!name.isEmpty() && !citizenId.isEmpty() && !address.isEmpty() && !phoneNum.isEmpty() && !email.isEmpty() && !cb_position.getValue().isEmpty()) {
+                int sequence = ShowYesNoAlert("thêm "+name+"");
+                if(sequence==JOptionPane.YES_OPTION) {
+                    Employee newEmployee = new Employee(name, citizenId, address, phoneNum, email, position, username);
+                    if(employeeDAO.addEmployee(newEmployee)) {
+                        loadEmployeeData();
+                        clearAddEmployeeFields();
+                    }
+                } else {}
             }
         }
+
     }
 
+    private void handleEditAction() {
+            Employee selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
+            if (selectedEmployee != null) {
+                btnAddEmployee.setText("Lưu");
+                btnAddEmployee.setDisable(false);
+                SetDisable(false);
+            }
+    }
+    private void handleCancel() {
+        clearAddEmployeeFields();
+        SetDisable(false);
+        btnAddEmployee.setDisable(false);
+        btnDeleteEmployee.setDisable(true);
+        btnEditEmployee.setDisable(true);
+        cb_position.setVisible(true);
+        tf_addPosition.setVisible(false);
+        btnAddEmployee.setText("Thêm");
+    }
     private void addSelectionListener() {
-        employeeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            boolean employeeSelected = newValue != null;
-            btnAddEmployee.setDisable(employeeSelected); // Vô hiệu hóa nút Add khi chọn nhân viên
-            if (employeeSelected) {
-                // Hiển thị thông tin nhân viên lên các TextField
-                addName.setText(newValue.getEmployName());
-                addcitizenId.setText(newValue.getCitizenId());
-                addAddress.setText(newValue.getAddress());
-                addPhoneNum.setText(newValue.getPhoneNumber());
-                addEmail.setText(newValue.getEmail());
-                addPosition.setText(newValue.getPosition());
-            } else {
+            employeeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                boolean employeeSelected = newValue != null;
+                SetDisable(true);
+                cb_position.setVisible(false);
+                tf_addPosition.setVisible(true);
+                btnDeleteEmployee.setDisable(false);
+                btnAddEmployee.setDisable(true);
+                btnEditEmployee.setDisable(false);
+                if (employeeSelected) {
+                    // Hiển thị thông tin nhân viên lên các TextField
+                    tf_addName.setText(newValue.getEmployeeName());
+                    tf_addcitizenId.setText(newValue.getEmployeeCitizenId());
+                    tf_addAddress.setText(newValue.getEmployeeAddress());
+                    tf_addPhoneNum.setText(newValue.getEmployeePhoneNumber());
+                    tf_addEmail.setText(newValue.getEmployeeEmail());
+                    tf_addPosition.setText(newValue.getEmployeePosition());
+                    tf_maNV.setText(String.valueOf(newValue.getEmployeeId()));
+                } else {
                 clearAddEmployeeFields();
+            }
+        });
+        tfEmployee.textProperty().addListener((observable, oldValue,newValue )-> {
+            if(tfEmployee.getText().isEmpty()) {
+                employeeTableView.setItems(employees);
             }
         });
     }
 
+    private void SetDisable(boolean bool) {
+        tf_addAddress.setDisable(bool);
+        tf_addEmail.setDisable(bool);
+        tf_addPosition.setDisable(bool);
+        tf_addcitizenId.setDisable(bool);
+        tf_addPhoneNum.setDisable(bool);
+        tf_addName.setDisable(bool);
+    }
+
     private void clearAddEmployeeFields() {
-        addName.clear();
-        addcitizenId.clear();
-        addAddress.clear();
-        addPhoneNum.clear();
-        addEmail.clear();
-        addPosition.clear();
+        tf_addName.clear();
+        tf_addcitizenId.clear();
+        tf_addAddress.clear();
+        tf_addPhoneNum.clear();
+        tf_addEmail.clear();
+        tf_addPosition.clear();
+        tf_maNV.clear();
+    }
+    private static String normalizeString(String str) {
+        return Normalizer.normalize(str, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+    }
+    private void showAlert(String tilte,String string) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(tilte);
+        alert.setHeaderText(null);
+        alert.setContentText(string);
+        alert.showAndWait();
+    }
+    private int ShowYesNoAlert(String string) {
+        JFrame frame = new JFrame("Table Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        return JOptionPane.showConfirmDialog(frame, "Có phải bạn muốn "+string+"?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
 }
+
+

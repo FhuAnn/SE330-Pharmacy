@@ -2,6 +2,9 @@ package com.example.se330_pharmacy.DataAccessObject;
 
 import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Employee;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -14,25 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAO {
-    private String name;
-    private String citizenId;
-    private String address;
-    private String phoneNum;
-    private String email;
-    private String position;
-    private String username;
-    Employee employee = new Employee(name, citizenId, address, phoneNum, email, position, username);
 
-    ConnectDB connectDB = ConnectDB.getInstance();
+    Employee employee = new Employee();
+    ConnectDB connectDB = new ConnectDB();
     public EmployeeDAO() {
     }
 
     public Employee getEmployee() {
         return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
     }
 
     public String GetHash(String plainText) {
@@ -73,13 +65,13 @@ public class EmployeeDAO {
                 if (resultSet.getString("defaultpassword")!=null && resultSet.getString("defaultpassword").equals(password))
                     return 1;//mật khẩu mặc định
                 else {
-                    employee.setEmloyeeId(resultSet.getInt("employee_id"));
-                    employee.setEmployName(resultSet.getString("employname"));
-                    employee.setCitizenId(resultSet.getString("employee_id"));
-                    employee.setAddress(resultSet.getString("address"));
-                    employee.setPhoneNumber(resultSet.getString("phonenumber"));
-                    employee.setPosition(resultSet.getString("position"));
-                    employee.setUsername(resultSet.getString("username"));
+                    employee.setEmployeeId(resultSet.getInt("employee_id"));
+                    employee.setEmployeeName(resultSet.getString("employname"));
+                    employee.setEmployeeCitizenId(resultSet.getString("employee_id"));
+                    employee.setEmployeeAddress(resultSet.getString("address"));
+                    employee.setEmployeePhoneNumber(resultSet.getString("phonenumber"));
+                    employee.setEmployeePosition(resultSet.getString("position"));
+                    employee.setEmployeeUsername(resultSet.getString("username"));
                     return 2; // mật khẩu chính
                 }
             } else {
@@ -110,14 +102,14 @@ public class EmployeeDAO {
         if (index == 0)
         {
             querry = "UPDATE Employee SET Password = ?, DefaultPassword = NULL  WHERE Username = ? ";
-            preparedStatement = connectDB.getConnection().prepareStatement(querry);
+            preparedStatement = connectDB.databaseLink.prepareStatement(querry);
             preparedStatement.setString(1,newPassword);
             preparedStatement.setString(2,username);
         }
         else
         {
             querry = "UPDATE Employee SET Password = ? WHERE Username = ? ";
-            preparedStatement = connectDB.getConnection().prepareStatement(querry);
+            preparedStatement = connectDB.databaseLink.prepareStatement(querry);
             preparedStatement.setString(1,newPassword);
             preparedStatement.setString(2,username);
         }
@@ -190,130 +182,85 @@ public class EmployeeDAO {
         return false;
     }
 
-    public void addEmployee(Employee employee) {
-        String query = "INSERT INTO nhanvien (hoten, sdt, cccd, username, password, vitri, defaultpassword, diachi, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection connection = connectDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, employee.getUsername());
-            statement.setString(2, employee.getPhoneNumber());
-            statement.setString(3, employee.getCitizenId());
-            statement.setString(4, employee.getUsername());
+    public boolean addEmployee(Employee employee) {
+        String query = "INSERT INTO employee (employname, phonenumber, citizen_id, username, password, position, defaultpassword, address, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String defaultPassword = GeneratePassword(true,true,true,true,8);
+        try (PreparedStatement statement = ConnectDB.getInstance().getPreparedStatement(query)) {
+            statement.setString(1, employee.getEmployeeUsername());
+            statement.setString(2, employee.getEmployeePhoneNumber());
+            statement.setString(3, employee.getEmployeeCitizenId());
+            statement.setString(4, employee.getEmployeeUsername());
             statement.setString(5, "");
-            statement.setString(6, employee.getPosition());
-            statement.setString(7, "123");
-            statement.setString(8, employee.getAddress());
-            statement.setString(9, employee.getEmail());
+            statement.setString(6, employee.getEmployeePosition());
+            statement.setString(7, defaultPassword);
+            statement.setString(8, employee.getEmployeeAddress());
+            statement.setString(9, employee.getEmployeeEmail());
             int affectedRows = statement.executeUpdate();
             if (affectedRows > 0) {
                 try (ResultSet rs = statement.getGeneratedKeys()) {
                     if (rs.next()) {
-                        employee.setEmloyeeId(rs.getInt(1));
+                        employee.setEmployeeId(rs.getInt(1));
                     }
                 }
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void updateEmployee(Employee employee) {
-        String query = "UPDATE nhanvien SET hoten = ?, sdt = ?, cccd = ?, diachi = ?, vitri = ?, email = ? WHERE manv = ?";
-        try (Connection connection = connectDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, employee.getUsername());
-            statement.setString(2, employee.getPhoneNumber());
-            statement.setString(3, employee.getCitizenId());
-            statement.setString(4, employee.getAddress());
-            statement.setString(5, employee.getPosition());
-            statement.setString(6, employee.getEmail());
-            statement.setInt(7, employee.getEmloyeeId());
-            statement.executeUpdate();
+    public boolean updateEmployee(Employee employee) {
+        String query = "UPDATE employee SET employname = ?, phonenumber = ?, citizen_id = ?, address = ?, position = ?, email = ? WHERE employee_id = ?";
+        try (PreparedStatement statement = ConnectDB.getInstance().getPreparedStatement(query)) {
+            statement.setString(1, employee.getEmployeeUsername());
+            statement.setString(2, employee.getEmployeePhoneNumber());
+            statement.setString(3, employee.getEmployeeCitizenId());
+            statement.setString(4, employee.getEmployeeAddress());
+            statement.setString(5, employee.getEmployeePosition());
+            statement.setString(6, employee.getEmployeeEmail());
+            statement.setInt(7, employee.getEmployeeId());
+            int aff =  statement.executeUpdate();
+            if (aff > 0) return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void deleteEmployee(int employeeId) {
-        String query = "DELETE FROM nhanvien WHERE manv = ?";
-        try (Connection connection = connectDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+    public boolean deleteEmployee(int employeeId) {
+        String query = "DELETE FROM employee WHERE employee_id = ?";
+        try (PreparedStatement statement = ConnectDB.getInstance().getPreparedStatement(query)) {
             statement.setInt(1, employeeId);
             int rowsAffected = statement.executeUpdate();
-            System.out.println("Rows affected: " + rowsAffected);
+            if (rowsAffected>0) return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public List<Employee> getAllEmployees() {
-        List<Employee> employees = new ArrayList<>();
-        String query = "SELECT * FROM nhanvien";
-        try (Connection connection = connectDB.getConnection();
+    public ObservableList<Employee> getAllEmployees() {
+        ObservableList<Employee> employees = FXCollections.observableArrayList();
+        String query = "SELECT * FROM employee";
+        try (Connection connection = connectDB.databaseLink;
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                Employee employee = new Employee(name, citizenId, address, phoneNum, email, position, username);
-                employee.setEmloyeeId(resultSet.getInt("manv"));
-                employee.setEmployName(resultSet.getString("hoten"));
-                employee.setCitizenId(resultSet.getString("cccd"));
-                employee.setPhoneNumber(resultSet.getString("sdt"));
-                employee.setAddress(resultSet.getString("diachi"));
-                employee.setPosition(resultSet.getString("vitri"));
-                employee.setUsername(resultSet.getString("username"));
-                employee.setEmail(resultSet.getString("email"));
+                Employee employee = new Employee();
+                employee.setEmployeeId(resultSet.getInt("employee_id"));
+                employee.setEmployeeName(resultSet.getString("employname"));
+                employee.setEmployeeCitizenId(resultSet.getString("citizen_id"));
+                employee.setEmployeePhoneNumber(resultSet.getString("phonenumber"));
+                employee.setEmployeeAddress(resultSet.getString("address"));
+                employee.setEmployeePosition(resultSet.getString("position"));
+                employee.setEmployeeUsername(resultSet.getString("username"));
+                employee.setEmployeeEmail(resultSet.getString("email"));
                 employees.add(employee);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return employees;
-    }
-
-    public Employee getEmployeeById(int employeeId) {
-        Employee employee = null;
-        String query = "SELECT * FROM nhanvien WHERE manv = ?";
-        try (Connection connection = connectDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, employeeId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                employee = new Employee(name, citizenId, address, phoneNum, email, position, username);
-                employee.setEmloyeeId(resultSet.getInt("manv"));
-                employee.setEmployName(resultSet.getString("hoten"));
-                employee.setCitizenId(resultSet.getString("cccd"));
-                employee.setPhoneNumber(resultSet.getString("sdt"));
-                employee.setPosition(resultSet.getString("vitri"));
-                employee.setAddress(resultSet.getString("diachi"));
-                employee.setUsername(resultSet.getString("username"));
-                employee.setEmail(resultSet.getString("email"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return employee;
-    }
-
-    public Employee getEmployeeByName(String employeeName) {
-        Employee employee = null;
-        String query = "SELECT * FROM nhanvien WHERE hoten = ?";
-        try (Connection connection = connectDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, employeeName);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                employee = new Employee(name, citizenId, address, phoneNum, email, position, username);
-                employee.setEmloyeeId(resultSet.getInt("manv"));
-                employee.setEmployName(resultSet.getString("hoten"));
-                employee.setCitizenId(resultSet.getString("cccd"));
-                employee.setPhoneNumber(resultSet.getString("sdt"));
-                employee.setPosition(resultSet.getString("vitri"));
-                employee.setAddress(resultSet.getString("diachi"));
-                employee.setUsername(resultSet.getString("username"));
-                employee.setEmail(resultSet.getString("email"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return employee;
     }
 }
