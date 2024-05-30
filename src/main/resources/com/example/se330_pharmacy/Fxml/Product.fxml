@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" styleClass="container-overall" stylesheets="@../Styles/Product.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" styleClass="container-overall" stylesheets="@../Styles/Product.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.se330_pharmacy.Controllers.ProductController">
    <children>
       <TitledPane animated="false" collapsible="false" graphicTextGap="0.0" layoutX="47.0" layoutY="12.0" prefHeight="322.0" prefWidth="726.0" text="Thông tin sản phẩm">
         <content>
@@ -25,7 +25,7 @@
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="tfQuantity1" disable="true" layoutX="37.0" layoutY="33.0" prefHeight="30.0" prefWidth="237.0" promptText="ID sản phẩm (Read only)" styleClass="input-field">
+                  <TextField fx:id="tfProductId" disable="true" layoutX="37.0" layoutY="33.0" prefHeight="30.0" prefWidth="237.0" promptText="ID sản phẩm (Read only)" styleClass="input-field">
                      <font>
                         <Font name="Segoe UI" size="16.0" />
                      </font>
@@ -35,7 +35,7 @@
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="tfQuantity11" layoutX="37.0" layoutY="95.0" prefHeight="30.0" prefWidth="238.0" promptText="Tên sản phảm" styleClass="input-field">
+                  <TextField fx:id="tfProductName" layoutX="37.0" layoutY="95.0" prefHeight="30.0" prefWidth="238.0" promptText="Tên sản phảm" styleClass="input-field">
                      <font>
                         <Font name="Segoe UI" size="16.0" />
                      </font>
@@ -45,7 +45,7 @@
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="tfQuantity111" layoutX="37.0" layoutY="155.0" prefHeight="30.0" prefWidth="239.0" promptText="Giá sản phẩm" styleClass="input-field">
+                  <TextField fx:id="tfProductPrice" layoutX="37.0" layoutY="155.0" prefHeight="30.0" prefWidth="239.0" promptText="Giá sản phẩm" styleClass="input-field">
                      <font>
                         <Font name="Segoe UI" size="16.0" />
                      </font>
@@ -55,13 +55,13 @@
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <ComboBox layoutX="402.0" layoutY="32.0" prefHeight="33.0" prefWidth="181.0" />
+                  <ComboBox fx:id="cbProductType" layoutX="402.0" layoutY="32.0" prefHeight="33.0" prefWidth="181.0" />
                   <Text layoutX="421.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mô tả sản phẩm">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="tfQuantity112" alignment="TOP_LEFT" layoutX="419.0" layoutY="95.0" prefHeight="87.0" prefWidth="289.0" promptText="Mô tả sản phảm" styleClass="input-field">
+                  <TextField fx:id="tfProductDescription" alignment="TOP_LEFT" layoutX="419.0" layoutY="95.0" prefHeight="87.0" prefWidth="289.0" promptText="Mô tả sản phảm" styleClass="input-field">
                      <font>
                         <Font name="Segoe UI" size="16.0" />
                      </font>
@@ -71,7 +71,7 @@
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="tfQuantity1121" alignment="TOP_LEFT" layoutX="419.0" layoutY="219.0" prefHeight="33.0" prefWidth="287.0" promptText="Nguồn gốc" styleClass="input-field">
+                  <TextField fx:id="tfProductOrigin" alignment="TOP_LEFT" layoutX="419.0" layoutY="219.0" prefHeight="33.0" prefWidth="287.0" promptText="Nguồn gốc" styleClass="input-field">
                      <font>
                         <Font name="Segoe UI" size="16.0" />
                      </font>
@@ -81,7 +81,7 @@
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <ComboBox layoutX="24.0" layoutY="220.0" prefHeight="33.0" prefWidth="142.0" />
+                  <ComboBox fx:id="cbUnit" layoutX="24.0" layoutY="220.0" prefHeight="33.0" prefWidth="142.0" />
                   <Text layoutX="172.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Đơn vị nhập">
                      <font>
                         <Font name="Segoe UI Bold" size="16.0" />
@@ -97,17 +97,17 @@
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <Label fx:id="bigAmount1" layoutX="279.0" layoutY="209.0" text="(Không xác định)" textFill="#1e9dfb">
+                  <Label fx:id="lbUnitImport" layoutX="279.0" layoutY="209.0" text="(Không xác định)" textFill="#1e9dfb">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="bigAmount11" layoutX="281.0" layoutY="235.0" text="(Không xác định)" textFill="#1e9dfb">
+                  <Label fx:id="lbUnitSale" layoutX="281.0" layoutY="235.0" text="(Không xác định)" textFill="#1e9dfb">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="bigAmount12" layoutX="282.0" layoutY="262.0" text="(Không xác định)" textFill="#1e9dfb">
+                  <Label fx:id="lbCoef" layoutX="282.0" layoutY="262.0" text="(Không xác định)" textFill="#1e9dfb">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -128,17 +128,17 @@
                         <Font name="Segoe UI Bold" size="16.0" />
                      </font>
                   </Text>
-                  <Button id="delete" fx:id="btnCancel1" layoutX="38.0" layoutY="163.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" text="Xoá" textFill="WHITE">
+                  <Button id="delete" fx:id="btnDelete" layoutX="38.0" layoutY="163.0" mnemonicParsing="false" onMouseClicked="#btnDeleteClicked" prefHeight="39.0" prefWidth="82.0" text="Xoá" textFill="WHITE">
                      <font>
                         <Font name="Segoe UI Semibold" size="18.0" />
                      </font>
                   </Button>
-                  <Button id="add" fx:id="btnCancel11" layoutX="38.0" layoutY="48.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" text="Thêm" textFill="#8cc835">
+                  <Button id="add" fx:id="btnAdd" layoutX="38.0" layoutY="48.0" mnemonicParsing="false" onMouseClicked="#btnAddClicked" prefHeight="39.0" prefWidth="82.0" text="Thêm" textFill="#8cc835">
                      <font>
                         <Font name="Segoe UI Semibold" size="18.0" />
                      </font>
                   </Button>
-                  <Button id="edit" fx:id="btnCancel12" layoutX="38.0" layoutY="104.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="82.0" text="Sửa" textFill="#fcb73b">
+                  <Button id="edit" fx:id="btnEdit" layoutX="38.0" layoutY="104.0" mnemonicParsing="false" onMouseClicked="#btnEditClicked" prefHeight="39.0" prefWidth="82.0" text="Sửa" textFill="#fcb73b">
                      <font>
                         <Font name="Segoe UI Semibold" size="18.0" />
                      </font>
@@ -150,17 +150,17 @@
             <Font name="Segoe UI Semibold" size="16.0" />
          </font>
       </TitledPane>
-      <TableView editable="true" layoutX="47.0" layoutY="360.0" prefHeight="407.0" prefWidth="1275.0">
+      <TableView fx:id="tvProduct" editable="true" layoutX="47.0" layoutY="360.0" prefHeight="407.0" prefWidth="1275.0">
          <columns>
-            <TableColumn minWidth="30.0" prefWidth="45.33334732055664" text="ID" />
-            <TableColumn prefWidth="190.66666412353516" text="Tên" />
-            <TableColumn prefWidth="135.33331298828125" text="Giá (Đơn vị nhập)" />
-            <TableColumn prefWidth="169.3333740234375" text="Mô tả SP" />
-            <TableColumn minWidth="8.0" prefWidth="121.33331298828125" text="Nguồn gốc" />
-            <TableColumn minWidth="5.3333740234375" prefWidth="136.66668701171875" text="Đơn vị bán" />
-            <TableColumn minWidth="0.0" prefWidth="130.0001220703125" text="Đơn vị nhập" />
-            <TableColumn prefWidth="162.6666259765625" text="Loại" />
-            <TableColumn prefWidth="81.3333740234375" text="Hệ số" />
+            <TableColumn fx:id="tcProductId" minWidth="30.0" prefWidth="45.33334732055664" text="ID" />
+            <TableColumn fx:id="tcProductName" prefWidth="190.66666412353516" text="Tên" />
+            <TableColumn fx:id="tcProductPrice" prefWidth="135.33331298828125" text="Giá (Đơn vị nhập)" />
+            <TableColumn fx:id="tcProductDescription" prefWidth="169.3333740234375" text="Mô tả SP" />
+            <TableColumn fx:id="tcProductOrigin" minWidth="8.0" prefWidth="121.33331298828125" text="Nguồn gốc" />
+            <TableColumn fx:id="tcProductUnitSale" minWidth="5.3333740234375" prefWidth="136.66668701171875" text="Đơn vị bán" />
+            <TableColumn fx:id="tcProductUnitImport" minWidth="0.0" prefWidth="130.0001220703125" text="Đơn vị nhập" />
+            <TableColumn fx:id="tcProductType" prefWidth="162.6666259765625" text="Loại" />
+            <TableColumn fx:id="tcProductCoef" prefWidth="81.3333740234375" text="Hệ số" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -182,7 +182,7 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <TextField prefHeight="37.0" prefWidth="273.0" promptText="Tìm kiếm sản phẩm: id, tên,..." styleClass="search-input">
+            <TextField fx:id="tfFind" prefHeight="37.0" prefWidth="273.0" promptText="Tìm kiếm sản phẩm: id, tên,..." styleClass="search-input">
                <font>
                   <Font name="Segoe UI Semibold Italic" size="12.0" />
                </font>

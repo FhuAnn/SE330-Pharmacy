@@ -13,6 +13,7 @@ public class Product {
     private int productBigUnitQuantities;
     private int productCoef;
 
+
     public int getProductCoef() {
         return productCoef;
     }

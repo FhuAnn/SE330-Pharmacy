@@ -18,6 +18,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
+import static java.lang.StringTemplate.STR;
+
 public class ReceiptController implements Initializable {
     public DatePicker dateTimePickerReceipt;
     public ComboBox<String> cbStatusReceipt;
