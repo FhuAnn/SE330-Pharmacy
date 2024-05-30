@@ -19,7 +19,7 @@ import java.util.List;
 public class EmployeeDAO {
 
     Employee employee = new Employee();
-    ConnectDB connectDB = new ConnectDB();
+    ConnectDB connectDB = ConnectDB.getInstance();
     public EmployeeDAO() {
     }
 
@@ -185,7 +185,7 @@ public class EmployeeDAO {
     public boolean addEmployee(Employee employee) {
         String query = "INSERT INTO employee (employname, phonenumber, citizen_id, username, password, position, defaultpassword, address, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String defaultPassword = GeneratePassword(true,true,true,true,8);
-        try (PreparedStatement statement = ConnectDB.getInstance().getPreparedStatement(query)) {
+        try (PreparedStatement statement = connectDB.getPreparedStatement(query)) {
             statement.setString(1, employee.getEmployeeUsername());
             statement.setString(2, employee.getEmployeePhoneNumber());
             statement.setString(3, employee.getEmployeeCitizenId());
@@ -212,8 +212,8 @@ public class EmployeeDAO {
 
     public boolean updateEmployee(Employee employee) {
         String query = "UPDATE employee SET employname = ?, phonenumber = ?, citizen_id = ?, address = ?, position = ?, email = ? WHERE employee_id = ?";
-        try (PreparedStatement statement = ConnectDB.getInstance().getPreparedStatement(query)) {
-            statement.setString(1, employee.getEmployeeUsername());
+        try (PreparedStatement statement = connectDB.getPreparedStatement(query)) {
+            statement.setString(1, employee.getEmployeeName());
             statement.setString(2, employee.getEmployeePhoneNumber());
             statement.setString(3, employee.getEmployeeCitizenId());
             statement.setString(4, employee.getEmployeeAddress());
@@ -230,7 +230,7 @@ public class EmployeeDAO {
 
     public boolean deleteEmployee(int employeeId) {
         String query = "DELETE FROM employee WHERE employee_id = ?";
-        try (PreparedStatement statement = ConnectDB.getInstance().getPreparedStatement(query)) {
+        try (PreparedStatement statement = connectDB.getPreparedStatement(query)) {
             statement.setInt(1, employeeId);
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected>0) return true;
@@ -242,9 +242,8 @@ public class EmployeeDAO {
 
     public ObservableList<Employee> getAllEmployees() {
         ObservableList<Employee> employees = FXCollections.observableArrayList();
-        String query = "SELECT * FROM employee";
-        try (Connection connection = connectDB.databaseLink;
-             PreparedStatement statement = connection.prepareStatement(query);
+        String query = "SELECT * FROM employee ORDER BY employee_id ASC";
+        try (PreparedStatement statement = connectDB.getPreparedStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 Employee employee = new Employee();

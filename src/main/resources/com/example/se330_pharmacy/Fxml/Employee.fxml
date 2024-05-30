@@ -125,7 +125,7 @@
       </TitledPane>
       <ImageView fitHeight="164.0" fitWidth="278.0" layoutX="44.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" styleClass="image_logo">
          <image>
-            <Image url="@../../../../../../../../SE330.1/src/main/resources/com/example/privateclinic/Images/Clinic_hori.png" />
+            <Image url="@../Images/Pharmacy_hori.png" />
          </image>
       </ImageView>
 

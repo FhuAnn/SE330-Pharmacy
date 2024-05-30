@@ -154,52 +154,55 @@ public class EmployeeController implements Initializable {
     }
 
     private void handleAddAction() {
-        if(btnAddEmployee.getText().equals("Lưu")) {
-            int id = Integer.parseInt(tf_maNV.getText());
-            String name = tf_addName.getText();
-            String citizenId = tf_addcitizenId.getText();
-            String address = tf_addAddress.getText();
-            String phoneNum = tf_addPhoneNum.getText();
-            String email = tf_addEmail.getText();
-            String position = tf_addPosition.getText();
-            String username = tf_addEmail.getText();
-
-            if (!name.isEmpty() && !citizenId.isEmpty() && !address.isEmpty() && !phoneNum.isEmpty() && !email.isEmpty() && !position.isEmpty()) {
+        String name = tf_addName.getText();
+        String citizenId = tf_addcitizenId.getText();
+        String address = tf_addAddress.getText();
+        String phoneNum = tf_addPhoneNum.getText();
+        String email = tf_addEmail.getText();
+        String position = cb_position.getValue();
+        String username = tf_addEmail.getText();
+        if (!name.isEmpty() && !citizenId.isEmpty() && !address.isEmpty() && !phoneNum.isEmpty() && checkEmail() && !cb_position.getValue().isEmpty()) {
+            if(btnAddEmployee.getText().equals("Lưu")) {
+                int id = Integer.parseInt(tf_maNV.getText());
                 int sequence = ShowYesNoAlert("lưu "+name+"");
                 if(sequence==JOptionPane.YES_OPTION) {
                     Employee employee = new Employee(id,name, citizenId, address, phoneNum, email, position, username);
                     if (employeeDAO.updateEmployee(employee)) {
                         btnAddEmployee.setText("Thêm");
-                        cb_position.setVisible(false);
-                        tf_addPosition.setVisible(true);
                         loadEmployeeData();
                         clearAddEmployeeFields();
+                        cb_position.setVisible(false);
+                        tf_addPosition.setVisible(true);
                     } else {
                         showAlert("Warning", "Error!");
                     }
                 } else {}
-            }
-        } else {
-            String name = tf_addName.getText();
-            String citizenId = tf_addcitizenId.getText();
-            String address = tf_addAddress.getText();
-            String phoneNum = tf_addPhoneNum.getText();
-            String email = tf_addEmail.getText();
-            String position = cb_position.getValue();
-            String username = tf_addEmail.getText();
-
-            if (!name.isEmpty() && !citizenId.isEmpty() && !address.isEmpty() && !phoneNum.isEmpty() && !email.isEmpty() && !cb_position.getValue().isEmpty()) {
+            } else {
                 int sequence = ShowYesNoAlert("thêm "+name+"");
                 if(sequence==JOptionPane.YES_OPTION) {
                     Employee newEmployee = new Employee(name, citizenId, address, phoneNum, email, position, username);
                     if(employeeDAO.addEmployee(newEmployee)) {
                         loadEmployeeData();
                         clearAddEmployeeFields();
+                        cb_position.setVisible(false);
+                        tf_addPosition.setVisible(true);
                     }
                 } else {}
             }
+        } else {
+            showAlert("Warning","Kiểm tra lại thông tin!");
         }
+    }
 
+    private boolean checkEmail() {
+        if(tf_addEmail.getText().isEmpty()) return false;
+        String email = tf_addEmail.getText();
+        int atIndex = email.indexOf("@");
+        if (atIndex <= 0) {
+            showAlert("Warning","Email is invalid");
+            return false;
+        }
+        return true;
     }
 
     private void handleEditAction() {
@@ -208,6 +211,9 @@ public class EmployeeController implements Initializable {
                 btnAddEmployee.setText("Lưu");
                 btnAddEmployee.setDisable(false);
                 SetDisable(false);
+                cb_position.setVisible(true);
+                tf_addPosition.setVisible(false);
+                cb_position.setValue(tf_addPosition.getText());
             }
     }
     private void handleCancel() {
