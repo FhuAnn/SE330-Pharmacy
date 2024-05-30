@@ -23,7 +23,7 @@ public class ConnectDB {
         return instance;
     }
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         /*String databaseName ="PharmacyNeon";
         String databaseUser ="postgres";
         String databasePassword="phuan03042004";

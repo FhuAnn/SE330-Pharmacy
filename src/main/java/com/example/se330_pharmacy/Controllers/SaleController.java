@@ -51,6 +51,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
+import static java.lang.StringTemplate.STR;
+
 public class SaleController implements Initializable {
 
     private Employee employee;

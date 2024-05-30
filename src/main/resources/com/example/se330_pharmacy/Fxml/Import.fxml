@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" styleClass="container-overall" stylesheets="@../Styles/Import.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0" styleClass="container-overall" stylesheets="@../Styles/Import.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.se330_pharmacy.Controllers.ImportController">
    <children>
       <TitledPane animated="false" collapsible="false" layoutX="28.0" layoutY="20.333333333333332" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="196.0" prefWidth="860.0" text="Mẫu nhập" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="20.333333333333332">
         <content>
@@ -52,7 +52,7 @@
             </AnchorPane>
         </content>
       </TitledPane>
-      <TitledPane animated="false" collapsible="false" layoutX="28.0" layoutY="276.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="860.0" text="Bảng sản phẩm">
+      <TitledPane fx:id="tvProduct" animated="false" collapsible="false" layoutX="28.0" layoutY="276.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="860.0" text="Bảng sản phẩm">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -77,11 +77,11 @@
                <children>
                   <Text layoutX="63.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Tổng tiền : " />
                   <Text layoutX="155.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="100000 VND" />
-                  <Button id="add" fx:id="btnAdd" layoutX="70.0" layoutY="50.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="129.0" text="Thêm" />
-                  <Button id="edit" fx:id="btnEdit" layoutX="222.0" layoutY="50.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="138.0" text="Sửa" />
-                  <Button id="cancel" fx:id="btnCancel" layoutX="222.0" layoutY="132.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="87.0" text="Hủy" />
-                  <Button id="create" fx:id="btnCreateForm" layoutX="73.0" layoutY="238.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="253.0" text="Tạo biểu mẫu" />
-                  <Button id="delete" fx:id="btnDelete" layoutX="72.0" layoutY="132.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="57.0" prefWidth="107.0" text="Xóa" />
+                  <Button id="add" fx:id="btnAdd" layoutX="70.0" layoutY="50.0" mnemonicParsing="false" onMouseClicked="#btnAddClicked" prefHeight="59.0" prefWidth="129.0" text="Thêm" />
+                  <Button id="edit" fx:id="btnEdit" layoutX="222.0" layoutY="50.0" mnemonicParsing="false" onMouseClicked="#btnEditClicked" prefHeight="77.0" prefWidth="138.0" text="Sửa" />
+                  <Button id="cancel" fx:id="btnCancel" layoutX="222.0" layoutY="132.0" mnemonicParsing="false" onMouseClicked="#btnCancelClicked" prefHeight="62.0" prefWidth="87.0" text="Hủy" />
+                  <Button id="create" fx:id="btnCreateForm" layoutX="73.0" layoutY="238.0" mnemonicParsing="false" onMouseClicked="#btnCreateFormClicked" prefHeight="62.0" prefWidth="253.0" text="Tạo biểu mẫu" />
+                  <Button id="delete" fx:id="btnDelete" layoutX="72.0" layoutY="132.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#btnDeleteClicked" prefHeight="57.0" prefWidth="107.0" text="Xóa" />
                </children>
             </AnchorPane>
          </content>
@@ -97,7 +97,7 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <TextField prefHeight="35.0" prefWidth="329.0" promptText="Tìm kiếm sản phẩm bằng tên, mã sản phẩm" styleClass="search-input">
+            <TextField fx:id="tfFind" prefHeight="35.0" prefWidth="329.0" promptText="Tìm kiếm sản phẩm bằng tên, mã sản phẩm" styleClass="search-input">
                <font>
                   <Font name="Segoe UI Semibold Italic" size="12.0" />
                </font>
