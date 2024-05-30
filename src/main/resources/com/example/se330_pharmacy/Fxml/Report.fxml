@@ -25,16 +25,16 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="775.0">
                      <children>
-                        <TableView editable="true" layoutY="-2.0" prefHeight="492.0" prefWidth="771.0">
+                        <TableView fx:id="reportTableView" editable="true" layoutY="-2.0" prefHeight="492.0" prefWidth="771.0">
                           <columns>
-                            <TableColumn minWidth="30.0" prefWidth="45.33334732055664" text="ID" />
-                            <TableColumn prefWidth="131.99999237060547" text="Tên" />
-                              <TableColumn prefWidth="98.66664123535156" text="Giá(DVN)" />
-                              <TableColumn prefWidth="126.6666259765625" text="Hiện có(DVN)" />
-                              <TableColumn minWidth="8.0" prefWidth="101.99996948242188" text="Giá(DVB)" />
-                              <TableColumn minWidth="5.3333740234375" prefWidth="129.3333740234375" text="Hiện có (DVB)" />
-                              <TableColumn minWidth="0.0" prefWidth="49.33331298828125" text="Tỷ lệ" />
-                              <TableColumn prefWidth="96.00006103515625" text="Đơn vị nhập" />
+                            <TableColumn fx:id="idColumn" minWidth="30.0" prefWidth="45.33334732055664" text="ID" />
+                            <TableColumn fx:id="medicineNameColumn" prefWidth="131.99999237060547" text="Tên" />
+                              <TableColumn fx:id="purchasePriceColumn" prefWidth="98.66664123535156" text="Giá(DVN)" />
+                              <TableColumn fx:id="quantityPurchasedColumn" prefWidth="126.6666259765625" text="Hiện có(DVN)" />
+                              <TableColumn fx:id="sellingPriceColumn" minWidth="8.0" prefWidth="101.99996948242188" text="Giá(DVB)" />
+                              <TableColumn fx:id="quantitySoldColumn" minWidth="5.3333740234375" prefWidth="129.3333740234375" text="Hiện có (DVB)" />
+                              <TableColumn fx:id="remainingRateColumn" minWidth="0.0" prefWidth="49.33331298828125" text="Tỷ lệ" />
+                              <TableColumn fx:id="unitColumn" prefWidth="96.00006103515625" text="Đơn vị nhập" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -131,7 +131,7 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <TextField prefHeight="37.0" prefWidth="273.0" promptText="Tìm kiếm sản phẩm: id, tên,..." styleClass="search-input">
+            <TextField fx:id="reportTf" prefHeight="37.0" prefWidth="273.0" promptText="Tìm kiếm sản phẩm: id, tên,..." styleClass="search-input">
                <font>
                   <Font name="Segoe UI Semibold Italic" size="12.0" />
                </font>
