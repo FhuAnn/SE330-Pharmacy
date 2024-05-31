@@ -64,6 +64,7 @@ public class ConnectDB {
         try {
             PreparedStatement preparedStatement = databaseLink.prepareStatement(sqlQuery);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             return resultSet;
         } catch (SQLException e) {
             e.printStackTrace();

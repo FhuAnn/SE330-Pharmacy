@@ -148,3 +148,12 @@
 {
     -fx-opacity: 0;
 }
+.pane_progress {
+    -fx-background-color: rgba(190, 190, 190, 0.42);
+    -fx-background-radius: 40px;
+    -fx-border-radius-radius: 40px;
+}
+.pane_progress .progress-indicator {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}

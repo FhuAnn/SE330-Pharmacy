@@ -1,87 +1,93 @@
 package com.example.se330_pharmacy.Models;
 
+import java.util.Date;
+
 public class Report {
-    private int medicineId;
-    private String medicineName;
-    private double purchasePrice;
-    private int quantityPurchased;
-    private double sellingPrice;
-    private int quantitySold;
-    private double remainingRate;
-    private String unit;
+    private int idBillStatus;
+    private Date dateStatus;
+    private String employnameStatus;
+    private int valueStatus;
 
-    public Report(int id, String medicineName, double purchasePrice, int quantityPurchased,
-                  double sellingPrice, int quantitySold, double remainingRate, String unit) {
-        this.medicineId = id;
-        this.medicineName = medicineName;
-        this.purchasePrice = purchasePrice;
-        this.quantityPurchased = quantityPurchased;
-        this.sellingPrice = sellingPrice;
-        this.quantitySold = quantitySold;
-        this.remainingRate = remainingRate;
-        this.unit = unit;
-    }
-    public int getId() {
-        return medicineId;
+    private int idEmployTop;
+    private String employnameTop;
+    private int numberTop;
+    private int totalTop;
+
+    public Report() {
     }
 
-    public void setId(int id) {
-        this.medicineId = medicineId;
+    public Report(int idBillStatus, Date dateStatus, String employnameStatus, int valueStatus, int idEmployTop, String employnameTop, int numberTop, int totalTop) {
+        this.idBillStatus = idBillStatus;
+        this.dateStatus = dateStatus;
+        this.employnameStatus = employnameStatus;
+        this.valueStatus = valueStatus;
+        this.idEmployTop = idEmployTop;
+        this.employnameTop = employnameTop;
+        this.numberTop = numberTop;
+        this.totalTop = totalTop;
     }
 
-    public String getMedicineName() {
-        return medicineName;
+    public int getIdBillStatus() {
+        return idBillStatus;
     }
 
-    public void setMedicineName(String medicineName) {
-        this.medicineName = medicineName;
+    public void setIdBillStatus(int idBillStatus) {
+        this.idBillStatus = idBillStatus;
     }
 
-    public double getPurchasePrice() {
-        return purchasePrice;
+    public Date getDateStatus() {
+        return dateStatus;
     }
 
-    public void setPurchasePrice(double purchasePrice) {
-        this.purchasePrice = purchasePrice;
+    public void setDateStatus(Date dateStatus) {
+        this.dateStatus = dateStatus;
     }
 
-    public int getQuantityPurchased() {
-        return quantityPurchased;
+    public String getEmploynameStatus() {
+        return employnameStatus;
     }
 
-    public void setQuantityPurchased(int quantityPurchased) {
-        this.quantityPurchased = quantityPurchased;
+    public void setEmploynameStatus(String employnameStatus) {
+        this.employnameStatus = employnameStatus;
     }
 
-    public double getSellingPrice() {
-        return sellingPrice;
+    public int getValueStatus() {
+        return valueStatus;
     }
 
-    public void setSellingPrice(double sellingPrice) {
-        this.sellingPrice = sellingPrice;
+    public void setValueStatus(int valueStatus) {
+        this.valueStatus = valueStatus;
     }
 
-    public int getQuantitySold() {
-        return quantitySold;
+    public int getIdEmployTop() {
+        return idEmployTop;
     }
 
-    public void setQuantitySold(int quantitySold) {
-        this.quantitySold = quantitySold;
+    public void setIdEmployTop(int idEmployTop) {
+        this.idEmployTop = idEmployTop;
     }
 
-    public double getRemainingRate() {
-        return remainingRate;
+    public String getEmploynameTop() {
+        return employnameTop;
     }
 
-    public void setRemainingRate(double remainingRate) {
-        this.remainingRate = remainingRate;
+    public void setEmploynameTop(String employnameTop) {
+        this.employnameTop = employnameTop;
     }
 
-    public String getUnit() {
-        return unit;
+    public int getNumberTop() {
+        return numberTop;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setNumberTop(int numberTop) {
+        this.numberTop = numberTop;
+    }
+
+    public int getTotalTop() {
+        return totalTop;
+    }
+
+    public void setTotalTop(int totalTop) {
+        this.totalTop = totalTop;
     }
 }
