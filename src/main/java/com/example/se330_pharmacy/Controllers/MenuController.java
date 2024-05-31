@@ -3,6 +3,7 @@ package com.example.se330_pharmacy.Controllers;
 import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Employee;
 import com.example.se330_pharmacy.Models.Model;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,6 +53,7 @@ public class MenuController {
     @FXML
     private  Pane mainPane;
 
+    public Pane paneProgress;
     @FXML
     private Text titleTextField;
     public Employee employee ;
@@ -62,19 +64,19 @@ public class MenuController {
 
     @FXML
     void btnEmployeeClicked(ActionEvent event) throws IOException {
+        titleTextField.setText("Nhân viên");
         setMainPane("/com/example/se330_pharmacy/Fxml/Employee.fxml");
-        titleTextField.setText("Employee");
     }
 
     @FXML
     void btnExportClicked(ActionEvent event) throws IOException {
         setMainPane("/com/example/se330_pharmacy/Fxml/Export.fxml");
-        titleTextField.setText("Export");
+        titleTextField.setText("Xuất hàng");
     }
 
     @FXML
     void btnImportClicked(ActionEvent event) throws IOException {
-        titleTextField.setText("Import");
+        titleTextField.setText("Nhập hàng");
         setMainPane("/com/example/se330_pharmacy/Fxml/Import.fxml");
     }
 
@@ -85,7 +87,7 @@ public class MenuController {
 
     @FXML
     void btnPayslipClicked(ActionEvent event) throws IOException {
-        titleTextField.setText("Payslip");
+        titleTextField.setText("Phiếu lương");
         FXMLLoader loader= setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_PaySlip.fxml");
         PaySlipController paySlipController = loader.getController();
         paySlipController.initData(employee);
@@ -112,9 +114,27 @@ public class MenuController {
     }
     
     @FXML
-    void btnReportClicked(ActionEvent event) throws IOException {
+    void btnReportClicked(ActionEvent event) {
         titleTextField.setText("Báo cáo");
-        setMainPane("/com/example/se330_pharmacy/Fxml/Report.fxml");
+        paneProgress.setVisible(true);
+        new Thread(()->{
+            try {
+                Thread.sleep(700);
+                Platform.runLater(() -> {
+                    try {
+                        setMainPane("/com/example/se330_pharmacy/Fxml/Report.fxml");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } finally {
+                Platform.runLater(() -> {
+                    paneProgress.setVisible(false);
+                });
+            }
+        }).start();
     }
 
     @FXML
@@ -149,6 +169,4 @@ public class MenuController {
         mainPane.getChildren().add(reportSceneRoot);
         return loader;
     }
-
-
 }

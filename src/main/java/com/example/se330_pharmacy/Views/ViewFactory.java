@@ -5,6 +5,7 @@ import com.example.se330_pharmacy.DataAccessObject.PayslipDAO;
 import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Employee;
 import com.example.se330_pharmacy.Models.Payslip;
+import com.example.se330_pharmacy.Models.Receipt;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
@@ -33,13 +34,13 @@ public class ViewFactory {
         menuController.initData(employee);
     }
 
-    public void showAddReceiptWindow(Payslip payslip,int _idCharger,String _employnameCharger,String _vitricharger,PaySlipController paySlipController) {
+    public void showAddReceiptWindow(Payslip payslip, int _idCharger, String _employnameCharger, String _vitricharger, PaySlipController paySlipController, ReceiptController receiptController, Receipt receipt) {
         if(stageAddReceiptAccountant==null)
         {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/se330_pharmacy/Fxml/Add_Accountant_Receipt.fxml"));
             stageAddReceiptAccountant=createStage(loader);
             AddReceiptController addReceiptController = loader.getController();
-            addReceiptController.initData(payslip,_idCharger,_employnameCharger,_vitricharger,paySlipController);
+            addReceiptController.initData(payslip,_idCharger,_employnameCharger,_vitricharger,paySlipController,receiptController,receipt);
         }
         else {
             stageAddReceiptAccountant.toFront();

@@ -24,6 +24,9 @@ public class Bill {
 
     private Date dateBill;
 
+    public Bill() {
+    }
+
     public Bill(int billId, String customerName, String phoneNumber, int billValue, Date dateBill) {
         this.billId = billId;
         this.customerName = customerName;
