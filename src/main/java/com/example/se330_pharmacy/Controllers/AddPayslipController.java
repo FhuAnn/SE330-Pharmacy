@@ -29,8 +29,8 @@ public class AddPayslipController implements Initializable { // su dung chung ch
 
     public TextField tf_content;
     public TextField tf_tongTra;
-    public ComboBox<String> cbStatus;
     public DatePicker dp_date;
+    public ComboBox<String> cbStatus;
     public Button btnAdd;
     public Button btnCancel;
     public TextField tf_ghiChu;
@@ -104,7 +104,6 @@ public class AddPayslipController implements Initializable { // su dung chung ch
     private boolean CheckFilled() {
         if(tf_maNhanVien.getText().isEmpty()) return false;
         if(tf_content.getText().isEmpty()) return false;
-        if(cbStatus.getValue()==null) return false;
         return true;
     }
 
@@ -114,7 +113,7 @@ public class AddPayslipController implements Initializable { // su dung chung ch
         payslip.setContent(tf_content.getText());
         payslip.setCreateDate(Date.valueOf(LocalDate.now()));
         payslip.setTotalPay(Double.parseDouble(tf_tongTra.getText()));
-        payslip.setStatus(cbStatus.getValue().toString());
+        payslip.setStatus("InComplete");
         payslip.setNote(tf_ghiChu.getText());
         if(payslip_init==null) {
             int sequence =  ShowYesNoAlert("Thêm phiếu lương ?");
@@ -145,8 +144,6 @@ public class AddPayslipController implements Initializable { // su dung chung ch
         payslipDAO = new PayslipDAO();
         dp_date.setDisable(true);
         addListenerTextChanged(tf_maNhanVien,tf_tongTra);
-        ObservableList<String> statusList = FXCollections.observableArrayList("InComplete", "Completed");
-        cbStatus.setItems(statusList);
     }
 
     @FXML
