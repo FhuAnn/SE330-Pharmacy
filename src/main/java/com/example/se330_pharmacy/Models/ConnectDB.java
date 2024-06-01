@@ -50,7 +50,7 @@ public class ConnectDB {
         return connection;
     }
 
-    private boolean isInternetAvailable() {
+    private static boolean isInternetAvailable() {
         boolean reachable = false;
         try {
             reachable = InetAddress.getByName("www.google.com").isReachable(500);// Kiểm tra kết nối tới Google trong 3 giây

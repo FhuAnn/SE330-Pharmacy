@@ -1,49 +1,244 @@
 package com.example.se330_pharmacy.Controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import com.example.se330_pharmacy.DataAccessObject.ImportDAO;
 import com.example.se330_pharmacy.Models.*;
+import javafx.scene.layout.Pane;
 
+import javax.swing.*;
 import java.net.URL;
-import java.util.List;
-import java.util.Optional;
+import java.text.Normalizer;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.showMessage;
 
-public class ImportController {
-    public TableView tvImportForm;
+public class ImportController implements Initializable {
+    public TableView<Product> tbl_ProductTable;
+    public TableColumn<Product,Integer> col_idProduct;
+    public TableColumn<Product,String> col_nameProduct;
+    public TableColumn<Product,Integer> col_priceProduct;
+    public TableColumn<Product,String> col_descriptionProduct;
+    public TableColumn<Product,String> col_originProduct;
+    public TableColumn<Product,String> col_unitProduct;
+    public TableColumn<Product,String> col_typeProduct;
+    public TableView<DetailImport> tbl_ImportForm;
+    public TableColumn<DetailImport,Integer> col_idDetail;
+    public TableColumn<DetailImport,String> col_nameDetail;
+    public TableColumn<DetailImport,Integer> col_priceDetail;
+    public TableColumn<DetailImport,String> col_quantityDetail;
+    public TableColumn<DetailImport,String> col_totalDetail;
+    public TableView<Supplier> tbl_Supplier;
+    public TableColumn<Supplier,String> col_namePartner;
+    public TableColumn<Product,String> col_address;
+    public TableColumn<Product,Integer> col_phonenumberPartner;
     public TextField tfProductID;
     public TextField tfProductName;
     public TextField tfProductPrice;
     public TextField tfProductQuantities;
     public TextField tfProductTotal;
-    public ComboBox cbbSupplier;
-    public TableView tvImportProductTable;
+    public TextField tf_supplier;
     public Button btnAdd;
     public Button btnEdit;
     public Button btnCancel;
     public Button btnCreateForm;
     public Button btnDelete;
+    public Button btnShow;
     public TextField tfFind;
-
-    private final ImportDAO productDAO = new ImportDAO();
-    private ObservableList<DetailImport> importProductList;
-
+    public Pane panelResultSupplier;
+    String message;
+    private final ImportDAO importDAO = new ImportDAO();
+    private ObservableList<Product> ListProducts;
+    private ObservableList<Supplier> ListSuppliers;
+    Employee employee_init;
+    Supplier supplierBeforeClicked;
+    public void InitData(Employee _employee){
+        employee_init = _employee;
+    }
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadImportProducts();
-        loadImportForm();
+        SetUp();
+        loadProducts();
+        loadSupplier();
+        AddListenner();
     }
 
-    
+    private void SetUp() {
+        panelResultSupplier.setVisible(false);
+
+        col_idProduct.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        col_nameProduct.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        col_priceProduct.setCellValueFactory(new PropertyValueFactory<>("productImportPrice"));
+        col_descriptionProduct.setCellValueFactory(new PropertyValueFactory<>("productDescription"));
+        col_originProduct.setCellValueFactory(new PropertyValueFactory<>("productOrigin"));
+        col_unitProduct.setCellValueFactory(new PropertyValueFactory<>("productBigUnit"));
+        col_typeProduct.setCellValueFactory(new PropertyValueFactory<>("productType"));
+
+        col_idDetail.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        col_nameDetail.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        col_priceDetail.setCellValueFactory(new PropertyValueFactory<>("importPrice"));
+        col_quantityDetail.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        col_totalDetail.setCellValueFactory(new PropertyValueFactory<>("total"));
+
+        col_namePartner.setCellValueFactory(new PropertyValueFactory<>("partnername"));
+        col_address.setCellValueFactory(new PropertyValueFactory<>("address"));
+        col_phonenumberPartner.setCellValueFactory(new PropertyValueFactory<>("phonenumber"));
+    }
+
+
+    private void AddListenner() {
+        tbl_ProductTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount()==2 ) {
+                    if(!tbl_Supplier.getItems().isEmpty()&&CheckNotExistProductInImportTable(tbl_ProductTable.getSelectionModel().getSelectedItem().getProductId()))
+                    {
+                        FillProductTableToTextField();
+                    } else showAlert("Warning",message);
+                }
+            }
+        });
+        tfFind.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(!newValue.isEmpty()){
+                    SearchProduct(newValue);
+                } else {
+                    tbl_ProductTable.setItems(ListProducts);
+                }
+            }
+        });
+        tbl_ImportForm.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount()==2) {
+                    FillImportTableToTextField();
+                }
+            }
+        });
+        tbl_Supplier.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount()==1) {
+                    supplierBeforeClicked= tbl_Supplier.getSelectionModel().getSelectedItem();
+                    tf_supplier.setText(supplierBeforeClicked.getPartnername());
+                }
+            }
+        });
+        tf_supplier.textProperty().addListener((observable,oldValue, newValue) -> {
+            if(!newValue.isEmpty()) {
+                SearchSupplier(newValue);
+            } else tbl_Supplier.setItems(ListSuppliers);
+        });
+        tfProductQuantities.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(!newValue.isEmpty()) {
+                    if (!newValue.matches("\\d*")) {
+                        tfProductQuantities.setText(newValue.replaceAll("[^\\d]", ""));
+                        showAlert("Warning","Chỉ nhập được nhập số!");
+                    } else {
+                        int total = Integer.parseInt(newValue)* Integer.parseInt(tfProductPrice.getText());
+                        tfProductTotal.setText(String.valueOf(total));
+                    }
+                }
+            }
+        });
+    }
+
+    private boolean CheckNotExistProductInImportTable(int id) {
+        ObservableList<DetailImport> listproducts = tbl_ImportForm.getItems();
+        for(DetailImport detailImport : listproducts) {
+            if(detailImport.getProduct_id() == id)  {
+                message="Bạn thêm sản phẩm này vào danh sách!";
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void SearchSupplier(String searchString) {
+        String lowerCase = normalizeString(searchString.toLowerCase());
+        ObservableList<Supplier> users = tbl_Supplier.getItems();
+        ObservableList<Supplier> listResult = FXCollections.observableArrayList(
+                users.stream()
+                        .filter(supplier ->
+                                normalizeString(String.valueOf(supplier.getPartner_id()).toLowerCase()).startsWith(lowerCase) ||
+                                        normalizeString(supplier.getPartnername().toLowerCase()).contains(lowerCase))
+                        .collect(Collectors.toList())
+        );
+        tbl_Supplier.setItems(listResult);
+    }
+    private void SearchProduct(String searchString) {
+        String lowerCase = normalizeString(searchString.toLowerCase());
+        ObservableList<Product> users = tbl_ProductTable.getItems();
+        ObservableList<Product> listResult = FXCollections.observableArrayList(
+                users.stream()
+                        .filter(product ->
+                                normalizeString(String.valueOf(product.getProductId()).toLowerCase()).startsWith(lowerCase) ||
+                                        normalizeString(product.getProductName().toLowerCase()).contains(lowerCase))
+                        .collect(Collectors.toList())
+        );
+        tbl_ProductTable.setItems(listResult);
+    }
+    private void FillImportTableToTextField() {
+        tfProductQuantities.setDisable(true);
+        DetailImport importProduct = tbl_ImportForm.getSelectionModel().getSelectedItem();
+        tfProductID.setText(String.valueOf(importProduct.getProduct_id()));
+        tfProductName.setText(importProduct.getProductName());
+        tfProductPrice.setText(String.valueOf(importProduct.getImportPrice()));
+        tfProductQuantities.setText(String.valueOf(importProduct.getQuantity()));
+        tfProductTotal.setText(String.valueOf(importProduct.getTotal()));
+    }
+    private void FillProductTableToTextField() {
+        tfProductQuantities.setDisable(false);
+        btnEdit.setText("Sửa");
+        btnEdit.setId("edit");
+        Product product = tbl_ProductTable.getSelectionModel().getSelectedItem();
+        tfProductID.setText(String.valueOf(product.getProductId()));
+        tfProductName.setText(product.getProductName());
+        tfProductPrice.setText(String.valueOf(product.getProductImportPrice()));
+    }
+
 
     public void btnEditClicked(MouseEvent mouseEvent) {
-        DetailImport selectedDetailImport = (DetailImport) tvImportProductTable.getSelectionModel().getSelectedItem();
+        if(!tfProductID.getText().isEmpty()) {
+            if(btnEdit.getText().equals("Sửa")) {
+                tfProductQuantities.setDisable(false);
+                btnEdit.setId("add");
+                btnEdit.setText("Lưu");
+            } else {
+                int sequence = ShowYesNoAlert("lưu");
+                if(sequence==JOptionPane.YES_OPTION) {
+                    int delete_pos= DeleteRowInImportTable(tbl_ImportForm.getItems(),tbl_ImportForm.getSelectionModel().getSelectedItem().getProduct_id());
+                    DetailImport detailImport = new DetailImport(
+                            Integer.parseInt(tfProductID.getText()),
+                            tfProductName.getText(),Integer.parseInt(tfProductPrice.getText()),
+                            Integer.parseInt(tfProductQuantities.getText()),
+                            Integer.parseInt(tfProductTotal.getText()));
+                    tbl_ImportForm.getItems().add(delete_pos,detailImport);
+                    tfProductQuantities.setDisable(true);
+                    btnEdit.setId("edit");
+                    btnEdit.setText("Sửa");
+                } else {
+                }
+            }
+        }
+
+       /* if(!tfProductID.getText().isEmpty()) {
+            SetDisable(false);
+        }
+        DetailImport selectedDetailImport = (DetailImport) tbl_ProductTable.getSelectionModel().getSelectedItem();
         if (selectedDetailImport == null) {
             showMessage("Please select a product to edit");
             return;
@@ -55,7 +250,6 @@ public class ImportController {
         tfProductPrice.setText(String.valueOf(selectedDetailImport.getImportPrice()));
         tfProductQuantities.setText(String.valueOf(selectedDetailImport.getQuantity()));
         tfProductTotal.setText(String.valueOf(selectedDetailImport.getTotal()));
-        cbbSupplier.setValue(selectedDetailImport.getSupplier());
 
         // 3. Khi người dùng thực hiện chỉnh sửa và nhấn nút "Edit"
         if (checkInformation()) {
@@ -66,8 +260,7 @@ public class ImportController {
                     tfProductName.getText(),
                     Float.parseFloat(tfProductPrice.getText()),
                     Integer.parseInt(tfProductQuantities.getText()),
-                    Double.parseDouble(tfProductTotal.getText()),
-                    cbbSupplier.getValue()
+                    Double.parseDouble(tfProductTotal.getText());
             );
             // Cập nhật dữ liệu của sản phẩm trong cơ sở dữ liệu
             if (ImportDAO.updateImportDetail(updatedDetailImport)) {
@@ -80,28 +273,55 @@ public class ImportController {
         } else {
             showMessage("Please fill in all fields");
         }
+*/
+    }
 
+    private int DeleteRowInImportTable(ObservableList<DetailImport> items, int productId) {
+        int index =0,pos_delete=0;
+        boolean flag =false;
+        for(DetailImport detailImport : items)
+        {
+            if(detailImport.getProduct_id()==productId) {
+                pos_delete=index;
+                flag=true;
+                break;
+            }
+            index++;
+        }
+        items.remove(pos_delete);
+        return pos_delete;
     }
 
     public void btnAddClicked(MouseEvent mouseEvent) {
-            // 1. Lấy dữ liệu từ các trường nhập liệu
+        String id = tfProductID.getText();
+        String productname = tfProductName.getText();
+        String price = tfProductPrice.getText();
+        String quantity = tfProductQuantities.getText();
+        String total = tfProductTotal.getText();
+        if(!id.isEmpty() && !productname.isEmpty() && !price.isEmpty() && !quantity.isEmpty() && !total.isEmpty()) {
+            DetailImport detailImport_ = new DetailImport(Integer.parseInt(id),productname,Integer.parseInt(price),Integer.parseInt(quantity),Integer.parseInt(total));
+            tbl_ImportForm.getItems().add(detailImport_);
+            clearInformation();
+        } else {
+            showAlert("Warning","Kiểm tra đảm bảo đầy đủ thông tin!");
+        }
+            /*// 1. Lấy dữ liệu từ các trường nhập liệu
             String productId = tfProductID.getText();
             String productName = tfProductName.getText();
             String productPrice = tfProductPrice.getText();
             String productQuantities = tfProductQuantities.getText();
             String productTotal = tfProductTotal.getText();
-            String supplier = (String) cbbSupplier.getValue();
 
             // 2. Kiểm tra xem các trường đã được nhập đầy đủ chưa
             if (productId.isEmpty() || productName.isEmpty() || productPrice.isEmpty() ||
-                    productQuantities.isEmpty() || productTotal.isEmpty() || supplier == null) {
+                    productQuantities.isEmpty() || productTotal.isEmpty() *//*|| supplier == null*//*) {
                 showMessage("Please fill in all fields");
                 return;
             }
 
             // 3. Tạo một đối tượng DetailImport mới
             DetailImport newDetailImport = new DetailImport(productId, productName, Float.parseFloat(productPrice),
-                    Integer.parseInt(productQuantities), Double.parseDouble(productTotal), supplier);
+                    Integer.parseInt(productQuantities), Double.parseDouble(productTotal)*//*, supplier*//*);
 
             // 4. Gọi phương thức thêm dữ liệu từ ImportDAO
             if (ImportDAO.addImportDetail(newDetailImport)) {
@@ -111,166 +331,83 @@ public class ImportController {
                 loadImportProducts();
             } else {
                 showMessage("Add detail import failed");
-            }
+            }*/
     }
 
     public void btnCancelClicked(MouseEvent mouseEvent) {
-        clearInformation(); // Xóa thông tin đã nhập trong các trường nhập liệu
-        tvImportProductTable.getSelectionModel().clearSelection(); // Xóa lựa chọn trong bảng sản phẩm nhập
-    }
-
-    public void btnCreateFormClicked(MouseEvent mouseEvent) {
-        if (validateForm()) {
-            // Lấy thông tin từ các trường nhập liệu
-            String productId = tfProductID.getText();
-            String productName = tfProductName.getText();
-            float productPrice = Float.parseFloat(tfProductPrice.getText());
-            int productQuantities = Integer.parseInt(tfProductQuantities.getText());
-            float productTotal = Float.parseFloat(tfProductTotal.getText());
-            String supplier = cbbSupplier.getValue().toString();
-
-            // Thêm dữ liệu vào cơ sở dữ liệu thông qua đối tượng ImportDAO
-            if (productDAO.addImportData(productId, productName, productPrice, productQuantities, productTotal, supplier)) {
-                showMessage("Created import form successfully. Do you want to print this form?");
-                clearForm(); // Xóa thông tin đã nhập
-                loadImportForm(); // Tải lại dữ liệu biểu mẫu
-            } else {
-                showMessage("Failed to create import form.");
-            }
-        } else {
-            showMessage("Please fill in all fields.");
+        int sequence = ShowYesNoAlert("huỷ");
+        if(sequence==JOptionPane.YES_OPTION) {
+            clearInformation();
+            tfProductQuantities.setDisable(false);
+            tbl_ImportForm.getSelectionModel().clearSelection();
         }
     }
 
-    private void loadSuppliers() {
-        ObservableList supplierList = FXCollections.observableArrayList(ImportDAO.getSuppliers());
-        cbbSupplier.setItems(supplierList);
+    public void btnCreateFormClicked(MouseEvent mouseEvent) {
+        if(!tbl_ImportForm.getItems().isEmpty()) {
+            Import import_ = new Import(
+                    employee_init.getEmployeeId(),
+                    supplierBeforeClicked.getPartner_id(),
+                    Integer.parseInt(tfProductTotal.getText()),
+                    LocalDate.now().format(DateTimeFormatter.ofPattern("HH:mm:ss dd-M-yyyy")));
+            if(importDAO.addImportData(import_)>0) {
+
+            }
+        }
     }
+
     public void clearInformation() {
         tfProductID.clear();
         tfProductName.clear();
         tfProductPrice.clear();
         tfProductQuantities.clear();
         tfProductTotal.clear();
-        cbbSupplier.setValue(null);
-        tvImportProductTable.getItems().clear();
+        tf_supplier.clear();
     }
-    private void loadImportProducts() {
-        List<DetailImport> importProducts = ImportDAO.getAllImportProducts();
-        importProductList = FXCollections.observableArrayList(importProducts);
-        tvImportProductTable.setItems(importProductList);
+    private void loadProducts() {
+        ListProducts = importDAO.getProductData();
+        tbl_ProductTable.setItems(ListProducts);
     }
-
-    private boolean checkInformation() {
-        // Check if any of the required fields are empty
-        if (tfProductID.getText().isEmpty() ||
-                tfProductName.getText().isEmpty() ||
-                tfProductPrice.getText().isEmpty() ||
-                tfProductQuantities.getText().isEmpty() ||
-                tfProductTotal.getText().isEmpty() ||
-                cbbSupplier.getValue() == null) {
-            // If any required field is empty, return false
-            return false;
-        }
-
-        // Check if the price, quantities, and total are valid numbers
-        try {
-            float price = Float.parseFloat(tfProductPrice.getText());
-            int quantities = Integer.parseInt(tfProductQuantities.getText());
-            double total = Double.parseDouble(tfProductTotal.getText());
-
-            // You can also add additional validation rules here if needed
-            // For example, ensure that price, quantities, and total are positive numbers
-            if (price <= 0 || quantities <= 0 || total <= 0) {
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            // If price, quantities, or total cannot be parsed as valid numbers, return false
-            return false;
-        }
-
-        // If all checks pass, return true
-        return true;
+    private void loadSupplier() {
+        ListSuppliers= importDAO.getSuppliers();
+        tbl_Supplier.setItems(ListSuppliers);
     }
-
-    private boolean validateForm() {
-        // Check if any of the required fields are empty
-        if (tfProductID.getText().isEmpty() ||
-                tfProductName.getText().isEmpty() ||
-                tfProductPrice.getText().isEmpty() ||
-                tfProductQuantities.getText().isEmpty() ||
-                tfProductTotal.getText().isEmpty() ||
-                cbbSupplier.getValue() == null) {
-            // If any required field is empty, show an error message and return false
-            showMessage("Please fill in all fields.");
-            return false;
-        }
-
-        // Check if the price, quantities, and total are valid numbers
-        try {
-            float price = Float.parseFloat(tfProductPrice.getText());
-            int quantities = Integer.parseInt(tfProductQuantities.getText());
-            double total = Double.parseDouble(tfProductTotal.getText());
-
-            // Check if the parsed numbers are positive
-            if (price <= 0 || quantities <= 0 || total <= 0) {
-                // If any of them are not positive, show an error message and return false
-                showMessage("Price, quantities, and total must be positive numbers.");
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            // If price, quantities, or total cannot be parsed as valid numbers, show an error message and return false
-            showMessage("Price, quantities, and total must be valid numbers.");
-            return false;
-        }
-
-        // If all checks pass, return true
-        return true;
-    }
-
-    // Inside ImportController
-    public void clearForm() {
-        tfProductID.setText("");
-        tfProductName.setText("");
-        tfProductPrice.setText("");
-        tfProductQuantities.setText("");
-        tfProductTotal.setText("");
-        cbbSupplier.getSelectionModel().clearSelection();
-    }
-
-    public void loadImportForm() {
-
-        ImportDAO importDAO = new ImportDAO();
-        ObservableList<Product> importedProducts = FXCollections.observableArrayList();
-        tvImportProductTable.setItems(importedProducts);
-
-    }
-
-
-    public void btnDeleteClicked(MouseEvent mouseEvent) {
-        if (tvImportProductTable.getSelectionModel().getSelectedItem() != null) {
-            // Lấy thông tin sản phẩm được chọn
-            Product selectedProduct = (Product) tvImportProductTable.getSelectionModel().getSelectedItem();
-            String productId = String.valueOf(selectedProduct.getProductId());
-
-            // Xác nhận xóa
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirm Deletion");
-            alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to delete this product?");
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                // Gọi phương thức xóa sản phẩm từ đối tượng ImportDAO
-                if (productDAO.deleteProduct(productId)) {
-                    showMessage("Deleted product successfully");
-                    loadImportForm(); // Tải lại dữ liệu biểu mẫu sau khi xóa
-                } else {
-                    showMessage("Failed to delete product");
-                }
-            }
+    public void handleButtonShow(ActionEvent event) {
+        if(panelResultSupplier.isVisible()) {
+            panelResultSupplier.setVisible(false);
+            btnShow.setId("orange");
+            btnShow.setText("Xem");
         } else {
-            showMessage("Please select a product to delete");
+            tbl_Supplier.setItems(ListSuppliers);
+            tf_supplier.promptTextProperty().setValue("Nhập id hoặc tên nhà cung cấp!");
+            panelResultSupplier.setVisible(true);
+            btnShow.setId("delete");
+            btnShow.setText("X");
         }
+    }
+    public void btnDeleteClicked(MouseEvent mouseEvent) {
+        if (tbl_ImportForm.getSelectionModel().getSelectedItem() != null) {
+        }
+    }
+
+
+    private static String normalizeString(String str) {
+        return Normalizer.normalize(str, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+    }
+    private void showAlert(String tilte,String string) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(tilte);
+        alert.setHeaderText(null);
+        alert.setContentText(string);
+        alert.showAndWait();
+    }
+
+
+    private int ShowYesNoAlert(String string) {
+        JFrame frame = new JFrame("Xác nhận");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        return JOptionPane.showConfirmDialog(frame, "Bạn muốn "+string+"?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
 }

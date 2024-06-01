@@ -6,51 +6,34 @@ import java.sql.SQLException;
 
 public class DetailImport {
     private int importId;
-    private String productId;
-    private float importPrice;
+    private int productId;
+    private int importPrice;
     private String productName;
     private int quantity;
-    private double total;
+    private int total;
     private String supplier;
 
-    public DetailImport(String productid, String productname, float v, int i, double v1, String sup) {
-        this.productId = productid;
-        this.productName = productname;
-        this.importPrice = v;
-        this.quantity = i;
-        this.total = v1;
-        this.supplier = sup;
-    }
 
-    public DetailImport(int importId, String text, String text1, float v, int i, double v1, Object value) {
-        this.importId = importId;
-        this.productId = text;
-        this.productName = text1;
-        this.importPrice = v;
-        this.quantity = i;
-        this.total = v1;
-        this.supplier = (String) value;
-    }
 
-    public static String getProduct_id() {
+    public int getProduct_id() {
         return productId;
     }
 
-    public void setProduct_id(String product_id) {
+    public void setProduct_id(int product_id) {
         this.productId = product_id;
     }
 
     // Getter và Setter cho importPrice
-    public static float getImportPrice() {
+    public int getImportPrice() {
         return importPrice;
     }
 
-    public void setImportPrice(float importPrice) {
+    public void setImportPrice(int importPrice) {
         this.importPrice = importPrice;
     }
 
     // Getter và Setter cho quantity
-    public static int getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
@@ -59,15 +42,15 @@ public class DetailImport {
     }
 
     // Getter và Setter cho total
-    public static double getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 
-    public DetailImport(String productID, String productName, float productPrice, int productQuantities, double productTotal) {
+    public DetailImport(int productID, String productName, int productPrice, int productQuantities, int productTotal) {
         this.productId = productID;
         this.productName = productName;
         this.importPrice = productPrice;
@@ -117,6 +100,14 @@ public class DetailImport {
 
     public void setImportId(int importId) {
         this.importId = importId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 }
 

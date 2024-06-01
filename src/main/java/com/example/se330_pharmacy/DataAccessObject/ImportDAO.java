@@ -1,39 +1,63 @@
 package com.example.se330_pharmacy.DataAccessObject;
 
-import com.example.se330_pharmacy.Models.ConnectDB;
-import com.example.se330_pharmacy.Models.DetailImport;
-import com.example.se330_pharmacy.Models.Import;
+import com.example.se330_pharmacy.Models.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ImportDAO {
-    private static final ConnectDB connectDB = ConnectDB.getInstance();
+    private ConnectDB connectDB = ConnectDB.getInstance();
 
     public ImportDAO() {}
 
-    public static List<String> getSuppliers() {
-        String sqlQuery = "SELECT SupplierName FROM Supplier";
-        List<String> suppliers = new ArrayList<>();
+    public ObservableList<Supplier> getSuppliers() {
+        String sqlQuery = "SELECT partner_id, partnername,address, phonenumber,email FROM partner";
+        ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
 
-        try (ResultSet rs = connectDB.getData(sqlQuery)) {
-            while (rs.next()) {
-                suppliers.add(rs.getString("SupplierName"));
+        try (ResultSet rs = connectDB.getPreparedStatement(sqlQuery).executeQuery()) {
+            while(rs.next()) {
+                Supplier suppier = new Supplier(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5));
+                suppliers.add(suppier);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return suppliers;
     }
 
-    public ResultSet getProductData() {
-        String sqlQuery = "SELECT Product_id AS ID, ProductName AS Name, Price, Description, Origin, " +
-                "Unit.Unit_Namelv1 AS Unit, TypeName AS Type " +
-                "FROM Product, ProductType, Unit " +
-                "WHERE Product.ProductType = ProductType.ProductType_id " +
-                "AND Unit.Unit_id = Product.Unit_id";
-        return connectDB.getData(sqlQuery);
+    public ObservableList<Product> getProductData() {
+        ObservableList<Product> listProduct = FXCollections.observableArrayList();
+        String sqlQuery = "SELECT pro.product_id , pro.productname , pro.price_import, pro.description, pro.origin, uni.big_unit, type.typename FROM product pro, producttype type, unit uni " +
+                "WHERE pro.producttype_id = type.producttype_id AND uni.unit_id = pro.unit_id";
+        try(PreparedStatement statement = connectDB.getPreparedStatement(sqlQuery))
+        {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Product product = new Product(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getInt(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7)
+                );
+                listProduct.add(product);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listProduct;
     }
 
     public ResultSet searchProductData(String search) {
@@ -71,19 +95,17 @@ public class ImportDAO {
         return null;
     }
 
-    public int addImportData(int employeeId, String supplierName, float totalPrice) {
-        String supplierId = getSupplierIdByName(supplierName);
+    public int addImportData(Import _import) {
         Date dateTime = new Date(System.currentTimeMillis());
-
-        String sqlQuery = "INSERT INTO ImportForm (Employee_id, Supplier_id, FormDate, TotalMoney) " +
-                "VALUES (?, ?, ?, ?)";
+        String sqlQuery = "INSERT INTO importform (employee_id, supplier_id, formdate, totalmoney) " +
+                "VALUES (?, ?, ?, ?) ";
 
         try {
             PreparedStatement preparedStatement = connectDB.getConnection().prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, employeeId);
-            preparedStatement.setInt(2, Integer.parseInt(supplierId));
+            preparedStatement.setInt(1, _import.getEmployeeId());
+            preparedStatement.setInt(2, _import.getSupplierId());
             preparedStatement.setDate(3, dateTime);
-            preparedStatement.setFloat(4, totalPrice);
+            preparedStatement.setFloat(4, _import.getTotal());
             preparedStatement.executeUpdate();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
@@ -160,7 +182,7 @@ public class ImportDAO {
             return null;
         }
     }
-    public static boolean addImportDetail(DetailImport detailImport) {
+   /* public boolean addImportDetail(DetailImport detailImport) {
         String query = "INSERT INTO DetailImportForm (Product_id, ImportForm_id, ImportPrice, Quantity, Total) VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -178,9 +200,9 @@ public class ImportDAO {
             return false;
         }
     }
-    public static List<DetailImport> getAllImportProducts() {
-        List<DetailImport> importProducts = new ArrayList<>();
-        String sqlQuery = "SELECT * FROM DetailImportForm"; // Thay đổi truy vấn tùy thuộc vào cấu trúc của cơ sở dữ liệu của bạn
+    public ObservableList<DetailImport> getAllImportProducts() {
+        ObservableList<DetailImport>  importProducts = FXCollections.observableArrayList();
+        String sqlQuery = "select product_id as ID, productname as name, price, description, origin, unit as Type from Product , ProductType where Product.ProductType = ProductType.ProductType_id"; // Thay đổi truy vấn tùy thuộc vào cấu trúc của cơ sở dữ liệu của bạn
 
         try (ResultSet rs = connectDB.getData(sqlQuery)) {
             while (rs.next()) {
@@ -199,7 +221,7 @@ public class ImportDAO {
         return importProducts;
     }
     public static boolean updateImportDetail(DetailImport detailImport) {
-        String sqlQuery = "UPDATE DetailImportForm SET ImportPrice = ?, Quantity = ?, Total = ? WHERE Product_id = ?";
+        String sqlQuery = "UPDATE detailimport SET ImportPrice = ?, Quantity = ?, Total = ? WHERE Product_id = ?";
 
         try (Connection connection = ConnectDB.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
@@ -216,16 +238,15 @@ public class ImportDAO {
         }
     }
 
-    public boolean addImportData(String productId, String productName, float productPrice, int productQuantities, float productTotal, String supplier) {
-        String query = "INSERT INTO DetailImportForm (Product_id, ImportForm_id, ImportPrice, Quantity, Total) VALUES (?, ?, ?, ?, ?)";
+    public boolean addImportData(Import _import) {
+        String query = "INSERT INTO import (employee_id, partner_id, totalmoney,formdate) VALUES (?, ?, ?, ?)";
 
         try {
-            Connection connection = connectDB.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, Integer.parseInt(DetailImport.getProduct_id()));
-            preparedStatement.setFloat(3, DetailImport.getImportPrice());
-            preparedStatement.setInt(4, DetailImport.getQuantity());
-            preparedStatement.setDouble(5, DetailImport.getTotal());
+            PreparedStatement preparedStatement = connectDB.getPreparedStatement(query);
+            preparedStatement.setInt(1, _import.getEmployeeId());
+            preparedStatement.setInt(2, _import.getSupplierId());
+            preparedStatement.setInt(4, _import.getTotal());
+            preparedStatement.setDate(5, (Date) _import.getFormDate());
 
             int affectedRows = preparedStatement.executeUpdate();
             return affectedRows > 0;
@@ -245,6 +266,6 @@ public class ImportDAO {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 }
 

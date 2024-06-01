@@ -6,25 +6,20 @@ public class Import {
     private int importId;
     private int employeeId;
     private int supplierId;
-    private float totalPrice;
+    private int totalPrice;
     private int productId;
-    private float importPrice;
+    private int importPrice;
     private int quantity;
-    private float total;
-    private Date formDate;
+    private int total;
+    private String formDate;
+
+    String productName;
 
     // Constructors
-    public Import() {}
 
-    public Import(int importId, int employeeId, int supplierId, float totalPrice, int productId,
-                       float importPrice, int quantity, float total, Date formDate) {
+    public Import(int importId, int supplierId, int total, String formDate) {
         this.importId = importId;
-        this.employeeId = employeeId;
         this.supplierId = supplierId;
-        this.totalPrice = totalPrice;
-        this.productId = productId;
-        this.importPrice = importPrice;
-        this.quantity = quantity;
         this.total = total;
         this.formDate = formDate;
     }
@@ -58,7 +53,7 @@ public class Import {
         return totalPrice;
     }
 
-    public void setTotalPrice(float totalPrice) {
+    public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -70,11 +65,11 @@ public class Import {
         this.productId = productId;
     }
 
-    public float getImportPrice() {
+    public int getImportPrice() {
         return importPrice;
     }
 
-    public void setImportPrice(float importPrice) {
+    public void setImportPrice(int importPrice) {
         this.importPrice = importPrice;
     }
 
@@ -86,20 +81,28 @@ public class Import {
         this.quantity = quantity;
     }
 
-    public float getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 
-    public Date getFormDate() {
+    public String getFormDate() {
         return formDate;
     }
 
-    public void setFormDate(Date formDate) {
+    public void setFormDate(String formDate) {
         this.formDate = formDate;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }
 
