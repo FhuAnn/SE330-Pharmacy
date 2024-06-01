@@ -339,36 +339,7 @@
     -fx-text-fill: #ffffff;
     -fx-cursor: hand;
 }
-#orange {
-    -fx-padding: 5 10 10 10;
-    -fx-background-insets: 0, 0 0 2 0, 0 0 3 0, 0 0 4 0;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
-    -fx-border-width: 2;
-    -fx-pref-width: 100;
-    -fx-pref-height: 50;
-    -fx-text-fill: #3ca7f8;
-    -fx-font-family: "Segoe UI black";
-    -fx-background-color: transparent;
-    -fx-border-color: #3ea9f9;
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
-}
-#orange:hover {
-    -fx-border-width: 0;
-    -fx-background-color: linear-gradient(from 0% 93% to 0% 100% , #4694ce 0%, #298dd7 100%),
-    #0b90f1,
-    #3296e0,
-    linear-gradient(to right, #91d0fd, #3ea9f9);
-    -fx-text-fill: #ffffff;
-    -fx-cursor: hand;
-}
-#orange:pressed
-{
-    --fx-padding: 6 10 9 10 ;
-    -fx-background-insets: 1 0 0 0, 1 0 1 0 , 1 0 2 0, 1 0 3 0;
-    -fx-effect: dropshadow(gaussian,rgba(0,0,0,0),4,0,0,1);
-}
+
 
 /*input*/
 /*inputfield*/

@@ -13,15 +13,34 @@ public class Import {
     private int total;
     private String formDate;
 
+    String employName;
+    String supplierName;
     String productName;
 
     // Constructors
+
+    public Import() {
+    }
 
     public Import(int employeeId, int supplierId, int total, String formDate) {
         this.employeeId = employeeId;
         this.supplierId = supplierId;
         this.total = total;
         this.formDate = formDate;
+    }
+
+    public Import(int importId, String formDate, String employName, String supplierName) {
+        this.importId = importId;
+        this.formDate = formDate;
+        this.employName = employName;
+        this.supplierName = supplierName;
+    }
+    public Import(int productID, String productName, int productPrice, int productQuantities, int productTotal) {
+        this.productId = productID;
+        this.productName = productName;
+        this.importPrice = productPrice;
+        this.quantity = productQuantities;
+        this.totalPrice = productTotal;
     }
 
     // Getters and Setters
@@ -49,7 +68,7 @@ public class Import {
         this.supplierId = supplierId;
     }
 
-    public float getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice;
     }
 
@@ -97,6 +116,22 @@ public class Import {
         this.formDate = formDate;
     }
 
+    public String getEmployName() {
+        return employName;
+    }
+
+    public void setEmployName(String employName) {
+        this.employName = employName;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
     public String getProductName() {
         return productName;
     }
@@ -104,5 +139,6 @@ public class Import {
     public void setProductName(String productName) {
         this.productName = productName;
     }
+
 }
 

@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import com.example.se330_pharmacy.DataAccessObject.ImportDAO;
 import com.example.se330_pharmacy.Models.*;
@@ -19,6 +20,7 @@ import javax.swing.*;
 import java.net.URL;
 import java.text.Normalizer;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -34,16 +36,21 @@ public class ImportController implements Initializable {
     public TableColumn<Product,String> col_originProduct;
     public TableColumn<Product,String> col_unitProduct;
     public TableColumn<Product,String> col_typeProduct;
-    public TableView<DetailImport> tbl_ImportForm;
-    public TableColumn<DetailImport,Integer> col_idDetail;
-    public TableColumn<DetailImport,String> col_nameDetail;
-    public TableColumn<DetailImport,Integer> col_priceDetail;
-    public TableColumn<DetailImport,String> col_quantityDetail;
-    public TableColumn<DetailImport,String> col_totalDetail;
+    public TableView<Import> tbl_DetailImportForm;
+    public TableColumn<Import,Integer> col_idDetail;
+    public TableColumn<Import,String> col_nameDetail;
+    public TableColumn<Import,Integer> col_priceDetail;
+    public TableColumn<Import,String> col_quantityDetail;
+    public TableColumn<Import,String> col_totalDetail;
     public TableView<Supplier> tbl_Supplier;
     public TableColumn<Supplier,String> col_namePartner;
     public TableColumn<Product,String> col_address;
     public TableColumn<Product,Integer> col_phonenumberPartner;
+    public TableView<Import> tbl_historyImport;
+    public TableColumn<Import,Integer> col_idImport;
+    public TableColumn<Import,String> col_employnameImport;
+    public TableColumn<Import,String> col_supplierImport;
+    public TableColumn<Import,String> col_dateImport;
     public TextField tfProductID;
     public TextField tfProductName;
     public TextField tfProductPrice;
@@ -56,8 +63,10 @@ public class ImportController implements Initializable {
     public Button btnCreateForm;
     public Button btnDelete;
     public Button btnShow;
+    public Button btnShowHistory;
+    public TitledPane tp_left, tp_ImportHistory;
     public TextField tfFind;
-    public Pane panelResultSupplier;
+    public Pane panelResultSupplier,panelImport;
     public Text lblTotalPay;
     String message;
     private final ImportDAO importDAO = new ImportDAO();
@@ -70,9 +79,20 @@ public class ImportController implements Initializable {
     }
     public void initialize(URL url, ResourceBundle resourceBundle) {
         SetUp();
+        LoadImport();
+        loadHistoryImport();
+        AddListenner();
+    }
+
+    private void loadHistoryImport() {
+        tbl_DetailImportForm.getItems().clear();
+        ObservableList<Import> imports = importDAO.getHistoryImport();
+        tbl_historyImport.setItems(imports);
+    }
+
+    private void LoadImport() {
         loadProducts();
         loadSupplier();
-        AddListenner();
     }
 
     private void SetUp() {
@@ -90,11 +110,17 @@ public class ImportController implements Initializable {
         col_nameDetail.setCellValueFactory(new PropertyValueFactory<>("productName"));
         col_priceDetail.setCellValueFactory(new PropertyValueFactory<>("importPrice"));
         col_quantityDetail.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        col_totalDetail.setCellValueFactory(new PropertyValueFactory<>("total"));
+        col_totalDetail.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
 
         col_namePartner.setCellValueFactory(new PropertyValueFactory<>("partnername"));
         col_address.setCellValueFactory(new PropertyValueFactory<>("address"));
         col_phonenumberPartner.setCellValueFactory(new PropertyValueFactory<>("phonenumber"));
+
+
+        col_idImport.setCellValueFactory(new PropertyValueFactory<>("importId"));
+        col_employnameImport.setCellValueFactory(new PropertyValueFactory<>("employName"));
+        col_supplierImport.setCellValueFactory(new PropertyValueFactory<>("supplierName"));;
+        col_dateImport.setCellValueFactory(new PropertyValueFactory<>("formDate"));
     }
 
 
@@ -113,14 +139,18 @@ public class ImportController implements Initializable {
         tfFind.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(!newValue.isEmpty()){
-                    SearchProduct(newValue);
-                } else {
-                    tbl_ProductTable.setItems(ListProducts);
+                if(newValue.isEmpty()) tbl_ProductTable.setItems(ListProducts);
+            }
+        });
+        tfFind.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                String searchString = tfFind.getText().trim();
+                if (isValidInput(searchString)) {
+                    SearchProduct(searchString);
                 }
             }
         });
-        tbl_ImportForm.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        tbl_DetailImportForm.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(event.getClickCount()==2) {
@@ -138,9 +168,15 @@ public class ImportController implements Initializable {
             }
         });
         tf_supplier.textProperty().addListener((observable,oldValue, newValue) -> {
-            if(!newValue.isEmpty()) {
-                SearchSupplier(newValue);
-            } else tbl_Supplier.setItems(ListSuppliers);
+            if(newValue.isEmpty()) tbl_Supplier.setItems(ListSuppliers);
+        });
+        tf_supplier.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                String searchString = tf_supplier.getText().trim();
+                if (isValidInput(searchString)) {
+                    SearchSupplier(searchString);
+                }
+            }
         });
         tfProductQuantities.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -156,12 +192,27 @@ public class ImportController implements Initializable {
                 }
             }
         });
+        tbl_historyImport.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount()==2) {
+                    int import_id = tbl_historyImport.getSelectionModel().getSelectedItem().getImportId();
+                    ObservableList<Import> listDetailImport= importDAO.getDetailFromImportId(import_id);
+                    tbl_DetailImportForm.setItems(listDetailImport);
+                }
+            }
+        });
+    }
+
+    private void SearchProduct(String searchString) {
+        ObservableList<Product> lists = importDAO.searchProductData(searchString);
+        tbl_ProductTable.setItems(lists);
     }
 
     private boolean CheckNotExistProductInImportTable(int id) {
-        ObservableList<DetailImport> listproducts = tbl_ImportForm.getItems();
-        for(DetailImport detailImport : listproducts) {
-            if(detailImport.getProduct_id() == id)  {
+        ObservableList<Import> listproducts = tbl_DetailImportForm.getItems();
+        for(Import import_ : listproducts) {
+            if(import_.getProductId() == id)  {
                 message="Bạn thêm sản phẩm này vào danh sách!";
                 return false;
             }
@@ -170,18 +221,10 @@ public class ImportController implements Initializable {
     }
 
     private void SearchSupplier(String searchString) {
-        String lowerCase = normalizeString(searchString.toLowerCase());
-        ObservableList<Supplier> users = tbl_Supplier.getItems();
-        ObservableList<Supplier> listResult = FXCollections.observableArrayList(
-                users.stream()
-                        .filter(supplier ->
-                                normalizeString(String.valueOf(supplier.getPartner_id()).toLowerCase()).startsWith(lowerCase) ||
-                                        normalizeString(supplier.getPartnername().toLowerCase()).contains(lowerCase))
-                        .collect(Collectors.toList())
-        );
+        ObservableList<Supplier> listResult = importDAO.getSupplierIdByName(searchString);
         tbl_Supplier.setItems(listResult);
     }
-    private void SearchProduct(String searchString) {
+    /*private void SearchProduct(String searchString) {
         String lowerCase = normalizeString(searchString.toLowerCase());
         ObservableList<Product> users = tbl_ProductTable.getItems();
         ObservableList<Product> listResult = FXCollections.observableArrayList(
@@ -192,11 +235,11 @@ public class ImportController implements Initializable {
                         .collect(Collectors.toList())
         );
         tbl_ProductTable.setItems(listResult);
-    }
+    }*/
     private void FillImportTableToTextField() {
         tfProductQuantities.setDisable(true);
-        DetailImport importProduct = tbl_ImportForm.getSelectionModel().getSelectedItem();
-        tfProductID.setText(String.valueOf(importProduct.getProduct_id()));
+        Import importProduct = tbl_DetailImportForm.getSelectionModel().getSelectedItem();
+        tfProductID.setText(String.valueOf(importProduct.getImportId()));
         tfProductName.setText(importProduct.getProductName());
         tfProductPrice.setText(String.valueOf(importProduct.getImportPrice()));
         tfProductQuantities.setText(String.valueOf(importProduct.getQuantity()));
@@ -274,29 +317,29 @@ public class ImportController implements Initializable {
     }
 
     private void LoadTotalPayFinal() {
-        ObservableList<DetailImport> items = tbl_ImportForm.getItems();
+        ObservableList<Import> items = tbl_DetailImportForm.getItems();
         int total = 0;
-        for(DetailImport detailImport : items) {
-            total+= detailImport.getTotal();
+        for(Import detailImport : items) {
+            total+= detailImport.getTotalPrice();
         }
         lblTotalPay.setText(total+" VND");
     }
 
     private void UpdateImportTable() {
-        int delete_pos= DeleteRowInImportTable(tbl_ImportForm.getItems(),tbl_ImportForm.getSelectionModel().getSelectedItem().getProduct_id());
-        DetailImport detailImport = new DetailImport(
+        int delete_pos= DeleteRowInImportTable(tbl_DetailImportForm.getItems(),tbl_DetailImportForm.getSelectionModel().getSelectedItem().getProductId());
+        Import import_ = new Import(
                 Integer.parseInt(tfProductID.getText()),
                 tfProductName.getText(),Integer.parseInt(tfProductPrice.getText()),
                 Integer.parseInt(tfProductQuantities.getText()),
                 Integer.parseInt(tfProductTotal.getText()));
-        tbl_ImportForm.getItems().add(delete_pos,detailImport);
+        tbl_DetailImportForm.getItems().add(delete_pos,import_);
     }
 
-    private int DeleteRowInImportTable(ObservableList<DetailImport> items, int productId) {
+    private int DeleteRowInImportTable(ObservableList<Import> items, int productId) {
         int index =0,pos_delete=0;
-        for(DetailImport detailImport : items)
+        for(Import detailImport : items)
         {
-            if(detailImport.getProduct_id()==productId) {
+            if(detailImport.getProductId()==productId) {
                 pos_delete=index;
                 break;
             }
@@ -313,8 +356,8 @@ public class ImportController implements Initializable {
         String quantity = tfProductQuantities.getText();
         String total = tfProductTotal.getText();
         if(!id.isEmpty() && !productname.isEmpty() && !price.isEmpty() && !quantity.isEmpty() && !total.isEmpty()) {
-            DetailImport detailImport_ = new DetailImport(Integer.parseInt(id),productname,Integer.parseInt(price),Integer.parseInt(quantity),Integer.parseInt(total));
-            tbl_ImportForm.getItems().add(detailImport_);
+            Import detailImport_ = new Import(Integer.parseInt(id),productname,Integer.parseInt(price),Integer.parseInt(quantity),Integer.parseInt(total));
+            tbl_DetailImportForm.getItems().add(detailImport_);
             LoadTotalPayFinal();
             clearInformation();
         } else {
@@ -327,12 +370,12 @@ public class ImportController implements Initializable {
         if(sequence==JOptionPane.YES_OPTION) {
             clearInformation();
             tfProductQuantities.setDisable(false);
-            tbl_ImportForm.getItems().clear();
+            tbl_DetailImportForm.getItems().clear();
         }
     }
 
     public void btnCreateFormClicked(MouseEvent mouseEvent) {
-        if(!tbl_ImportForm.getItems().isEmpty()) {
+        if(!tbl_DetailImportForm.getItems().isEmpty()) {
             if(tf_supplier.getText().isEmpty()) {
                 showAlert("Warning","Bạn chưa chọn nhà cung cấp!");
                 return;
@@ -340,17 +383,30 @@ public class ImportController implements Initializable {
             String string = lblTotalPay.getText();
             String[] splits =string.split(" ");
             int totalPay = Integer.parseInt(splits[0]);
+
             Import import_ = new Import(
                     employee_init.getEmployeeId(),
                     supplierBeforeClicked.getPartner_id(),
                     totalPay,
-                    LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-            if(importDAO.addImportData(import_)>0) {
-                showAlert("Warning","Thông tin nhập hàng được ghi nhận!");
-                clearInformation();
-                tbl_ImportForm.getItems().clear();
+                    LocalDateTime.now().toString());
+            int id = importDAO.addImportData(import_);
+            if(id>0) {
+                if(AddDetailImportToDB(id)){
+                    showAlert("Warning","Thông tin nhập hàng được ghi nhận!");
+                    clearInformation();
+                    tbl_DetailImportForm.getItems().clear();
+                } else System.out.println("Error");
             }
         }
+    }
+
+    private boolean AddDetailImportToDB(int id) {
+        ObservableList<Import> listImport = tbl_DetailImportForm.getItems();
+        for(Import import_: listImport){
+            import_.setImportId(id);
+            if(!importDAO.AddDetailtoDB(import_)) return false;
+        }
+        return true;
     }
 
     public void clearInformation() {
@@ -372,7 +428,7 @@ public class ImportController implements Initializable {
     public void handleButtonShow(ActionEvent event) {
         if(panelResultSupplier.isVisible()) {
             panelResultSupplier.setVisible(false);
-            btnShow.setId("orange");
+            btnShow.setId("edit");
             btnShow.setText("Xem");
         } else {
             tbl_Supplier.setItems(ListSuppliers);
@@ -383,7 +439,7 @@ public class ImportController implements Initializable {
         }
     }
     public void btnDeleteClicked(MouseEvent mouseEvent) {
-        if (tbl_ImportForm.getSelectionModel().getSelectedItem() != null) {
+        if (tbl_DetailImportForm.getSelectionModel().getSelectedItem() != null) {
         }
     }
 
@@ -405,5 +461,22 @@ public class ImportController implements Initializable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
         return JOptionPane.showConfirmDialog(frame, "Bạn muốn "+string+"?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    }
+
+    public void HandleButtonHistory(ActionEvent event) {
+        loadHistoryImport();
+        if(tp_ImportHistory.isVisible()) {
+            panelImport.setVisible(true);
+            tp_ImportHistory.setVisible(false);
+            btnShowHistory.setText("Xem lịch sử");
+        } else {
+            panelImport.setVisible(false);
+            tp_ImportHistory.setVisible(true);
+            btnShowHistory.setText("Quay về nhập hàng");
+        }
+    }
+    private boolean isValidInput(String input) {
+        String regex = ".*[a-zA-Z\u00C0-\u1FFF\u2C00-\uD7FF]+.*";
+        return input.matches(regex);
     }
 }

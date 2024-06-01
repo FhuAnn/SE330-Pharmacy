@@ -151,7 +151,7 @@
                <children>
                   <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="9.0" layoutY="5.0" onMouseClicked="#minimizeMenu" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../../SE330.1/src/main/resources/com/example/privateclinic/Images/minimize-sign.png" />
+                        <Image url="@../Images/minimize.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
