@@ -40,4 +40,30 @@ public class ProductDAO {
         return products;
     }
 
+    public ObservableList<Product> getAllProductExport() {
+        ObservableList<Product> products = FXCollections.observableArrayList();
+        String query = "SELECT product.product_id , productname, price_import, product.description,product.origin, unit.big_unit, producttype.typename ,product.big_unit FROM product,unit,producttype WHERE product.unit_id = unit.unit_id AND product.producttype_id = producttype.producttype_id  ".formatted();
+
+        try (PreparedStatement preparedStatement = connectDB.databaseLink.prepareStatement(query);
+             ResultSet rs = preparedStatement.executeQuery()) {
+
+            while (rs.next()) {
+                Product product = new Product();
+                product.setProductId(rs.getInt(1));
+                product.setProductName(rs.getString(2));
+                product.setProductImportPrice(rs.getInt(3));
+                product.setProductDescription(rs.getString(4));
+                product.setProductOrigin(rs.getString(5));
+                product.setProductBigUnit(rs.getString(6));
+                product.setProductType(rs.getString(7));
+                product.setProductBigUnitQuantities(rs.getInt(8));
+                products.add(product);
+            }
+        } catch (Exception e) {
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
+        }
+        return products;
+    }
+
 }

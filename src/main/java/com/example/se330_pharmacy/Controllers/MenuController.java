@@ -52,6 +52,14 @@ public class MenuController {
     @FXML
     private  Pane mainPane;
 
+    public Pane getMainPane() {
+        return mainPane;
+    }
+
+    public void setMainPane(Pane mainPane) {
+        this.mainPane = mainPane;
+    }
+
     @FXML
     private Text titleTextField;
     public Employee employee ;
@@ -142,13 +150,12 @@ public class MenuController {
         s.setIconified(true);
     }
 
-    private FXMLLoader setMainPane(String resource) throws IOException {
+    public FXMLLoader setMainPane(String resource) throws IOException {
         mainPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Parent reportSceneRoot = loader.load();
         mainPane.getChildren().add(reportSceneRoot);
         return loader;
     }
-
 
 }
