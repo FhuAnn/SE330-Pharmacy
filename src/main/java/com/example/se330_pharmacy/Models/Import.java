@@ -17,8 +17,8 @@ public class Import {
 
     // Constructors
 
-    public Import(int importId, int supplierId, int total, String formDate) {
-        this.importId = importId;
+    public Import(int employeeId, int supplierId, int total, String formDate) {
+        this.employeeId = employeeId;
         this.supplierId = supplierId;
         this.total = total;
         this.formDate = formDate;

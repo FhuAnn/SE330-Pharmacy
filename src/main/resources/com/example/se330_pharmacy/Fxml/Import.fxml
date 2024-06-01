@@ -27,7 +27,6 @@
                         <TableColumn fx:id="col_priceDetail" minWidth="126.66665649414062" prefWidth="164.66665649414062" text="Giá" />
                         <TableColumn fx:id="col_quantityDetail" minWidth="144.66668701171875" prefWidth="148.0" text="Số lượng" />
                         <TableColumn fx:id="col_totalDetail" minWidth="120.0" prefWidth="131.3333740234375" text="Tổng" />
-                        <TableColumn fx:id="col_nameDetail1" minWidth="172.0" prefWidth="75.0" text="Tên sản phẩm" />
                     </columns>
                   </TableView>
                </children>
@@ -62,10 +61,10 @@
                <children>
                   <TableView fx:id="tbl_ProductTable" layoutX="-4.0" prefHeight="407.0" prefWidth="860.0">
                      <columns>
-                        <TableColumn fx:id="col_idProduct" minWidth="44.66665840148926" prefWidth="49.33331489562988" text="Mã SP" />
-                        <TableColumn fx:id="col_nameProduct" minWidth="122.8" prefWidth="200.66669464111328" text="Tên sản phẩm" />
+                        <TableColumn fx:id="col_idProduct" minWidth="44.66665840148926" prefWidth="68.66669654846191" text="Mã SP" />
+                        <TableColumn fx:id="col_nameProduct" minWidth="122.8" prefWidth="250.0" text="Tên sản phẩm" />
                         <TableColumn fx:id="col_priceProduct" minWidth="80.00006103515625" prefWidth="80.00006103515625" text="Giá" />
-                        <TableColumn fx:id="col_descriptionProduct" minWidth="122.8" prefWidth="166.66659545898438" text="Mô tả" />
+                        <TableColumn fx:id="col_descriptionProduct" minWidth="122.8" prefWidth="250.0" text="Mô tả" />
                         <TableColumn fx:id="col_originProduct" minWidth="94.6666259765625" prefWidth="94.6666259765625" text="Nguồn gốc" />
                         <TableColumn fx:id="col_unitProduct" minWidth="122.8" prefWidth="173.33331298828125" text="Đơn vị" />
                         <TableColumn fx:id="col_typeProduct" minWidth="102.666748046875" prefWidth="102.666748046875" text="Loại" />
@@ -80,7 +79,7 @@
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="324.0" prefWidth="399.0" styleClass="anchor-pane">
                <children>
                   <Text layoutX="77.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Tổng tiền : " />
-                  <Text fill="#727272" layoutX="181.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="100000 VND" />
+                  <Text fx:id="lblTotalPay" fill="#727272" layoutX="181.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="100000 VND" />
                   <Button id="add" fx:id="btnAdd" layoutX="70.0" layoutY="22.0" mnemonicParsing="false" onMouseClicked="#btnAddClicked" prefHeight="59.0" prefWidth="129.0" text="Thêm" />
                   <Button id="edit" fx:id="btnEdit" layoutX="222.0" layoutY="22.0" mnemonicParsing="false" onMouseClicked="#btnEditClicked" prefHeight="77.0" prefWidth="138.0" text="Sửa" />
                   <Button id="cancel" fx:id="btnCancel" layoutX="222.0" layoutY="104.0" mnemonicParsing="false" onMouseClicked="#btnCancelClicked" prefHeight="62.0" prefWidth="87.0" text="Hủy" />

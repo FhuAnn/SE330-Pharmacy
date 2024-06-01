@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import com.example.se330_pharmacy.DataAccessObject.ImportDAO;
 import com.example.se330_pharmacy.Models.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 import javax.swing.*;
 import java.net.URL;
@@ -57,6 +58,7 @@ public class ImportController implements Initializable {
     public Button btnShow;
     public TextField tfFind;
     public Pane panelResultSupplier;
+    public Text lblTotalPay;
     String message;
     private final ImportDAO importDAO = new ImportDAO();
     private ObservableList<Product> ListProducts;
@@ -220,13 +222,8 @@ public class ImportController implements Initializable {
             } else {
                 int sequence = ShowYesNoAlert("lưu");
                 if(sequence==JOptionPane.YES_OPTION) {
-                    int delete_pos= DeleteRowInImportTable(tbl_ImportForm.getItems(),tbl_ImportForm.getSelectionModel().getSelectedItem().getProduct_id());
-                    DetailImport detailImport = new DetailImport(
-                            Integer.parseInt(tfProductID.getText()),
-                            tfProductName.getText(),Integer.parseInt(tfProductPrice.getText()),
-                            Integer.parseInt(tfProductQuantities.getText()),
-                            Integer.parseInt(tfProductTotal.getText()));
-                    tbl_ImportForm.getItems().add(delete_pos,detailImport);
+                    UpdateImportTable();
+                    LoadTotalPayFinal();
                     tfProductQuantities.setDisable(true);
                     btnEdit.setId("edit");
                     btnEdit.setText("Sửa");
@@ -276,14 +273,31 @@ public class ImportController implements Initializable {
 */
     }
 
+    private void LoadTotalPayFinal() {
+        ObservableList<DetailImport> items = tbl_ImportForm.getItems();
+        int total = 0;
+        for(DetailImport detailImport : items) {
+            total+= detailImport.getTotal();
+        }
+        lblTotalPay.setText(total+" VND");
+    }
+
+    private void UpdateImportTable() {
+        int delete_pos= DeleteRowInImportTable(tbl_ImportForm.getItems(),tbl_ImportForm.getSelectionModel().getSelectedItem().getProduct_id());
+        DetailImport detailImport = new DetailImport(
+                Integer.parseInt(tfProductID.getText()),
+                tfProductName.getText(),Integer.parseInt(tfProductPrice.getText()),
+                Integer.parseInt(tfProductQuantities.getText()),
+                Integer.parseInt(tfProductTotal.getText()));
+        tbl_ImportForm.getItems().add(delete_pos,detailImport);
+    }
+
     private int DeleteRowInImportTable(ObservableList<DetailImport> items, int productId) {
         int index =0,pos_delete=0;
-        boolean flag =false;
         for(DetailImport detailImport : items)
         {
             if(detailImport.getProduct_id()==productId) {
                 pos_delete=index;
-                flag=true;
                 break;
             }
             index++;
@@ -301,37 +315,11 @@ public class ImportController implements Initializable {
         if(!id.isEmpty() && !productname.isEmpty() && !price.isEmpty() && !quantity.isEmpty() && !total.isEmpty()) {
             DetailImport detailImport_ = new DetailImport(Integer.parseInt(id),productname,Integer.parseInt(price),Integer.parseInt(quantity),Integer.parseInt(total));
             tbl_ImportForm.getItems().add(detailImport_);
+            LoadTotalPayFinal();
             clearInformation();
         } else {
             showAlert("Warning","Kiểm tra đảm bảo đầy đủ thông tin!");
         }
-            /*// 1. Lấy dữ liệu từ các trường nhập liệu
-            String productId = tfProductID.getText();
-            String productName = tfProductName.getText();
-            String productPrice = tfProductPrice.getText();
-            String productQuantities = tfProductQuantities.getText();
-            String productTotal = tfProductTotal.getText();
-
-            // 2. Kiểm tra xem các trường đã được nhập đầy đủ chưa
-            if (productId.isEmpty() || productName.isEmpty() || productPrice.isEmpty() ||
-                    productQuantities.isEmpty() || productTotal.isEmpty() *//*|| supplier == null*//*) {
-                showMessage("Please fill in all fields");
-                return;
-            }
-
-            // 3. Tạo một đối tượng DetailImport mới
-            DetailImport newDetailImport = new DetailImport(productId, productName, Float.parseFloat(productPrice),
-                    Integer.parseInt(productQuantities), Double.parseDouble(productTotal)*//*, supplier*//*);
-
-            // 4. Gọi phương thức thêm dữ liệu từ ImportDAO
-            if (ImportDAO.addImportDetail(newDetailImport)) {
-                showMessage("Add detail import successfully");
-                clearInformation(); // Xóa thông tin sau khi thêm thành công
-                // Cập nhật lại bảng sản phẩm nhập
-                loadImportProducts();
-            } else {
-                showMessage("Add detail import failed");
-            }*/
     }
 
     public void btnCancelClicked(MouseEvent mouseEvent) {
@@ -339,19 +327,28 @@ public class ImportController implements Initializable {
         if(sequence==JOptionPane.YES_OPTION) {
             clearInformation();
             tfProductQuantities.setDisable(false);
-            tbl_ImportForm.getSelectionModel().clearSelection();
+            tbl_ImportForm.getItems().clear();
         }
     }
 
     public void btnCreateFormClicked(MouseEvent mouseEvent) {
         if(!tbl_ImportForm.getItems().isEmpty()) {
+            if(tf_supplier.getText().isEmpty()) {
+                showAlert("Warning","Bạn chưa chọn nhà cung cấp!");
+                return;
+            }
+            String string = lblTotalPay.getText();
+            String[] splits =string.split(" ");
+            int totalPay = Integer.parseInt(splits[0]);
             Import import_ = new Import(
                     employee_init.getEmployeeId(),
                     supplierBeforeClicked.getPartner_id(),
-                    Integer.parseInt(tfProductTotal.getText()),
-                    LocalDate.now().format(DateTimeFormatter.ofPattern("HH:mm:ss dd-M-yyyy")));
+                    totalPay,
+                    LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             if(importDAO.addImportData(import_)>0) {
-
+                showAlert("Warning","Thông tin nhập hàng được ghi nhận!");
+                clearInformation();
+                tbl_ImportForm.getItems().clear();
             }
         }
     }
@@ -402,7 +399,6 @@ public class ImportController implements Initializable {
         alert.setContentText(string);
         alert.showAndWait();
     }
-
 
     private int ShowYesNoAlert(String string) {
         JFrame frame = new JFrame("Xác nhận");

@@ -97,7 +97,7 @@ public class ImportDAO {
 
     public int addImportData(Import _import) {
         Date dateTime = new Date(System.currentTimeMillis());
-        String sqlQuery = "INSERT INTO importform (employee_id, supplier_id, formdate, totalmoney) " +
+        String sqlQuery = "INSERT INTO importform (employee_id, partner_id, formdate, totalmoney) " +
                 "VALUES (?, ?, ?, ?) ";
 
         try {
