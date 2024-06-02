@@ -52,8 +52,8 @@
       <Text layoutX="338.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Tổng trả:" />
       <TextField fx:id="tf_tongTra" layoutX="338.0" layoutY="170.0" prefWidth="207.0" promptText="Tổng trả" styleClass="input-field" />
       <Text layoutX="52.0" layoutY="318.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Ngày lập phiếu" />
-      <Text layoutX="339.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Trạng thái hoá đơn:" />
-      <ComboBox fx:id="cbStatus" layoutX="325.0" layoutY="248.0" prefHeight="44.0" prefWidth="168.0" promptText="Status" style="-fx-font-size: 16px;" />
+      <Text layoutX="339.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Trạng thái:" />
+      <ComboBox fx:id="cbStatus" disable="true" layoutX="325.0" layoutY="248.0" prefHeight="44.0" prefWidth="168.0" promptText="Status" style="-fx-font-size: 16px;" />
       <DatePicker fx:id="dp_date" layoutX="34.0" layoutY="326.0" prefHeight="42.0" prefWidth="199.0" />
       <Button id="add" fx:id="btnAdd" layoutX="345.0" layoutY="314.0" mnemonicParsing="false" text="Add" />
       <Button id="delete" fx:id="btnCancel" layoutX="462.0" layoutY="313.0" mnemonicParsing="false" text="Cancel" />

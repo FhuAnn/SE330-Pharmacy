@@ -43,11 +43,12 @@ public class PayslipDAO {
         }
         return payslips;
     }
-    public boolean UpdatePayslipCompleted(int _id)
+    public boolean UpdatePayslipCompleted(int _id,int _receipt)
     {
-        String query = "UPDATE payslip SET status = 'Completed' WHERE payslip_id = ?";
+        String query = "UPDATE payslip SET status = 'Completed', receipt_id = ? WHERE payslip_id = ?";
         try(PreparedStatement statement = connectDB.databaseLink.prepareStatement(query)) {
-            statement.setInt(1,_id);
+            statement.setInt(1,_receipt);
+            statement.setInt(2,_id);
             int affRow = statement.executeUpdate();
             if(affRow ==0 ) return false;
         } catch (SQLException e)

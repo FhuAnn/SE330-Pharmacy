@@ -7,14 +7,16 @@ public class Receipt {
     int employee_id;
     int personcharge_id;
     int payslip_id;
-    String tenNhanVien;
-    String tenNguoiTra;
-
     String content;
     Date createDate;
     Double totalPay;
     String note;
     String status;
+    //
+    String tenNhanVien;
+    String tenNguoiTra;
+    String viTriNhanVien;
+    String vitriNguoiTra;
 
     public Receipt() {
     }
@@ -116,4 +118,19 @@ public class Receipt {
         this.payslip_id = payslip_id;
     }
 
+    public String getViTriNhanVien() {
+        return viTriNhanVien;
+    }
+
+    public void setViTriNhanVien(String viTriNhanVien) {
+        this.viTriNhanVien = viTriNhanVien;
+    }
+
+    public String getVitriNguoiTra() {
+        return vitriNguoiTra;
+    }
+
+    public void setVitriNguoiTra(String vitriNguoiTra) {
+        this.vitriNguoiTra = vitriNguoiTra;
+    }
 }

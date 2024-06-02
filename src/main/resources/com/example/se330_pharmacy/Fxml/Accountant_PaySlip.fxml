@@ -12,7 +12,7 @@
 <AnchorPane prefHeight="780.0" prefWidth="1356.0" styleClass="container_overall" stylesheets="@../Styles/Accountant_PaySlip.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.se330_pharmacy.Controllers.PaySlipController">
    <children>
       <Text fx:id="lbFilterPaySlip" layoutX="265.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lbl" text="Lọc" />
-      <DatePicker fx:id="dateTimePickerPayslip" layoutX="293.0" layoutY="27.0" style="-fx-font-size: 16px;" />
+      <DatePicker fx:id="dateTimePickerPayslip" layoutX="293.0" layoutY="24.0" prefHeight="42.0" prefWidth="206.0" style="-fx-font-size: 16px;" />
       <ComboBox fx:id="cbStatusPayslip" layoutX="574.0" layoutY="27.0" prefWidth="150.0" promptText="Status" style="-fx-font-size: 16px;" />
       <TableView fx:id="tblPaySlip" layoutX="45.0" layoutY="78.0" prefHeight="668.0" prefWidth="1255.0">
         <columns>

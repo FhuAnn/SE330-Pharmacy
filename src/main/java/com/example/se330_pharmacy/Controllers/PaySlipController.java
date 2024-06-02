@@ -72,12 +72,10 @@ public class PaySlipController implements Initializable {
         btnExport.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(tblPaySlip.getSelectionModel().isEmpty()) {
-
-                } else {
+                if(!tblPaySlip.getSelectionModel().isEmpty())  {
                     Payslip payslip = tblPaySlip.getSelectionModel().getSelectedItem();
                     if(payslip.getStatus().equals("InComplete")) {
-                        Model.getInstance().getViewFactory().showAddReceiptWindow(payslip,employee.getEmloyeeId(),employee.getEmployName(),employee.getPosition(),PaySlipController.this);
+                        Model.getInstance().getViewFactory().showAddReceiptWindow(payslip,employee.getEmployeeId(),employee.getEmployeeName(),employee.getEmployeePosition(),PaySlipController.this,null,null);
                         LoadListPayslip();
                     }
                     else {
@@ -123,7 +121,6 @@ public class PaySlipController implements Initializable {
         dateTimePickerPayslip.setValue(LocalDate.from(LocalDateTime.now()));
         ObservableList<String> statusList = FXCollections.observableArrayList("InComplete", "Completed");
         cbStatusPayslip.setItems(statusList);
-        LoadListPayslip(); // all
     }
 
     private void FilterByDate() {
@@ -132,7 +129,7 @@ public class PaySlipController implements Initializable {
         tblPaySlip.setItems(FXCollections.observableArrayList());
         for (Payslip payslip : payslips) {
             if (payslip.getCreateDate().toLocalDate().getYear() == dateTimePickerPayslip.getValue().getYear()) {
-                if(payslip.getCreateDate().toLocalDate().getMonthValue() == dateTimePickerPayslip.getValue().getMonthValue())
+                if(payslip.getCreateDate().toLocalDate().getMonthValue() <= dateTimePickerPayslip.getValue().getMonthValue())
                     filtered.add(payslip);
             }
         }

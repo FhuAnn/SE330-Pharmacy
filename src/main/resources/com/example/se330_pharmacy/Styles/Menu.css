@@ -96,6 +96,22 @@
     -fx-border-width: 0 0 0.4 0;
 }
 /*minimized*/
+.menu-button   * {
+    -fx-primary-color: #66a611;
+    -fx-secondary-color: #497309;
+    -fx-font-size: 1.1em;
+}
+.menu-button .menu-item {
+    -fx-text-fill: -fx-secondary-color;
+}
+.menu-button .menu-item:hover {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: -fx-primary-color;
+}
+.menu-button .menu-item:focused {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: -fx-secondary-color;
+}
 
 .minimize
 {
@@ -131,4 +147,13 @@
 .pane_close:hover .image
 {
     -fx-opacity: 0;
+}
+.pane_progress {
+    -fx-background-color: rgba(190, 190, 190, 0.42);
+    -fx-background-radius: 40px;
+    -fx-border-radius-radius: 40px;
+}
+.pane_progress .progress-indicator {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
 }
