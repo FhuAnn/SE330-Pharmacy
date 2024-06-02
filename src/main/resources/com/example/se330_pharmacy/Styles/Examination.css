@@ -234,8 +234,22 @@
     -fx-font-weight: 700;
 }
 
-.container-pick .combo-box .list-view .list-cell:filled {
+.container-pick .combo-box .list-view .list-cell {
 
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+    -fx-text-fill: #3d3c3c;
+    -fx-background-color: #ffffff;
+}
+.container-pick .combo-box .list-view .list-cell:hover {
+
+    -fx-background-color: #6fa62f;
+    -fx-text-fill: #ffffff;
+}
+.container-pick .combo-box .list-view .list-cell:pressed {
+
+    -fx-background-color: #6fa62f;
+    -fx-text-fill: #ffffff;
 }
 /*date-picker*/
 .date-picker .text-field
@@ -254,17 +268,7 @@
     -fx-background-radius: 5;
     -fx-border-radius: 5;
 }
-.date-picker-popup
-{
 
-}
-.calendar-header
-{
-
-}
-.calendar-grid
-{
-}
 .amount
 {
     -fx-font-family: "Segoe UI Semibold";
@@ -338,27 +342,7 @@
     -fx-border-color: #416c0d;
 
 }
-.table-view .table-cell
-{
 
-}
-.table-row-cell:odd
-{
-
-}
-.table-view >.virtual-flow >.scroll-bar:vertical
-{
-
-}
-.table-row-cell:selected
-{
-}
-/*pane-infor*/
-
-.anchor
-{
-
-}
 .anchor Text
 {
     -fx-font-size: 15px;

@@ -363,8 +363,22 @@
     -fx-font-weight: 700;
 }
 
-.container-pick .combo-box .list-view .list-cell:filled {
+.combo-box .list-view .list-cell {
 
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+    -fx-text-fill: #3d3c3c;
+    -fx-background-color: #ffffff;
+}
+.combo-box .list-view .list-cell:hover {
+
+    -fx-background-color: #6fa62f;
+    -fx-text-fill: #ffffff;
+}
+.combo-box .list-view .list-cell:pressed {
+
+    -fx-background-color: #6fa62f;
+    -fx-text-fill: #ffffff;
 }
 /*date-picker*/
 .date-picker .text-field
@@ -377,23 +391,7 @@
     -fx-background-radius: 5 0 0 5;
     -fx-font-weight: bold;
 }
-.date-picker
-{
-    -fx-border-color: #4A7612;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-}
-.date-picker-popup
-{
 
-}
-.calendar-header
-{
-
-}
-.calendar-grid
-{
-}
 .amount
 {
     -fx-font-family: "Segoe UI Semibold";
@@ -405,29 +403,6 @@
     -fx-border-radius: 10px;
     -fx-border-color: #416c0d;
 }
-/*
-!*listview thuoc*!
-.input-medicine
-{
-    -fx-border-width: 1 1 1 1;
-    -fx-border-radius: 5;
-    -fx-border-color: #9E9DA3;
-    -fx-font-family: "Segoe UI Semibold";
-}
-.input-medicine:hover
-{
-    -fx-border-width: 1 1 1 1;
-    -fx-border-radius: 5;
-    -fx-border-color: #8BC634;
-
-}
-.input-medicine:focused
-{
-    -fx-border-width: 1 1 1 1;
-    -fx-border-radius: 5;
-    -fx-border-color: #8BC634;
-    -fx-wrap-text: true;
-}*/
 
 /*table-view*/
 .table-view {
@@ -451,7 +426,7 @@
 {
     -fx-alignment: center;
     -fx-font-size: 12.5px;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Segoe UI Semibold";
     -fx-font-weight: bold;
 
 }

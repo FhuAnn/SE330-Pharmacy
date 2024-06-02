@@ -12,6 +12,7 @@ public class ConnectDB {
         databaseLink = getConnection();
     }
 
+
     public static ConnectDB getInstance() {
         if (instance == null) {
             synchronized (ConnectDB.class) {
@@ -23,7 +24,7 @@ public class ConnectDB {
         return instance;
     }
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         /*String databaseName ="PharmacyNeon";
         String databaseUser ="postgres";
         String databasePassword="phuan03042004";
@@ -32,7 +33,6 @@ public class ConnectDB {
         Connection connection = null;
         try {
             if (isInternetAvailable()) {
-                //Class.forName("com.mysql.cj.jdbc.Driver");
                 Class.forName("org.postgresql.Driver");
                 //databaseLink= DriverManager.getConnection(urlPostgres,databaseUser,databasePassword);
                 connection = DriverManager.getConnection(urlNeon_DB);
@@ -50,7 +50,7 @@ public class ConnectDB {
         return connection;
     }
 
-    private boolean isInternetAvailable() {
+    private static boolean isInternetAvailable() {
         boolean reachable = false;
         try {
             reachable = InetAddress.getByName("www.google.com").isReachable(500);// Kiểm tra kết nối tới Google trong 3 giây
@@ -64,6 +64,7 @@ public class ConnectDB {
         try {
             PreparedStatement preparedStatement = databaseLink.prepareStatement(sqlQuery);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             return resultSet;
         } catch (SQLException e) {
             e.printStackTrace();
