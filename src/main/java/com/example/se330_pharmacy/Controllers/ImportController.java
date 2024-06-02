@@ -6,13 +6,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import com.example.se330_pharmacy.DataAccessObject.ImportDAO;
 import com.example.se330_pharmacy.Models.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
@@ -68,12 +71,16 @@ public class ImportController implements Initializable {
     public TextField tfFind;
     public Pane panelResultSupplier,panelImport;
     public Text lblTotalPay;
+    public HBox hboxFind;
+    public Label lbl_noContent;
     String message;
     private final ImportDAO importDAO = new ImportDAO();
     private ObservableList<Product> ListProducts;
     private ObservableList<Supplier> ListSuppliers;
     Employee employee_init;
     Supplier supplierBeforeClicked;
+    @FXML
+    ImageView imgLogo;
     public void InitData(Employee _employee){
         employee_init = _employee;
     }
@@ -358,6 +365,8 @@ public class ImportController implements Initializable {
         if(!id.isEmpty() && !productname.isEmpty() && !price.isEmpty() && !quantity.isEmpty() && !total.isEmpty()) {
             Import detailImport_ = new Import(Integer.parseInt(id),productname,Integer.parseInt(price),Integer.parseInt(quantity),Integer.parseInt(total));
             tbl_DetailImportForm.getItems().add(detailImport_);
+            lbl_noContent.setVisible(true);
+            if(tbl_DetailImportForm.getItems().isEmpty()) lbl_noContent.setVisible(true); else  lbl_noContent.setVisible(false);
             LoadTotalPayFinal();
             clearInformation();
         } else {
@@ -371,6 +380,7 @@ public class ImportController implements Initializable {
             clearInformation();
             tfProductQuantities.setDisable(false);
             tbl_DetailImportForm.getItems().clear();
+            if(tbl_DetailImportForm.getItems().isEmpty()) lbl_noContent.setVisible(true); else  lbl_noContent.setVisible(false);
         }
     }
 
@@ -392,12 +402,18 @@ public class ImportController implements Initializable {
             int id = importDAO.addImportData(import_);
             if(id>0) {
                 if(AddDetailImportToDB(id)){
+                    if(CreatePaySlip(id,totalPay))
                     showAlert("Warning","Thông tin nhập hàng được ghi nhận!");
                     clearInformation();
                     tbl_DetailImportForm.getItems().clear();
                 } else System.out.println("Error");
             }
         }
+    }
+
+    private boolean CreatePaySlip(int id,int totalPay) {
+        String content ="Import ID: " + id, status = "InComplete", note = LocalDate.now().toString();
+        return importDAO.autoCreatePaySlip(employee_init.getEmployeeId(),content,totalPay,status,note);
     }
 
     private boolean AddDetailImportToDB(int id) {
@@ -428,6 +444,7 @@ public class ImportController implements Initializable {
     public void handleButtonShow(ActionEvent event) {
         if(panelResultSupplier.isVisible()) {
             panelResultSupplier.setVisible(false);
+
             btnShow.setId("edit");
             btnShow.setText("Xem");
         } else {
@@ -439,10 +456,15 @@ public class ImportController implements Initializable {
         }
     }
     public void btnDeleteClicked(MouseEvent mouseEvent) {
-        if (tbl_DetailImportForm.getSelectionModel().getSelectedItem() != null) {
+        if (!tbl_DetailImportForm.getSelectionModel().isEmpty()) {
+            Import import_ = tbl_DetailImportForm.getSelectionModel().getSelectedItem();
+            int sequence = ShowYesNoAlert("xoá " +import_.getProductName());
+            if(sequence==JOptionPane.YES_OPTION) {
+                tbl_DetailImportForm.getItems().remove(import_);
+                if(tbl_DetailImportForm.getItems().isEmpty()) lbl_noContent.setVisible(true); else  lbl_noContent.setVisible(false);
+            } else {}
         }
     }
-
 
     private static String normalizeString(String str) {
         return Normalizer.normalize(str, Normalizer.Form.NFD)
@@ -469,10 +491,20 @@ public class ImportController implements Initializable {
             panelImport.setVisible(true);
             tp_ImportHistory.setVisible(false);
             btnShowHistory.setText("Xem lịch sử");
+            hboxFind.setVisible(true);
+            tp_left.setLayoutY(7);
+            tp_left.setPrefHeight(252);
+            tp_left.setText("Danh sách nhập");
+            tbl_DetailImportForm.setPrefHeight(212);
         } else {
             panelImport.setVisible(false);
             tp_ImportHistory.setVisible(true);
             btnShowHistory.setText("Quay về nhập hàng");
+            hboxFind.setVisible(false);
+            tp_left.setLayoutY(312);
+            tp_left.setPrefHeight(460);
+            tp_left.setText("Chi tiết nhập hàng");
+            tbl_DetailImportForm.setPrefHeight(424);
         }
     }
     private boolean isValidInput(String input) {
