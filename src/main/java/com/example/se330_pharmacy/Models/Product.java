@@ -21,7 +21,10 @@ public class Product {
 
     public Product() {
     }
-
+    @Override
+    public String toString() {
+        return productCoef + " "+ productSmallUnit +"/"+ productBigUnit;
+    }
     public Product(int productId, String productName, int productImport, String productDescription, String productOrigin, String productType, String productBigUnit, String productSmallUnit, int productSmallUnitQuantities, int productBigUnitQuantities) {
         this.productId = productId;
         this.productName = productName;
