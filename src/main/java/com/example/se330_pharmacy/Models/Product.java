@@ -34,6 +34,16 @@ public class Product {
         this.productBigUnitQuantities = productBigUnitQuantities;
     }
 
+    public Product(int productId, String productName, long productImportPrice, String productDescription, String productOrigin, String productType, String productBigUnit) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productImportPrice = productImportPrice;
+        this.productDescription = productDescription;
+        this.productOrigin = productOrigin;
+        this.productType = productType;
+        this.productBigUnit = productBigUnit;
+    }
+
     public int getProductId() {
         return productId;
     }
@@ -120,4 +130,5 @@ public class Product {
     public void setProductBigUnitQuantities(int productBigUnitQuantities) {
         this.productBigUnitQuantities = productBigUnitQuantities;
     }
+
 }

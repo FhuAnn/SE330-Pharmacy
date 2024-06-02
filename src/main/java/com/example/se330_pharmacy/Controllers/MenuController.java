@@ -77,7 +77,9 @@ public class MenuController {
     @FXML
     void btnImportClicked(ActionEvent event) throws IOException {
         titleTextField.setText("Nhập hàng");
-        setMainPane("/com/example/se330_pharmacy/Fxml/Import.fxml");
+        FXMLLoader loader = setMainPane("/com/example/se330_pharmacy/Fxml/Import.fxml");
+        ImportController importController = loader.getController();
+        importController.InitData(employee);
     }
 
     @FXML
