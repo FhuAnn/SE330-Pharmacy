@@ -131,6 +131,11 @@
     -fx-text-fill: #ffffff;
     -fx-focus-color: transparent;
 }
+#table-view {
+    -fx-border-radius: 0px 0px 10px 10px;
+    -fx-background-radius: 0px 0px 10px 10px;
+    -fx-effect: drop;
+}
 /*tabpane*/
 .tab-pane
 {
@@ -335,12 +340,6 @@
     -fx-cursor: hand;
 }
 
-#edit:pressed
-{
-    --fx-padding: 6 10 9 10 ;
-    -fx-background-insets: 1 0 0 0, 1 0 1 0 , 1 0 2 0, 1 0 3 0;
-    -fx-effect: dropshadow(gaussian,rgba(0,0,0,0),4,0,0,1);
-}
 
 /*input*/
 /*inputfield*/
@@ -394,4 +393,10 @@
     -fx-border-color: #9E9DA3;
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 15px;
+}
+.panelSupplier {
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-color: rgba(194, 194, 194, 0.4);
+    -fx-effect: dropshadow(three-pass-box, #868686,5,0.3,1,1);
 }

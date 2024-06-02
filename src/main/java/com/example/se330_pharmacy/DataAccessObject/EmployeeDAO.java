@@ -58,7 +58,7 @@ public class EmployeeDAO {
         try
         {
             //thực thi truy vấn và lấy kết qua
-            ResultSet resultSet = connectDB.getData(query);
+            ResultSet resultSet = connectDB.getResultSet(query);
             //kiểm tra kq trả về
             if (resultSet.next()) {
                 //tìm thấy người dùng có user và password khớp
