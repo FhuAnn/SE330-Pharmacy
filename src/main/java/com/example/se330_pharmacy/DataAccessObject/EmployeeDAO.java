@@ -50,7 +50,7 @@ public class EmployeeDAO {
     }
     public int CheckValidate(String username, String password) {
         password = GetHash(password);
-        String query = "SELECT * FROM employee WHERE username = '"+username+"' AND (defaultpassword = '"+password+"' OR password ='"+password+"')";
+        String query = STR."SELECT * FROM employee WHERE username = '\{username}' AND (defaultpassword = '\{password}' OR password ='\{password}')";
         try
         {
             //thực thi truy vấn và lấy kết qua

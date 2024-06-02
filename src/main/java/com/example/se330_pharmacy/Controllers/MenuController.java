@@ -68,8 +68,10 @@ public class MenuController {
 
     @FXML
     void btnExportClicked(ActionEvent event) throws IOException {
-        setMainPane("/com/example/se330_pharmacy/Fxml/Export.fxml");
-        titleTextField.setText("Export");
+        titleTextField.setText("Xuất hàng");
+        FXMLLoader loader = setMainPane("/com/example/se330_pharmacy/Fxml/Export.fxml");
+        ExportController exportController = loader.getController();
+        exportController.initData(employee);
     }
 
     @FXML
