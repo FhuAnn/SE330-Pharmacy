@@ -1,6 +1,7 @@
 package com.example.se330_pharmacy.Models;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class Receipt {
     int receipt_id;
@@ -8,8 +9,8 @@ public class Receipt {
     int personcharge_id;
     int payslip_id;
     String content;
-    Date createDate;
-    Double totalPay;
+    LocalDateTime createDate;
+    int totalPay;
     String note;
     String status;
     //
@@ -21,7 +22,7 @@ public class Receipt {
     public Receipt() {
     }
 
-    public Receipt(int receipt_id, int employee_id,int personcharge_id, String content, Date createDate, Double totalPay, String note, String status,int payslip_id) {
+    public Receipt(int receipt_id, int employee_id,int personcharge_id, String content, LocalDateTime createDate, int totalPay, String note, String status,int payslip_id) {
         this.receipt_id = receipt_id;
         this.employee_id = employee_id;
         this.content = content;
@@ -57,19 +58,19 @@ public class Receipt {
         this.content = content;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public Double getTotalPay() {
+    public int getTotalPay() {
         return totalPay;
     }
 
-    public void setTotalPay(Double totalPay) {
+    public void setTotalPay(int totalPay) {
         this.totalPay = totalPay;
     }
 

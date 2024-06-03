@@ -71,7 +71,7 @@ public class AddReceiptController implements Initializable {
             lbl_viTri.setText(receipt.getViTriNhanVien());
 
             lbl_createDate.setText(receipt.getCreateDate().toString());
-            lbl_totalPay.setText(receipt.getTotalPay().toString());
+            lbl_totalPay.setText(String.valueOf(receipt.getTotalPay()));
             ta_content.setText(receipt.getContent());
             cbStatusReceipt.setDisable(false);
             ta_content.setDisable(true);
@@ -116,12 +116,10 @@ public class AddReceiptController implements Initializable {
                 Receipt receipt = new Receipt();
                 receipt.setEmployee_id(payslip.getEmployee_id());
                 receipt.setContent(ta_content.getText());
-                receipt.setCreateDate(Date.valueOf(LocalDate.now()));
                 receipt.setTotalPay(payslip.getTotalPay());
                 receipt.setNote(ta_note.getText());
                 receipt.setStatus(cbStatusReceipt.getValue());
                 receipt.setPersoncharge_id(idCharger);
-                receipt.setPayslip_id(payslip.getPayslip_id());
                 int receipt_id_return = receiptDAO.AddReceiptToDB(receipt);
                 if(receipt_id_return>0) {
                     if(payslipDAO.UpdatePayslipCompleted(payslip.getPayslip_id(),receipt_id_return)) {
@@ -136,9 +134,9 @@ public class AddReceiptController implements Initializable {
                     receipt.setNote(ta_note.getText());
                     receipt.setStatus(cbStatusReceipt.getValue());
                     if(receiptDAO.UpdateReceiptToDB(receipt)) {
+                        receiptController_init.LoadListReceipt();
                         Model.getInstance().getViewFactory().closeStage((Stage) btnExport.getScene().getWindow());
                         showAlert("Warning","Cập nhật dữ liệu thành công");
-
                     } else {
                         showAlert("Warning","Error");
                     }
