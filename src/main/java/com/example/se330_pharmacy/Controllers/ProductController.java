@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -155,7 +156,21 @@ public class ProductController implements Initializable {
                 tf_coef.setText("2");
             }
         });
+        tfFind.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                String searchString = tfFind.getText().trim();
+                if (isValidInput(searchString)) {
+                    SearchProduct(searchString);
+                }
+            }
+        });
+        tfFind.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue.isEmpty()) {
+                tblProduct.setItems(productList);
+            }
+        });
     }
+
 
     private void FillTableToTextField(Product product) {
         tfProductId.setText(String.valueOf(product.getProductId()));
@@ -266,15 +281,17 @@ public class ProductController implements Initializable {
             btnEdit.setText("Lưu");
             btnEdit.setId("save");
             cbUnit.setVisible(true);
-            lblValue.setText("Giá trị");
+/*            lblValue.setText("Giá trị");
             lblSmallUnit.setText("đơn vị bé");
             lblOn.setText("trên");
-            lblBigUnit.setText("đơn vị lớn");
+            lblBigUnit.setText("đơn vị lớn");*/
             hboxUnit.setLayoutX(40);
             hboxUnit.setLayoutY(255);//225
-            lblValue.setVisible(true);
-            lblBigUnit.setVisible(true);
-            lblOn.setVisible(true);
+            if(!lblSmallUnit.getText().equals(lblBigUnit.getText())) {
+                lblValue.setVisible(true);
+                lblBigUnit.setVisible(true);
+                lblOn.setVisible(true);
+            }
         } else {
             if (checkInformationEdit()) {
                 int sequence = ShowYesNoAlert("sửa thông tin sản phẩm "+tfProductName.getText());
@@ -355,8 +372,7 @@ public class ProductController implements Initializable {
     }
 
     private boolean checkInformationEdit() {
-        return !tfProductId.getText().isEmpty() &&
-                !tfProductName.getText().isEmpty() &&
+        return  !tfProductName.getText().isEmpty() &&
                 !tfProductPrice.getText().isEmpty() &&
                 !tfProductDescription.getText().isEmpty() &&
                 !tfProductOrigin.getText().isEmpty() &&
@@ -516,7 +532,14 @@ public class ProductController implements Initializable {
             }
         }
     }
-
+    private void SearchProduct(String searchString) {
+        ObservableList<Product> lists = productDAO.searchProduct(searchString);
+        tblProduct.setItems(lists);
+    }
+    private boolean isValidInput(String input) {
+        String regex = ".*[a-zA-Z\u00C0-\u1FFF\u2C00-\uD7FF]+.*";
+        return input.matches(regex);
+    }
     private boolean checkInformationUnit() {
         return !tf_coef.getText().isEmpty() && ((!tf_smallUnit.getText().isEmpty() &&
                 !tf_bigUnit.getText().isEmpty())||(!tf_bigUnit.isVisible()&&!tf_smallUnit.getText().isEmpty()));

@@ -44,6 +44,46 @@ public class ProductDAO {
         return products;
     }
 
+    public ObservableList<Product> searchProduct(String searchString) {
+        ObservableList<Product> products = FXCollections.observableArrayList();
+        String query = "SELECT product_id , productname, price_import, product.small_unit , unit.small_unit, " +
+                "product.big_unit, unit.big_unit, unit.value, description, origin, pty.typename  FROM product,unit, producttype pty WHERE product.unit_id = unit.unit_id AND product.producttype_id = pty.producttype_id " +
+                "AND unaccent(productname) ILIKE unaccent(?) ";
+        boolean isIdSearch = false;
+        try {
+            int id = Integer.parseInt(searchString);
+            query += " AND pro.product_id = ?";
+            isIdSearch = true;
+        } catch(NumberFormatException e){
+        }
+
+        try (PreparedStatement statement = connectDB.getPreparedStatement(query)) {
+            statement.setString(1,"%"+searchString+"%");
+            if (isIdSearch) {
+                statement.setInt(2, Integer.parseInt(searchString));
+            }
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Product product = new Product();
+                product.setProductId(rs.getInt(1));
+                product.setProductName(rs.getString(2));
+                product.setProductImportPrice(rs.getInt(3));
+                product.setProductSmallUnit(rs.getString(5));
+                product.setProductSmallUnitQuantities(rs.getInt(4));
+                product.setProductBigUnit(rs.getString(7));
+                product.setProductBigUnitQuantities(rs.getInt(6));
+                product.setProductCoef(rs.getInt(8));
+                product.setProductDescription(rs.getString(9));
+                product.setProductOrigin(rs.getString(10));
+                product.setProductType(rs.getString(11));
+                products.add(product);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
     public List<String> getProductTypes() {
         List<String> productTypes = new ArrayList<>();
         String query = "SELECT typename FROM producttype";
@@ -57,9 +97,6 @@ public class ProductDAO {
         }
         return productTypes;
     }
-
-
-
 
     public int getTypeString(String name) {
         String sqlQuery = "SELECT producttype_id FROM producttype WHERE typename = ?";
@@ -163,29 +200,4 @@ public class ProductDAO {
         }
         return -1; // Or handle the case where no data is found
     }
-
-    public ResultSet getProductUnit() {
-        ConnectDB connect = new ConnectDB();
-        String sqlQuery = "SELECT CONCAT(Value, ' ', Unit_Namelv2, '/', Unit_Namelv1) AS Unit, Value AS Coef FROM Unit";
-        return connect.getData(sqlQuery);
-    }
-
-    public boolean addUnitToDB(String big, String small, String coef) {
-        ConnectDB connect = new ConnectDB();
-        String sql = "INSERT INTO Unit (Value, Unit_Namelv1, Unit_Namelv2) VALUES (?, ?, ?)";
-        try (Connection connection = connect.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, Integer.parseInt(coef));
-            ps.setString(2, big);
-            ps.setString(3, small);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
-
-
 }
