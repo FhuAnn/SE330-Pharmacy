@@ -1,5 +1,13 @@
 package com.example.se330_pharmacy.Controllers;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -9,6 +17,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -18,8 +29,14 @@ import com.example.se330_pharmacy.Models.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import com.itextpdf.text.Font;
+
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.text.Normalizer;
 import java.time.LocalDate;
@@ -81,6 +98,8 @@ public class ImportController implements Initializable {
     Supplier supplierBeforeClicked;
     @FXML
     ImageView imgLogo;
+    private Employee employee;
+
     public void InitData(Employee _employee){
         employee_init = _employee;
     }
@@ -393,12 +412,97 @@ public class ImportController implements Initializable {
                 if(AddDetailImportToDB(id)){
                     if(CreatePaySlip(id,totalPay)) {
                         showAlert("Warning","Thông tin nhập hàng được ghi nhận!");
+                        printBill();
                         clearInformation();
                         tbl_DetailImportForm.getItems().clear();
                     }
                 } else System.out.println("Error");
             }
         }
+    }
+
+    private void printBill() {
+        Document document = new Document();
+
+        String fileName = "Import_Bill_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".pdf";
+        String directoryPath = "Bill/";
+        String filePath = directoryPath + fileName;
+
+        try {
+            // Create directories if they don't exist
+            File directory = new File(directoryPath);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+
+            String fontPath = "notosans-regular.ttf";
+            BaseFont baseFont = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+            Font boldFont = new Font(baseFont, 15, Font.BOLD);
+            Font regularFont = new Font(baseFont, 13, Font.BOLD);
+
+            document.add(new Paragraph("Green Pharmacy", boldFont));
+            document.add(new Paragraph("Address: 136, Linh Trung, Thủ Đức, TP Thủ Đức", regularFont));
+            document.add(new Paragraph("Phone: 1900 1555           Employee: " + String.valueOf(employee.getEmployeeId()), regularFont));
+            document.add(new Paragraph("IMPORT BILL", boldFont));
+
+            PdfPTable table = new PdfPTable(5);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10f);
+
+            float[] columnWidths = {2f, 1f, 1f, 1f, 1f};
+            table.setWidths(columnWidths);
+
+            // Table headers
+            table.addCell(new PdfPCell(new Phrase("Product ID", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Product Name", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Price", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Quantity", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Total", boldFont)));
+
+            // Table data
+            for (Import product : tbl_DetailImportForm.getItems()) {
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(product.getProductId()), regularFont)));
+                table.addCell(new PdfPCell(new Phrase(product.getProductName(), regularFont)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(product.getImportPrice()), regularFont)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(product.getQuantity()), regularFont)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(product.getTotal()), regularFont)));
+            }
+
+            document.add(table);
+
+            float total = getTotalImport();
+            document.add(new Paragraph("Total: " + String.format("%,.0f", total), boldFont));
+            document.add(new Paragraph("Date: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), regularFont));
+
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to generate PDF bill");
+        } finally {
+            document.close();
+
+            // Open the generated PDF file
+            try {
+                File file = new File(filePath);
+                Desktop.getDesktop().open(file);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                showAlert("Error", "Failed to open PDF file");
+            }
+        }
+    }
+
+
+    private float getTotalImport() {
+        float total = 0;
+        for (Import product : tbl_DetailImportForm.getItems()) {
+            total += product.getTotal();
+        }
+        return total;
     }
 
     private boolean CreatePaySlip(int id,int totalPay) {
