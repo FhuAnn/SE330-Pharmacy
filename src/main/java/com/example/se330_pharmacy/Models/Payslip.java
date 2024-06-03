@@ -1,14 +1,16 @@
 package com.example.se330_pharmacy.Models;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Payslip {
     int payslip_id;
     int receipt_id;
     int employee_id;
     String content;
-    Date createDate;
-    Double totalPay;
+    LocalDateTime createDate;
+    int totalPay;
     String note;
     String status;
 
@@ -18,7 +20,7 @@ public class Payslip {
     public Payslip() {
     }
 
-    public Payslip(int payslip_id, int receipt_id, int employee_id, String tenNhanVien, String content, Date createDate, Double totalPay, String note, String status) {
+    public Payslip(int payslip_id, int receipt_id, int employee_id, String tenNhanVien, String content, LocalDateTime createDate, int totalPay, String note, String status) {
         this.payslip_id =payslip_id;
         this.receipt_id = receipt_id;
         this.employee_id = employee_id;
@@ -68,19 +70,19 @@ public class Payslip {
         this.content = content;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public Double getTotalPay() {
+    public int getTotalPay() {
         return totalPay;
     }
 
-    public void setTotalPay(Double totalPay) {
+    public void setTotalPay(int totalPay) {
         this.totalPay = totalPay;
     }
 

@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -27,7 +28,7 @@ import java.util.ResourceBundle;
 
 public class AddPayslipController implements Initializable { // su dung chung cho them va sua
 
-    public TextField tf_content;
+    public TextArea ta_content;
     public TextField tf_tongTra;
     public DatePicker dp_date;
     public ComboBox<String> cbStatus;
@@ -56,7 +57,7 @@ public class AddPayslipController implements Initializable { // su dung chung ch
             tf_phieuLuongId.setText(String.valueOf(payslip_init.getPayslip_id()));
             tf_maNhanVien.setText(String.valueOf(payslip_init.getEmployee_id()));
             tf_tongTra.setText(String.valueOf(payslip_init.getTotalPay()));
-            tf_content.setText(payslip_init.getContent());
+            ta_content.setText(payslip_init.getContent());
             tf_ghiChu.setText(payslip_init.getNote());
             cbStatus.setValue(payslip_init.getStatus());
             dp_date.setValue(payslip_init.getCreateDate().toLocalDate());
@@ -65,6 +66,7 @@ public class AddPayslipController implements Initializable { // su dung chung ch
             tf_phieuLuongId.setVisible(false);
             dp_date.setValue(LocalDate.now());
             btnAdd.setText("Thêm");
+            ta_content.setText("Thanh toán lương tháng ?");
         }
     }
 
@@ -74,11 +76,11 @@ public class AddPayslipController implements Initializable { // su dung chung ch
         SetAddListener();
     }
     private void addListenerTextChanged(TextField...tfs) {
-        for(TextField textField : tfs)
+        for(TextField tf : tfs)
         {
-            textField.textProperty().addListener((observable,oldValues,newValue)->{
+            tf.textProperty().addListener((observable,oldValues,newValue)->{
                 if (!newValue.matches("\\d*")) {
-                    textField.setText(newValue.replaceAll("[^\\d]", ""));
+                    tf.setText(newValue.replaceAll("[^\\d]", ""));
                     showAlert("Warning","Chỉ được nhập số !");
                     }
             });
@@ -103,22 +105,21 @@ public class AddPayslipController implements Initializable { // su dung chung ch
 
     private boolean CheckFilled() {
         if(tf_maNhanVien.getText().isEmpty()) return false;
-        if(tf_content.getText().isEmpty()) return false;
+        if(ta_content.getText().isEmpty()) return false;
         return true;
     }
 
     private void AddToDatabase() {
-        Payslip payslip = new Payslip();
-        payslip.setEmployee_id(Integer.parseInt(tf_maNhanVien.getText()));
-        payslip.setContent(tf_content.getText());
-        payslip.setCreateDate(Date.valueOf(LocalDate.now()));
-        payslip.setTotalPay(Double.parseDouble(tf_tongTra.getText()));
-        payslip.setStatus("InComplete");
-        payslip.setNote(tf_ghiChu.getText());
         if(payslip_init==null) {
             int sequence =  ShowYesNoAlert("Thêm phiếu lương ?");
             if(sequence == JOptionPane.YES_OPTION)
             {
+                Payslip payslip = new Payslip();
+                payslip.setEmployee_id(Integer.parseInt(tf_maNhanVien.getText()));
+                payslip.setContent(ta_content.getText());
+                payslip.setTotalPay(Integer.parseInt(tf_tongTra.getText()));
+                payslip.setStatus("InComplete");
+                payslip.setNote(tf_ghiChu.getText());
                 if(payslipDAO.AddPaySlip(payslip)){
                     showAlert("Warning","Thêm vào cơ sở dữ liệu thành công!");
                     paySlipController.LoadListPayslip();

@@ -44,7 +44,7 @@ public class ReceiptController implements Initializable {
         LoadListReceipt();
     }
 
-    private void LoadListReceipt() {
+    public void LoadListReceipt() {
         receipts=receiptDAO.GetReceiptsData();
         tblReceipt.setItems(receipts);
         if(receipts.isEmpty())
@@ -61,6 +61,7 @@ public class ReceiptController implements Initializable {
                 cbStatusReceipt.setValue(null);
                 FilterByDate();
                 FilterByStatus();
+                LoadListReceipt();
             }
         });
         dateTimePickerReceipt.setOnAction(new EventHandler<ActionEvent>() {
