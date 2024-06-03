@@ -94,16 +94,16 @@
                     </content>
                 </TitledPane>
             </children></Pane>
-        <TitledPane fx:id="tp_ImportHistory" animated="false" collapsible="false" layoutX="910.0" layoutY="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="439.0" text="Lịch sử nhập hàng" visible="false">
+        <TitledPane fx:id="tp_ImportHistory" animated="false" collapsible="false" layoutX="10.0" layoutY="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0" prefWidth="892.0" text="Lịch sử nhập hàng" visible="false">
             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="214.0" prefWidth="854.0">
                     <children>
-                        <TableView fx:id="tbl_historyImport" layoutX="-3.0" layoutY="1.0" prefHeight="765.0" prefWidth="439.0">
+                        <TableView fx:id="tbl_historyImport" layoutX="-3.0" layoutY="1.0" prefHeight="215.0" prefWidth="892.0">
                             <columns>
-                                <TableColumn fx:id="col_idImport" minWidth="44.666653871536255" prefWidth="60.0" text="Mã" />
-                                <TableColumn fx:id="col_employnameImport" minWidth="121.99995422363281" prefWidth="180.0" text="Người nhập" />
-                                <TableColumn fx:id="col_supplierImport" minWidth="126.66665649414062" prefWidth="180.0" text="Nhà cung cấp" />
-                                <TableColumn fx:id="col_dateImport" minWidth="104.6666259765625" prefWidth="180.0" text="Ngày" />
+                                <TableColumn fx:id="col_idImport" minWidth="44.666653871536255" prefWidth="98.66665649414062" text="Mã" />
+                                <TableColumn fx:id="col_employnameImport" minWidth="121.99995422363281" prefWidth="214.66668701171875" text="Người nhập" />
+                                <TableColumn fx:id="col_supplierImport" minWidth="126.66665649414062" prefWidth="359.3333740234375" text="Nhà cung cấp" />
+                                <TableColumn fx:id="col_dateImport" minWidth="95.333251953125" prefWidth="218.6666259765625" text="Ngày" />
                             </columns>
                         </TableView>
                     </children>
@@ -134,11 +134,11 @@
                                 <TableColumn fx:id="col_totalDetail" minWidth="120.0" prefWidth="156.0" text="Tổng" />
                             </columns>
                         </TableView>
-                  <Label fx:id="lbl_noContent" layoutX="325.0" layoutY="100.0" prefHeight="27.0" prefWidth="233.0" style="-fx-background-color: #ffffff; -fx-alignment: center;" text="Danh sách nhập trống">
-                     <font>
-                        <Font name="Segoe UI Semibold" size="18.0" />
-                     </font>
-                  </Label>
+                        <Label fx:id="lbl_noContent" layoutX="325.0" layoutY="100.0" prefHeight="27.0" prefWidth="233.0" style="-fx-background-color: #ffffff; -fx-alignment: center;" text="Danh sách nhập trống">
+                            <font>
+                                <Font name="Segoe UI Semibold" size="18.0" />
+                            </font>
+                        </Label>
                     </children>
                 </AnchorPane>
             </content>
