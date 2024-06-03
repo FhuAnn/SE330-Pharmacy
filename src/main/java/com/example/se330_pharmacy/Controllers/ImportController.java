@@ -102,7 +102,6 @@ public class ImportController implements Initializable {
         loadSupplier();
     }
 
-
     private void SetUp() {
         panelResultSupplier.setVisible(false);
 
@@ -232,6 +231,18 @@ public class ImportController implements Initializable {
         ObservableList<Supplier> listResult = importDAO.getSupplierIdByName(searchString);
         tbl_Supplier.setItems(listResult);
     }
+    /*private void SearchProduct(String searchString) {
+        String lowerCase = normalizeString(searchString.toLowerCase());
+        ObservableList<Product> users = tbl_ProductTable.getItems();
+        ObservableList<Product> listResult = FXCollections.observableArrayList(
+                users.stream()
+                        .filter(product ->
+                                normalizeString(String.valueOf(product.getProductId()).toLowerCase()).startsWith(lowerCase) ||
+                                        normalizeString(product.getProductName().toLowerCase()).contains(lowerCase))
+                        .collect(Collectors.toList())
+        );
+        tbl_ProductTable.setItems(listResult);
+    }*/
     private void FillImportTableToTextField() {
         tfProductQuantities.setDisable(true);
         Import importProduct = tbl_DetailImportForm.getSelectionModel().getSelectedItem();
@@ -391,11 +402,10 @@ public class ImportController implements Initializable {
             int id = importDAO.addImportData(import_);
             if(id>0) {
                 if(AddDetailImportToDB(id)){
-                    if(CreatePaySlip(id,totalPay)) {
+                    if(CreatePaySlip(id,totalPay))
                         showAlert("Warning","Thông tin nhập hàng được ghi nhận!");
-                        clearInformation();
-                        tbl_DetailImportForm.getItems().clear();
-                    }
+                    clearInformation();
+                    tbl_DetailImportForm.getItems().clear();
                 } else System.out.println("Error");
             }
         }

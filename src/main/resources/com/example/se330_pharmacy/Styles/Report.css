@@ -330,3 +330,26 @@ Customize left and right arrow
     -fx-font-size: 15px;
     -fx-font-family: "Segoe UI Semibold";
 }
+.lbl_panel {
+    -fx-font-size: 18px;
+    -fx-font-family: "Segoe UI Semibold";
+}
+.pnl {
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+#left {
+    -fx-background-color: linear-gradient(to right,#21617C,#2F8D95);
+    -fx-effect: dropshadow(three-pass-box, rgb(5, 47, 66), 5, 0.2, 0, 2);
+}
+#center {
+    -fx-background-color: linear-gradient(to right,#6FA426,#8DC936);
+    -fx-effect: dropshadow(three-pass-box, rgb(57, 100, 5), 5, 0.2, 0, 2);
+}
+#center .text {
+    -fx-text-fill: #000000;
+}
+#right {
+    -fx-background-color: linear-gradient(to right,#8C60F6,#D099F4);
+    -fx-effect: dropshadow(three-pass-box, rgb(50, 11, 143), 5, 0.2, 0, 2);
+}
