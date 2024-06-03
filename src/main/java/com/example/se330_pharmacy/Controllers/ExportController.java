@@ -2,10 +2,7 @@ package com.example.se330_pharmacy.Controllers;
 
 import com.example.se330_pharmacy.DataAccessObject.ExportDAO;
 import com.example.se330_pharmacy.DataAccessObject.ProductDAO;
-import com.example.se330_pharmacy.Models.CartItem;
-import com.example.se330_pharmacy.Models.Employee;
-import com.example.se330_pharmacy.Models.ExportItem;
-import com.example.se330_pharmacy.Models.Product;
+import com.example.se330_pharmacy.Models.*;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.BaseFont;
@@ -23,6 +20,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.awt.*;
@@ -126,6 +124,53 @@ public class ExportController implements Initializable {
 
     private ObservableList<ExportItem> exportList;
 
+    @FXML
+    private AnchorPane historyExportPane;
+
+    @FXML
+    private Button btnBackToExport;
+
+    @FXML
+    private TableView<ExportForm> tvExportHistory;
+
+    @FXML
+    private TableView<DetailExport> tvDetailExport;
+    @FXML
+    private AnchorPane ExportPane;
+
+    @FXML
+    private TableColumn<ExportForm, String> tcExportDate;
+
+    @FXML
+    private TableColumn<ExportForm, String> tcExportEmployee;
+
+    @FXML
+    private TableColumn<ExportForm, Integer> tcExportId;
+
+    @FXML
+    private TableColumn<ExportForm, Integer> tcExportPrice;
+
+    @FXML
+    private TableColumn<DetailExport, Integer> tcExportProductId;
+
+    @FXML
+    private TableColumn<DetailExport, String> tcExportProductName;
+
+    @FXML
+    private TableColumn<DetailExport, Long> tcExportProductTotal;
+
+    @FXML
+    private TableColumn<DetailExport, Integer> tcExportQuantity;
+
+    @FXML
+    private TableColumn<ExportForm, String> tcExportReason;
+
+    @FXML
+    private TableColumn<ExportForm, Long> tcExportTotal;
+
+    @FXML
+    private TableColumn<DetailExport, String> tcExportUnit;
+
     private boolean isEdit = false;
     private ExportItem itemToDelete;
     private Employee _employee;
@@ -135,6 +180,17 @@ public class ExportController implements Initializable {
         _employee = employee;
     }
 
+    @FXML
+    void btnHistoryClicked(MouseEvent event) {
+        ExportPane.setVisible(false);
+        historyExportPane.setVisible(true);
+        loadDetailExport();
+    }
+    @FXML
+    void btnBackToExportClicked(MouseEvent event) {
+        ExportPane.setVisible(true);
+        historyExportPane.setVisible(false);
+    }
 
     @FXML
     void btnAddClicked(MouseEvent event) {
@@ -261,7 +317,7 @@ public class ExportController implements Initializable {
 
             document.add(new Paragraph("Green Pharmacy", boldFont));
             document.add(new Paragraph("Address: 136, Linh Trung, Thủ Đức, TP Thủ Đức", regularFont));
-            document.add(new Paragraph(STR."Phone: 1900 1555           Employee: \{_employee.getEmloyeeId()},  Name: \{_employee.getEmployName()}", regularFont));
+            document.add(new Paragraph(STR."Phone: 1900 1555           Employee: \{_employee.getEmployeeId()},  Name: \{_employee.getEmployeeName()}", regularFont));
             document.add(new Paragraph("EXPORT FORM", boldFont));
 
             PdfPTable table = new PdfPTable(4);
@@ -330,7 +386,7 @@ public class ExportController implements Initializable {
     }
 
     private boolean addDataToDB() {
-        String id = exportDAO.addData(STR."\{_employee.getEmloyeeId()}",taExportReason.getText(),textTotalValue.getText().split(" ")[0]);
+        String id = exportDAO.addData(STR."\{_employee.getEmployeeId()}",taExportReason.getText(),textTotalValue.getText().split(" ")[0]);
         if (id != null && !tvExportForm.getItems().isEmpty()) {
             ObservableList<ExportItem> rows = tvExportForm.getItems();
 
@@ -384,6 +440,7 @@ public class ExportController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         exportList = FXCollections.observableArrayList();
+        setUpHistoryExportRowClicked();
         bindExportItemData();
         setUpProductTable();
         setUpProductTableRowClicked();
@@ -391,6 +448,32 @@ public class ExportController implements Initializable {
         setUpProductSearch();
         tfProductQuantities.textProperty().addListener((observable, oldValue, newValue) -> updateTotalValue());
         tfProductPrice.textProperty().addListener((observable, oldValue, newValue) -> updateTotalValue());
+    }
+
+    private void setUpHistoryExportRowClicked() {
+        tvExportHistory.setOnMouseClicked(event -> {
+            tcExportProductId.setCellValueFactory(new PropertyValueFactory<>("exportProductId"));
+            tcExportProductName.setCellValueFactory(new PropertyValueFactory<>("exportProductName"));
+            tcExportPrice.setCellValueFactory(new PropertyValueFactory<>("exportProductPrice"));
+            tcExportQuantity.setCellValueFactory(new PropertyValueFactory<>("exportProductQuan"));
+            tcExportUnit.setCellValueFactory(new PropertyValueFactory<>("exportProductUnit"));
+            tcExportProductTotal.setCellValueFactory(new PropertyValueFactory<>("exportTotal"));
+            if(event.getClickCount() == 2) {
+                ExportForm selected = tvExportHistory.getSelectionModel().getSelectedItem();
+                tvDetailExport.setItems(exportDAO.getExportById(selected.getExportFormId()));
+
+            }
+        });
+    }
+
+    private void loadDetailExport() {
+        tcExportId.setCellValueFactory(new PropertyValueFactory<>("exportFormId"));
+        tcExportEmployee.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
+        tcExportReason.setCellValueFactory(new PropertyValueFactory<>("exportReason"));
+        tcExportDate.setCellValueFactory(new PropertyValueFactory<>("exportDate"));
+        tcExportTotal.setCellValueFactory(new PropertyValueFactory<>("totalMoney"));
+
+        tvExportHistory.setItems(exportDAO.getAllExportForm());
     }
 
     private void setUpExportItemRowClicked() {
