@@ -13,10 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ExportDAO {
     final private ConnectDB connectDB = ConnectDB.getInstance();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public ExportDAO() {
 
@@ -131,5 +133,24 @@ public class ExportDAO {
 
         return detailExports;
     }
+
+    public boolean autoCreateReceipt(int employeeId, String content, int totalPay, String status, String note) {
+            LocalDateTime dateTime = LocalDateTime.parse(LocalDateTime.now().format(formatter),formatter);
+            String sqlQuery = "INSERT INTO receipt (employee_id, content, createDate, totalpay, status, note) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+            try {
+                PreparedStatement preparedStatement = connectDB.databaseLink.prepareStatement(sqlQuery);
+                preparedStatement.setInt(1, employeeId);
+                preparedStatement.setString(2, content);
+                preparedStatement.setObject(3, dateTime);
+                preparedStatement.setInt(4, totalPay);
+                preparedStatement.setString(5, status);
+                preparedStatement.setString(6, note);
+                return preparedStatement.executeUpdate() > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
 
 }

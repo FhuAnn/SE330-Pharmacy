@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.text.Normalizer;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -301,6 +302,8 @@ public class ExportController implements Initializable {
 
         return noSpaces;
     }
+
+
     private void printExportForm() throws IOException {
         Document document = new Document();
 
@@ -389,13 +392,16 @@ public class ExportController implements Initializable {
         String id = exportDAO.addData(STR."\{_employee.getEmployeeId()}",taExportReason.getText(),textTotalValue.getText().split(" ")[0]);
         if (id != null && !tvExportForm.getItems().isEmpty()) {
             ObservableList<ExportItem> rows = tvExportForm.getItems();
-
+            int sum = 0;
             for (ExportItem row : rows) {
                 if (row.getExportItemId() != 0) {
+                    sum+= row.getExportItemTotal();
                     exportDAO.addDetailData(row.getExportItemId(), id, row.getExportItemQuantity(), row.getExportItemPrice(), row.getExportItemTotal());
                     exportDAO.updateProduct(row.getExportItemQuantity(), row.getExportItemId());
                 }
             }
+            CreateReceipt(_employee.getEmployeeId(),sum);
+
             message = "Đã tạo biểu mẫu xuất thành công. Bạn có muốn in mẫu này?";
             return true;
         } else {
@@ -577,4 +583,8 @@ public class ExportController implements Initializable {
         });
     }
 
+    private boolean CreateReceipt(int id,int totalPay) {
+        String content ="Export ID: " + id, status = "InComplete", note = LocalDate.now().toString();
+        return exportDAO.autoCreateReceipt(_employee.getEmployeeId(),content,totalPay,status,note);
+    }
 }

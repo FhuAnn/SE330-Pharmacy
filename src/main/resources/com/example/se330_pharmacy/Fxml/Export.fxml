@@ -34,7 +34,7 @@
                   </AnchorPane>
                </content>
             </TitledPane>
-            <TitledPane  animated="false" collapsible="false" layoutX="616.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="685.0" text="Chi tiết mẫu xuất">
+            <TitledPane animated="false" collapsible="false" layoutX="616.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="685.0" text="Chi tiết mẫu xuất">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
