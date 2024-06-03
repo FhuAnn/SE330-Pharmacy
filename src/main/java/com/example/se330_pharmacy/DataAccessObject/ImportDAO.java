@@ -36,33 +36,6 @@ public class ImportDAO {
         }
         return suppliers;
     }
-
-    public ObservableList<Product> getProductData() {
-        ObservableList<Product> listProduct = FXCollections.observableArrayList();
-        String sqlQuery = "SELECT pro.product_id , pro.productname , pro.price_import, pro.description, pro.origin, uni.big_unit, type.typename FROM product pro, producttype type, unit uni " +
-                "WHERE pro.producttype_id = type.producttype_id AND uni.unit_id = pro.unit_id";
-        try(PreparedStatement statement = connectDB.getPreparedStatement(sqlQuery))
-        {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Product product = new Product(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getInt(3),
-                        resultSet.getString(4),
-                        resultSet.getString(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7)
-                );
-                listProduct.add(product);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return listProduct;
-    }
-
     public ObservableList<Product>  searchProductData(String search) {
         ObservableList<Product> products = FXCollections.observableArrayList();
         String sqlQuery = "SELECT pro.product_id , pro.productname , pro.price_import, pro.description, pro.origin, uni.big_unit, type.typename FROM product pro, producttype type, unit uni " +

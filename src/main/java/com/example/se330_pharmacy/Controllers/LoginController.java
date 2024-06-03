@@ -99,10 +99,12 @@ public class LoginController implements Initializable {
         paneProgress.toFront();
         paneProgress.setVisible(true);
         new Thread(() -> {
-            String username_result = null;
-            username_result = employeeDAO.getUsername(tf_username_forgot.getText().toString());
+            String username_result;
+            username_result = employeeDAO.getUsername(tf_username_forgot.getText());
             if (username_result == null) {
-                showAlert("Warning","Invalid username: " + tf_username_forgot.getText().toString());
+            Platform.runLater(()->{
+                    showAlert("Warning","Không tồn tại username: " + tf_username_forgot.getText());
+            });
                 return;
             }
             storedOTP = generateOTP();
@@ -178,7 +180,7 @@ public class LoginController implements Initializable {
     @FXML
     void btnContinue_clicked(MouseEvent event) throws InterruptedException {
         if (CheckForFill()) {
-            if (!textFieldOTP.getText().toString().equals(sentEmail)) {
+            if (!textFieldOTP.getText().equals(sentEmail)) {
                 showAlert("Warning","OTP is wrong!");
                 return;
             }
@@ -229,9 +231,9 @@ public class LoginController implements Initializable {
     private boolean UpdatePassword(int index) throws SQLException{
         if(index==0)// yêu cầu đổi mật khẩu mặc định
         {
-            return employeeDAO.UpdatePassword(tfUsername_Login.getText().toString(),pfPassword2_change.getText().toString(),index);
+            return employeeDAO.UpdatePassword(tfUsername_Login.getText(),pfPassword2_change.getText(),index);
         }
-        return employeeDAO.UpdatePassword(tf_username_forgot.getText().toString(),pfPassword2_change.getText().toString(),index);
+        return employeeDAO.UpdatePassword(tf_username_forgot.getText(),pfPassword2_change.getText(),index);
     }
 
     @FXML
