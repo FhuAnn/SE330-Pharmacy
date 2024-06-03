@@ -18,7 +18,7 @@ public class PayslipDAO {
     {
         ObservableList<Payslip> payslips = FXCollections.observableArrayList();
         String query = "SELECT * FROM payslip pl, Employee emp  WHERE pl.employee_id = emp.employee_id";
-        try (ResultSet resultSet = connectDB.getData(query))
+        try (ResultSet resultSet = connectDB.getResultSet(query))
         {
             while (resultSet.next())
             {

@@ -103,7 +103,8 @@ public class LoginController implements Initializable {
             username_result = employeeDAO.getUsername(tf_username_forgot.getText());
             if (username_result == null) {
             Platform.runLater(()->{
-                    showAlert("Warning","Không tồn tại username: " + tf_username_forgot.getText());
+                paneProgress.setVisible(false);
+                showAlert("Warning","Không tồn tại username: " + tf_username_forgot.getText());
             });
                 return;
             }
@@ -127,7 +128,7 @@ public class LoginController implements Initializable {
 
             try {
                 Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(fromEmail, "Green Clinic"));
+                message.setFrom(new InternetAddress(fromEmail, "Green Pharmacy"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(employeeDAO.getEmail(tf_username_forgot.getText())));
                 message.setSubject(subject);
                 message.setText(body);

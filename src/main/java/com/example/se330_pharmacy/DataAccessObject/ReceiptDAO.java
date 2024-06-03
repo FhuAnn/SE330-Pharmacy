@@ -22,7 +22,7 @@ public class ReceiptDAO {
                 "JOIN Employee emp1 ON rp.personcharge_id = emp1.employee_id " +
                 "JOIN Employee emp2 ON rp.employee_id = emp2.employee_id " +
                 "JOIN Payslip pl ON pl.receipt_id = rp.receipt_id";
-        try (ResultSet resultSet = connectDB.getData(query))
+        try (ResultSet resultSet = connectDB.getResultSet(query))
         {
             while (resultSet.next())
             {
