@@ -57,7 +57,7 @@ public class AddPayslipController implements Initializable { // su dung chung ch
             tf_ghiChu.setDisable(true);
             ta_content.setDisable(true);
             tf_tongTra.setDisable(true);
-
+            btnAdd.setDisable(true);
             tf_maNhanVien.setText(String.valueOf(payslip_init.getEmployee_id()));
             tf_tongTra.setText(String.valueOf(payslip_init.getTotalPay()));
             ta_content.setText(payslip_init.getContent());
@@ -74,6 +74,7 @@ public class AddPayslipController implements Initializable { // su dung chung ch
             cbStatus.setValue("InComplete");
             dp_date.setValue(LocalDate.now());
             btnAdd.setText("Thêm");
+            btnAdd.setDisable(false);
             ta_content.setText("Thanh toán lương tháng ?");
         }
     }

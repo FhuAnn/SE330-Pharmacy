@@ -219,3 +219,12 @@
     -fx-border-color: #575757;
     -fx-text-fill: #424242;
 }
+#green-txt {
+    -fx-text-fill: #0f9100;
+}
+#red-txt {
+    -fx-text-fill: #ff0000;
+}
+#black-txt {
+    -fx-text-fill: #000000;
+}
