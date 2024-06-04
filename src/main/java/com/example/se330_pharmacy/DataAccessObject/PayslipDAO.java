@@ -20,7 +20,7 @@ public class PayslipDAO {
     {
         ObservableList<Payslip> payslips = FXCollections.observableArrayList();
         String query = "SELECT * FROM payslip pl, Employee emp  WHERE pl.employee_id = emp.employee_id";
-        try (ResultSet resultSet = connectDB.getData(query))
+        try (ResultSet resultSet = connectDB.getResultSet(query))
         {
             while (resultSet.next())
             {
@@ -97,5 +97,17 @@ public class PayslipDAO {
             e.printStackTrace();
         }
         return true;
+    }
+    public boolean isReceiptOfPayslip(int _id){
+        String query = "SELECT 1 FROM payslip WHERE receipt_id = ? ";
+        try (PreparedStatement statement = connectDB.databaseLink.prepareStatement(query)) {
+            statement.setInt(1,_id);
+            try (ResultSet rs =  statement.executeQuery();) {
+                return rs.next();
+            }
+        } catch (SQLException e ){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -87,7 +87,7 @@ public class EmployeeDAO {
     public String getEmail(String username) throws SQLException {
         String username_result =null;
         String query = "SELECT email FROM employee WHERE username = '" + username +"'";
-        ResultSet resultSet = connectDB.getData(query);
+        ResultSet resultSet = connectDB.getResultSet(query);
         if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không
         {
             username_result = resultSet.getString("email");
@@ -149,8 +149,7 @@ public class EmployeeDAO {
     {
         String username =null;
         String query = "SELECT username FROM employee WHERE username = '" + _username +"'";
-        ResultSet resultSet = connectDB.getData(query);
-        try
+        try(ResultSet resultSet = connectDB.getResultSet(query))
         {
             if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không
             {
@@ -164,24 +163,6 @@ public class EmployeeDAO {
         }
         return null;
     }
-    public boolean checkID(int id)
-    {
-        String query = "SELECT * FROM employee WHERE employee_id = '" + id +"'";
-        ResultSet resultSet = connectDB.getData(query);
-        try
-        {
-            if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không
-            {
-                return true;
-            }
-        }
-        catch (SQLException e )
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     public boolean addEmployee(Employee employee) {
         String query = "INSERT INTO employee (employname, phonenumber, citizen_id, username, password, position, defaultpassword, address, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String defaultPassword = GeneratePassword(true,true,true,true,8);

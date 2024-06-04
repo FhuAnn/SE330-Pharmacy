@@ -406,3 +406,39 @@ Customize left and right arrow
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-weight: bold;
 }
+/*close*/
+.image
+{
+    -fx-opacity: 100;
+    -fx-pref-width:30;
+    -fx-pref-height: 25;
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+}
+.image_hover
+{
+    -fx-opacity: 0;
+    -fx-pref-width:30;
+    -fx-pref-height: 25;
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+}
+.pane_close
+{
+    -fx-background-color: transparent;
+    -fx-pref-width:30;
+    -fx-pref-height: 25;
+}
+.pane_close:hover
+{
+    -fx-background-color: #FF0000;
+}
+
+.pane_close:hover .image_hover
+{
+    -fx-opacity: 100;
+}
+.pane_close:hover .image
+{
+    -fx-opacity: 0;
+}

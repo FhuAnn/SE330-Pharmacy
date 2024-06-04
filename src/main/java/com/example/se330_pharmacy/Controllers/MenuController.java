@@ -107,7 +107,9 @@ public class MenuController {
     @FXML
     void btnReceiptClicked(ActionEvent event) throws IOException {
         titleTextField.setText("Hóa đơn");
-        setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_Receipt.fxml");
+        FXMLLoader loader = setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_Receipt.fxml");
+        ReceiptController receiptController = loader.getController();
+        receiptController.initData(employee);
     }
 
     @FXML
