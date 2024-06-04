@@ -17,6 +17,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class ViewFactory {
@@ -36,26 +37,15 @@ public class ViewFactory {
     public void showMenuWindow(Employee employee) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/se330_pharmacy/Fxml/Menu.fxml"));
         Pane pane = loader.load();
-        pane.setPrefSize(1600,900);
         VBox root = new VBox(pane);
-        Scene scene = new Scene(root,1600,900);
-        Scale scale = new Scale(1,1);
-        pane.getTransforms().add(scale);
-
-        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
-            double newScale = newVal.doubleValue() / 1600;
-            scale.setX(newScale);
-            scale.setY(newScale);
-            centerPane(pane, newVal.doubleValue(), scene.getHeight(),newScale);
-        });
-
-        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
-            double newScale = newVal.doubleValue() / 900;
-            scale.setX(newScale);
-            scale.setY(newScale);
-            centerPane(pane, scene.getWidth(), newVal.doubleValue(),newScale);
-        });
-
+        Dimension resolution = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = resolution.getWidth();
+        double height = resolution.getHeight();
+        double w = width/1600;  // your window width
+        double h = height/900;  // your window height
+        Scale scale = new Scale(w, h, 0, 0);
+        root.getTransforms().add(scale);
+        Scene scene = new Scene(root);
         Stage menuStage = new Stage(StageStyle.UNDECORATED);
         menuStage.setScene(scene);
         menuStage.setMaximized(true);
@@ -119,12 +109,6 @@ public class ViewFactory {
         //if(stageProfile!=null &&!stageProfile.isShowing()) stageProfile=null;
     }
 
-    private void centerPane(Pane pane, double sceneWidth, double sceneHeight, double scale) {
-        double newWidth = pane.getPrefWidth() * scale;
-        double newHeight = pane.getPrefHeight() * scale;
 
-        pane.setLayoutX((sceneWidth - newWidth) / 2);
-        pane.setLayoutY((sceneHeight - newHeight) / 2);
-    }
 //ua//ualogin
 }
