@@ -1,5 +1,6 @@
 package com.example.se330_pharmacy.Controllers;
 
+import com.example.se330_pharmacy.DataAccessObject.EmployeeDAO;
 import com.example.se330_pharmacy.DataAccessObject.PayslipDAO;
 import com.example.se330_pharmacy.DataAccessObject.ReceiptDAO;
 import com.example.se330_pharmacy.Models.Employee;
@@ -10,9 +11,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -24,7 +27,12 @@ public class PaySlipController implements Initializable {
 
     public DatePicker dateTimePickerPayslip;
     public ComboBox<String> cbStatusPayslip;
+    public TitledPane tlt_Employee;
+    public TableView<Employee> employeeTableView;
     public TableView<Payslip> tblPaySlip;
+    public TableColumn<Employee, Integer> idColumn;
+    public TableColumn<Employee, String> nameColumn;
+    public TableColumn<Employee, String> positionColumn;
     public TableColumn<Payslip,Integer> col_maPhieuLuong;
     public TableColumn <Payslip,String> col_tenNhanVien;
     public TableColumn<Payslip,String> col_noiDung;
@@ -37,8 +45,10 @@ public class PaySlipController implements Initializable {
     public Button btnAdd;
     public Button btnTatCa ;
     PayslipDAO payslipDAO;
+    EmployeeDAO employeeDAO;
     Employee employee;
     ObservableList<Payslip> payslips;
+    ObservableList<Employee> employees;
 
     public PaySlipController() {
     }
@@ -58,6 +68,7 @@ public class PaySlipController implements Initializable {
         cbStatusPayslip.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                tlt_Employee.setVisible(false);
                 FilterByDate();
                 FilterByStatus();
             }
@@ -65,6 +76,7 @@ public class PaySlipController implements Initializable {
         dateTimePickerPayslip.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                tlt_Employee.setVisible(false);
                 FilterByDate();
                 FilterByStatus();
             }
@@ -72,6 +84,7 @@ public class PaySlipController implements Initializable {
         btnExport.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                tlt_Employee.setVisible(false);
                 if(!tblPaySlip.getSelectionModel().isEmpty())  {
                     Payslip payslip = tblPaySlip.getSelectionModel().getSelectedItem();
                     if(payslip.getStatus().equals("InComplete")) {
@@ -87,6 +100,7 @@ public class PaySlipController implements Initializable {
         btnTatCa.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                tlt_Employee.setVisible(false);
                 dateTimePickerPayslip.setValue(LocalDate.now());
                 cbStatusPayslip.setValue(null);
                 LoadListPayslip();
@@ -97,13 +111,15 @@ public class PaySlipController implements Initializable {
         btnAdd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                tlt_Employee.setVisible(false);
                 Model.getInstance().getViewFactory().showAddPayslipWindow(null,PaySlipController.this);
             }
         });
         btnEdit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    if(!tblPaySlip.getSelectionModel().isEmpty()) Model.getInstance().getViewFactory().showAddPayslipWindow(tblPaySlip.getSelectionModel().getSelectedItem(),PaySlipController.this);
+                tlt_Employee.setVisible(false);
+                if(!tblPaySlip.getSelectionModel().isEmpty()) Model.getInstance().getViewFactory().showAddPayslipWindow(tblPaySlip.getSelectionModel().getSelectedItem(),PaySlipController.this);
             }
         });
     }
@@ -114,13 +130,22 @@ public class PaySlipController implements Initializable {
         col_ngayLap.setCellValueFactory(new PropertyValueFactory<>("createDate"));
         col_tongTra.setCellValueFactory(new PropertyValueFactory<>("totalPay"));
         col_trangThai.setCellValueFactory(new PropertyValueFactory<>("status"));
-    }
 
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
+        positionColumn.setCellValueFactory(new PropertyValueFactory<>("employeePosition"));
+    }
+    private void loadEmployeeData() {
+        employees = employeeDAO.getAllEmployees();
+        employeeTableView.setItems(employees);
+    }
     private void Setup() {
         payslipDAO = new PayslipDAO();
+        employeeDAO=new EmployeeDAO();
         dateTimePickerPayslip.setValue(LocalDate.from(LocalDateTime.now()));
         ObservableList<String> statusList = FXCollections.observableArrayList("InComplete", "Completed");
         cbStatusPayslip.setItems(statusList);
+        loadEmployeeData();
     }
 
     private void FilterByDate() {
@@ -169,5 +194,13 @@ public class PaySlipController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(string);
         alert.showAndWait();
+    }
+
+    public void handleButtonShowList(ActionEvent event) {
+        tlt_Employee.setVisible(true);
+    }
+
+    public void close(MouseEvent mouseEvent) {
+        tlt_Employee.setVisible(false);
     }
 }
