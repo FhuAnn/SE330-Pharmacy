@@ -53,8 +53,11 @@ public class AddPayslipController implements Initializable { // su dung chung ch
             payslip_init=_payslip;
             btnAdd.setDisable(false);
             btnAdd.setText("Lưu");
+            tf_maNhanVien.setDisable(true);
+            tf_ghiChu.setDisable(true);
+            ta_content.setDisable(true);
+            tf_tongTra.setDisable(true);
 
-            tf_phieuLuongId.setText(String.valueOf(payslip_init.getPayslip_id()));
             tf_maNhanVien.setText(String.valueOf(payslip_init.getEmployee_id()));
             tf_tongTra.setText(String.valueOf(payslip_init.getTotalPay()));
             ta_content.setText(payslip_init.getContent());
@@ -64,6 +67,11 @@ public class AddPayslipController implements Initializable { // su dung chung ch
         } else {
             lbl_id.setVisible(false);
             tf_phieuLuongId.setVisible(false);
+            tf_maNhanVien.setDisable(false);
+            tf_ghiChu.setDisable(false);
+            ta_content.setDisable(false);
+            tf_tongTra.setDisable(false);
+            cbStatus.setValue("InComplete");
             dp_date.setValue(LocalDate.now());
             btnAdd.setText("Thêm");
             ta_content.setText("Thanh toán lương tháng ?");

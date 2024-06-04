@@ -103,7 +103,7 @@ public class PaySlipController implements Initializable {
         btnEdit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(!tblPaySlip.getSelectionModel().isEmpty()) Model.getInstance().getViewFactory().showAddPayslipWindow(tblPaySlip.getSelectionModel().getSelectedItem(),PaySlipController.this);
+                    if(!tblPaySlip.getSelectionModel().isEmpty()) Model.getInstance().getViewFactory().showAddPayslipWindow(tblPaySlip.getSelectionModel().getSelectedItem(),PaySlipController.this);
             }
         });
     }
