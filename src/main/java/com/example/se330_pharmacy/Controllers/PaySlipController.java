@@ -30,7 +30,7 @@ public class PaySlipController implements Initializable {
     public TableColumn<Payslip,String> col_noiDung;
     public TableColumn<Payslip,Double> col_tongTra;
     public TableColumn<Payslip,String> col_trangThai;
-    public TableColumn<Payslip, Date> col_ngayLap;
+    public TableColumn<Payslip, String> col_ngayLap;
     public Button btnExport;
     public Button btnEdit;
     public Button btnDelete;

@@ -1,6 +1,8 @@
 package com.example.se330_pharmacy.Controllers;
 
 import com.example.se330_pharmacy.DataAccessObject.ProductDAO;
+import com.example.se330_pharmacy.DataAccessObject.ReceiptDAO;
+import com.example.se330_pharmacy.DataAccessObject.SupplierDAO;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -77,6 +79,8 @@ public class ImportController implements Initializable {
     String message;
     private final ImportDAO importDAO = new ImportDAO();
     private final ProductDAO productDAO = new ProductDAO();
+    private final ReceiptDAO receiptDAO = new ReceiptDAO();
+    private final SupplierDAO supplierDAO = new SupplierDAO();
     private ObservableList<Product> ListProducts;
     private ObservableList<Supplier> ListSuppliers;
     Employee employee_init;
@@ -171,8 +175,10 @@ public class ImportController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 if(event.getClickCount()==1) {
-                    supplierBeforeClicked= tbl_Supplier.getSelectionModel().getSelectedItem();
-                    tf_supplier.setText(supplierBeforeClicked.getPartnername());
+                    if(!tbl_Supplier.getSelectionModel().isEmpty()) {
+                        supplierBeforeClicked= tbl_Supplier.getSelectionModel().getSelectedItem();
+                        tf_supplier.setText(supplierBeforeClicked.getPartnername());
+                    }
                 }
             }
         });
@@ -252,6 +258,8 @@ public class ImportController implements Initializable {
         tfProductID.setText(String.valueOf(product.getProductId()));
         tfProductName.setText(product.getProductName());
         tfProductPrice.setText(String.valueOf(product.getProductImportPrice()));
+        tfProductQuantities.clear();
+        tfProductTotal.clear();
     }
     public void btnEditClicked(MouseEvent mouseEvent) {
         if(!tfProductID.getText().isEmpty()) {
@@ -340,30 +348,34 @@ public class ImportController implements Initializable {
                 showAlert("Warning","Bạn chưa chọn nhà cung cấp!");
                 return;
             }
-            String string = lblTotalPay.getText();
-            String[] splits =string.split(" ");
-            int totalPay = Integer.parseInt(splits[0]);
+            int sequence = ShowYesNoAlert("nhập hàng");
+            if(sequence==JOptionPane.YES_OPTION) {
+                String string = lblTotalPay.getText();
+                String[] splits =string.split(" ");
+                int totalPay = Integer.parseInt(splits[0]);
 
-            Import import_ = new Import(
-                    employee_init.getEmployeeId(),
-                    supplierBeforeClicked.getPartner_id(),
-                    totalPay,
-                    LocalDateTime.now().toString());
-            int id = importDAO.addImportData(import_);
-            if(id>0) {
-                if(AddDetailImportToDB(id)){
-                    if(CreatePaySlip(id,totalPay))
-                        showAlert("Warning","Thông tin nhập hàng được ghi nhận!");
-                    clearInformation();
-                    tbl_DetailImportForm.getItems().clear();
-                } else System.out.println("Error");
-            }
+                Import import_ = new Import(
+                        employee_init.getEmployeeId(),
+                        supplierBeforeClicked.getPartner_id(),
+                        totalPay,
+                        LocalDateTime.now().toString());
+                int id = importDAO.addImportData(import_);
+                if(id>0) {
+                    if(AddDetailImportToDB(id)){
+                        if(CreateReceipt(id,totalPay))
+                            showAlert("Warning","Thông tin nhập hàng được ghi nhận!");
+                        clearInformation();
+                        tbl_DetailImportForm.getItems().clear();
+                    } else System.out.println("Error");
+                }
+            } else {};
+
         }
     }
 
-    private boolean CreatePaySlip(int id,int totalPay) {
+    private boolean CreateReceipt(int id,int totalPay) {
         String content ="Import ID: " + id, status = "InComplete", note = LocalDate.now().toString();
-        return importDAO.autoCreatePaySlip(employee_init.getEmployeeId(),content,totalPay,status,note);
+        return receiptDAO.autoCreateReceipt(employee_init.getEmployeeId(),content,totalPay,status,note);
     }
 
     private boolean AddDetailImportToDB(int id) {
@@ -388,7 +400,7 @@ public class ImportController implements Initializable {
         tbl_ProductTable.setItems(ListProducts);
     }
     private void loadSupplier() {
-        ListSuppliers= importDAO.getSuppliers();
+        ListSuppliers= supplierDAO.getSuppliers();
         tbl_Supplier.setItems(ListSuppliers);
     }
     public void handleButtonShow(ActionEvent event) {
@@ -454,7 +466,7 @@ public class ImportController implements Initializable {
         }
     }
     private boolean isValidInput(String input) {
-        String regex = ".*[a-zA-Z\u00C0-\u1FFF\u2C00-\uD7FF]+.*";
+        String regex = ".*[a-zA-Z\\d\\u00C0-\\u1FFF\\u2C00-\\uD7FF]+.*";
         return input.matches(regex);
     }
 }

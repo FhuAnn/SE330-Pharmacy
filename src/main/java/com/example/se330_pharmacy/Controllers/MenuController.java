@@ -66,12 +66,15 @@ public class MenuController {
     void btnEmployeeClicked(ActionEvent event) throws IOException {
         titleTextField.setText("Nhân viên");
         setMainPane("/com/example/se330_pharmacy/Fxml/Employee.fxml");
+        titleTextField.setText("Employee");
     }
 
     @FXML
     void btnExportClicked(ActionEvent event) throws IOException {
-        setMainPane("/com/example/se330_pharmacy/Fxml/Export.fxml");
         titleTextField.setText("Xuất hàng");
+        FXMLLoader loader = setMainPane("/com/example/se330_pharmacy/Fxml/Export.fxml");
+        ExportController exportController = loader.getController();
+        exportController.initData(employee);
     }
 
     @FXML
@@ -164,11 +167,13 @@ public class MenuController {
         s.setIconified(true);
     }
 
-    private FXMLLoader setMainPane(String resource) throws IOException {
+    public FXMLLoader setMainPane(String resource) throws IOException {
         mainPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Parent reportSceneRoot = loader.load();
         mainPane.getChildren().add(reportSceneRoot);
         return loader;
     }
+
+
 }

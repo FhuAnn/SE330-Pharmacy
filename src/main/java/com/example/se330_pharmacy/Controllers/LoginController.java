@@ -321,7 +321,11 @@ public class LoginController implements Initializable {
                 pfPassword_Login.setText("");
                 Stage stage = (Stage) btnLogin.getScene().getWindow(); //get login-screen
                 Model.getInstance().getViewFactory().closeStage(stage);//close login-screen
-                Model.getInstance().getViewFactory().showMenuWindow(employeeDAO.getEmployee());//mở menu-screen
+                try {
+                    Model.getInstance().getViewFactory().showMenuWindow(employeeDAO.getEmployee());//mở menu-screen
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } else
                 showAlert("Warning","Fail to login! Check your Username and Password again");
         });

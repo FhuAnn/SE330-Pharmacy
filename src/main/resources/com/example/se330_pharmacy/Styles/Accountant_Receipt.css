@@ -308,9 +308,12 @@ Customize left and right arrow
 {
 
 }
-.table-row-cell:odd
+.table-row-cell
 {
-
+    -fx-cell-size: 100px;
+}
+.table-cell {
+    -fx-wrap-text: true;
 }
 .table-view >.virtual-flow >.scroll-bar:vertical
 {

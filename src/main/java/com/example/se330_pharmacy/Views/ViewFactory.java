@@ -9,9 +9,15 @@ import com.example.se330_pharmacy.Models.Receipt;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.transform.Scale;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import java.io.IOException;
 
 public class ViewFactory {
 
@@ -27,11 +33,35 @@ public class ViewFactory {
         createStage(loader);
     }
 
-    public void showMenuWindow(Employee employee) {
+    public void showMenuWindow(Employee employee) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/se330_pharmacy/Fxml/Menu.fxml"));
-        createStage(loader);
+        Pane pane = loader.load();
+        pane.setPrefSize(1600,900);
+        VBox root = new VBox(pane);
+        Scene scene = new Scene(root,1600,900);
+        Scale scale = new Scale(1,1);
+        pane.getTransforms().add(scale);
+
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+            double newScale = newVal.doubleValue() / 1600;
+            scale.setX(newScale);
+            scale.setY(newScale);
+            centerPane(pane, newVal.doubleValue(), scene.getHeight(),newScale);
+        });
+
+        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+            double newScale = newVal.doubleValue() / 900;
+            scale.setX(newScale);
+            scale.setY(newScale);
+            centerPane(pane, scene.getWidth(), newVal.doubleValue(),newScale);
+        });
+
+        Stage menuStage = new Stage(StageStyle.UNDECORATED);
+        menuStage.setScene(scene);
+        menuStage.setMaximized(true);
         MenuController menuController = loader.getController();
         menuController.initData(employee);
+        menuStage.show();
     }
 
     public void showAddReceiptWindow(Payslip payslip, int _idCharger, String _employnameCharger, String _vitricharger, PaySlipController paySlipController, ReceiptController receiptController, Receipt receipt) {
@@ -56,6 +86,7 @@ public class ViewFactory {
         } else  stageAddPayslipAccountant.toFront();
     }
     private Stage createStage(FXMLLoader loader) {
+
         Scene scene = null;
         try {
             scene = new Scene(loader.load());
@@ -88,5 +119,12 @@ public class ViewFactory {
         //if(stageProfile!=null &&!stageProfile.isShowing()) stageProfile=null;
     }
 
+    private void centerPane(Pane pane, double sceneWidth, double sceneHeight, double scale) {
+        double newWidth = pane.getPrefWidth() * scale;
+        double newHeight = pane.getPrefHeight() * scale;
+
+        pane.setLayoutX((sceneWidth - newWidth) / 2);
+        pane.setLayoutY((sceneHeight - newHeight) / 2);
+    }
 //ua//ualogin
 }

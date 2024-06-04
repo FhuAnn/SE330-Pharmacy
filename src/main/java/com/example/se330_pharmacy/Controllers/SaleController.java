@@ -861,6 +861,8 @@ public class SaleController implements Initializable {
             }
             int totalCartAmount = 0;
             int total1Unit = 0;
+            int remain = 0;
+            int remain1Unit = 0;
             if(!tvCart.getItems().isEmpty()) {
                 for (CartItem cartItem : tvCart.getItems()) {
                     if(cartItem.getProductId() == productId && cartItem.getProductUnit().equals(radBigUnit.getText()) && !bigUnit.equals(smallUnit)) {
@@ -870,15 +872,16 @@ public class SaleController implements Initializable {
                     } else if (cartItem.getProductId() == productId && cartItem.getProductUnit().equals(radBigUnit.getText()) && bigUnit.equals(smallUnit)) {
                         total1Unit += cartItem.getProductQuantities();
                     }
-                    int remain = Integer.parseInt(smallAmount.getText())- totalCartAmount;
-                    int remain1Unit = Integer.parseInt(bigAmount.getText()) - total1Unit;
-                    smallAmount.setText(STR."\{remain}");
+                    remain = Integer.parseInt(smallAmount.getText())- totalCartAmount;
+                    remain1Unit = Integer.parseInt(bigAmount.getText()) - total1Unit;
 
-                    if (bigUnit.equals(smallUnit)) {
-                        bigAmount.setText(STR."\{remain1Unit}");
-                    } else {
-                        bigAmount.setText(STR."\{remain / Integer.parseInt(_coef)}");
-                    }
+                }
+                smallAmount.setText(STR."\{remain}");
+
+                if (bigUnit.equals(smallUnit)) {
+                    bigAmount.setText(STR."\{remain1Unit}");
+                } else {
+                    bigAmount.setText(STR."\{remain / Integer.parseInt(_coef)}");
                 }
             }
 
@@ -996,7 +999,7 @@ public class SaleController implements Initializable {
             // neu khong co item co san trong cart thi se them moi
             if(!foundItem) {
 
-                if(cartItem.getProductQuantities()>= Integer.parseInt(_coef)) {
+                if(cartItem.getProductQuantities()>= Integer.parseInt(_coef) && !smallUnit.equals(bigUnit)) {
 
                     _bigQuantities = STR."\{cartItem.getProductQuantities() / Integer.parseInt(_coef)}";
                     _smallQuantities = STR."\{cartItem.getProductQuantities() % Integer.parseInt(_coef)}";

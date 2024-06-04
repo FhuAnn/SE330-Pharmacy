@@ -17,36 +17,18 @@ public class ImportDAO {
     public ImportDAO() {
     }
 
-    public ObservableList<Supplier> getSuppliers() {
-        String sqlQuery = "SELECT partner_id, partnername,address, phonenumber,email FROM partner";
-        ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
-        try (ResultSet rs = connectDB.getPreparedStatement(sqlQuery).executeQuery()) {
-            while(rs.next()) {
-                Supplier suppier = new Supplier(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5));
-                suppliers.add(suppier);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return suppliers;
-    }
     public ObservableList<Product>  searchProductData(String search) {
         ObservableList<Product> products = FXCollections.observableArrayList();
         String sqlQuery = "SELECT pro.product_id , pro.productname , pro.price_import, pro.description, pro.origin, uni.big_unit, type.typename FROM product pro, producttype type, unit uni " +
-                " WHERE pro.producttype_id = type.producttype_id AND uni.unit_id = pro.unit_id AND unaccent(productname) ILIKE unaccent(?)";
+                " WHERE pro.producttype_id = type.producttype_id AND uni.unit_id = pro.unit_id AND (unaccent(productname) ILIKE unaccent(?) ";
         boolean isIdSearch = false;
         try {
             int id = Integer.parseInt(search);
-            sqlQuery += " AND pro.product_id = ?";
+            sqlQuery += " OR pro.product_id = ?";
             isIdSearch = true;
         } catch(NumberFormatException e){
         }
+        sqlQuery+=")";
         try (PreparedStatement statement= connectDB.databaseLink.prepareStatement(sqlQuery)) {
             statement.setString(1, "%" + search + "%");
             if (isIdSearch) {
@@ -78,7 +60,7 @@ public class ImportDAO {
         boolean isIdSearch = false;
         try {
             int id = Integer.parseInt(search);
-            sqlQuery += " AND partner_id = ?";
+            sqlQuery += " OR partner_id = ?";
             isIdSearch = true;
         } catch(NumberFormatException e){
         }
@@ -157,25 +139,6 @@ public class ImportDAO {
         }
         return listImport;
     }
-    public boolean autoCreatePaySlip(int employeeId, String content, int totalPay, String status, String note) {
-        LocalDateTime dateTime = LocalDateTime.parse(LocalDateTime.now().format(formatter),formatter);
-        String sqlQuery = "INSERT INTO payslip (employee_id, content, createDate, totalpay, status, note) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement preparedStatement = connectDB.databaseLink.prepareStatement(sqlQuery);
-            preparedStatement.setInt(1, employeeId);
-            preparedStatement.setString(2, content);
-            preparedStatement.setObject(3, dateTime);
-            preparedStatement.setInt(4, totalPay);
-            preparedStatement.setString(5, status);
-            preparedStatement.setString(6, note);
-            return preparedStatement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public ObservableList<Import> getDetailFromImportId(int importId) {
         ObservableList<Import> list = FXCollections.observableArrayList();
         String query = "SELECT pro.product_id, pro.productname,dtl.importprice, dtl.quantity,dtl.totalprice FROM product pro, importform im, detailimportform dtl WHERE im.importform_id = "+importId+" AND dtl.importform_id = im.importform_id AND pro.product_id = dtl.product_id";

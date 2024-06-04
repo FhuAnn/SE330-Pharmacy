@@ -211,3 +211,11 @@
 {
     -fx-opacity: 0;
 }
+.combo-box:disabled
+{
+    -fx-opacity: 0.8;
+    -fx-background-color: linear-gradient(to bottom,#ffffff, #efffd5);
+    -fx-border-width: 1;
+    -fx-border-color: #575757;
+    -fx-text-fill: #424242;
+}
