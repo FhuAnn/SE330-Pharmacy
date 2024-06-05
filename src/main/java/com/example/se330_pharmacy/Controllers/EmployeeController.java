@@ -2,6 +2,7 @@ package com.example.se330_pharmacy.Controllers;
 
 import com.example.se330_pharmacy.DataAccessObject.EmployeeDAO;
 import com.example.se330_pharmacy.Models.Employee;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,9 +12,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.*;
 import java.net.URL;
 import java.text.Normalizer;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -81,7 +86,7 @@ public class EmployeeController implements Initializable {
     private void SetTextChanged() {
         tf_addPhoneNum.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                tf_addPhoneNum.setText(newValue.replaceAll("[^\\d]", oldValue));
+                tf_addPhoneNum.setText(newValue.replaceAll("[^\\d]", ""));
                 showAlert("Warning","Chỉ được nhập số");
             } else {
                 if (!newValue.isEmpty() && newValue.charAt(0) != '0') tf_addPhoneNum.setText(oldValue);
@@ -153,7 +158,7 @@ public class EmployeeController implements Initializable {
         }
     }
 
-    private void handleAddAction() {
+    private void handleAddAction() { // add and save
         String name = tf_addName.getText();
         String citizenId = tf_addcitizenId.getText();
         String address = tf_addAddress.getText();
@@ -161,7 +166,7 @@ public class EmployeeController implements Initializable {
         String email = tf_addEmail.getText();
         String position = cb_position.getValue();
         String username = tf_addEmail.getText();
-        if (!name.isEmpty() && !citizenId.isEmpty() && !address.isEmpty() && !phoneNum.isEmpty() && checkEmail() && !cb_position.getValue().isEmpty()) {
+        if (!name.isEmpty() && !citizenId.isEmpty() && !address.isEmpty() && !phoneNum.isEmpty() && checkEmail() && cb_position.getValue()!=null) {
             if(btnAddEmployee.getText().equals("Lưu")) {
                 int id = Integer.parseInt(tf_maNV.getText());
                 int sequence = ShowYesNoAlert("lưu "+name+"");
@@ -181,16 +186,54 @@ public class EmployeeController implements Initializable {
                 int sequence = ShowYesNoAlert("thêm "+name+"");
                 if(sequence==JOptionPane.YES_OPTION) {
                     Employee newEmployee = new Employee(name, citizenId, address, phoneNum, email, position, username);
-                    if(employeeDAO.addEmployee(newEmployee)) {
+                    if(employeeDAO.addEmployee(newEmployee)>0) {
+                        SendDefaultPassword(newEmployee.employeeEmail);
                         loadEmployeeData();
                         clearAddEmployeeFields();
-                        cb_position.setVisible(false);
-                        tf_addPosition.setVisible(true);
+                        cb_position.setVisible(true);
+                        tf_addPosition.setVisible(false);
                     }
                 } else {}
             }
         } else {
             showAlert("Warning","Kiểm tra lại thông tin!");
+        }
+    }
+
+    private void SendDefaultPassword(String email) {
+        String defaultpassword = employeeDAO.getDefaultpassword();
+        String fromEmail = "kiseryouta2003@gmail.com";
+        String password = "qcqa slmu vkbr edha";
+        String subject = "OTP code";
+        String body = "Your default password for Pharmacy account is " + defaultpassword;
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(fromEmail, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(fromEmail, "Green Pharmacy"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            message.setSubject(subject);
+            message.setText(body);
+
+            Transport.send(message);
+            Platform.runLater(() -> {
+            showAlert("Warning"," Mật khẩu mặc định là "+defaultpassword+" đã gửi về email: "+email+" !");
+            employeeDAO.setDefaultpassword(null);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Warning","Failed to send OTP: " + e.getMessage());
         }
     }
 

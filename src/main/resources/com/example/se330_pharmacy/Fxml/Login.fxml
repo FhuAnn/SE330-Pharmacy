@@ -212,8 +212,8 @@
                         </ImageView>
                         <Pane prefHeight="32.0" prefWidth="215.0">
                            <children>
-                              <PasswordField fx:id="pfPassword_Login" depthTest="DISABLE" onKeyTyped="#passwordFieldKeyTyped" prefHeight="32.0" prefWidth="211.0" promptText="Password" styleClass="password-field" />
                               <TextField fx:id="tfShowPasswordLogin" prefHeight="32.0" prefWidth="211.0" promptText="Password" styleClass="inputText" visible="false" />
+                              <PasswordField fx:id="pfPassword_Login" depthTest="DISABLE" onKeyTyped="#passwordFieldKeyTyped" prefHeight="32.0" prefWidth="211.0" promptText="Password" styleClass="password-field" />
                            </children>
                         </Pane>
                      </children>

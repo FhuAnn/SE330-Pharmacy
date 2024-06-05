@@ -35,7 +35,8 @@ public class LoginController implements Initializable {
     public TextField tf_username_forgot;
     public PasswordField pfPassword1_change;
     public PasswordField pfPassword2_change;
-    public RadioButton radioHideShowChange,radioHideShow;
+    public RadioButton radioHideShowChange;
+    public RadioButton radioHideShow;
     public TextField tfShowPasswordCP1,tfShowPasswordCP2,tfShowPasswordLogin;
     private int index ;
     public Text loginMessageLabel;
@@ -230,7 +231,7 @@ public class LoginController implements Initializable {
         }).start();
     }
     private boolean UpdatePassword(int index) throws SQLException{
-        if(index==0)// yêu cầu đổi mật khẩu mặc định
+        if(index==3)// yêu cầu đổi mật khẩu mặc định
         {
             return employeeDAO.UpdatePassword(tfUsername_Login.getText(),pfPassword2_change.getText(),index);
         }
@@ -275,25 +276,18 @@ public class LoginController implements Initializable {
 
     private void showPassword() {
         if (index == 0 && radioHideShow.isSelected()) {
-
             //show password va an password field
             tfShowPasswordLogin.setVisible(true);
             pfPassword_Login.setVisible(false);
         } else if (index == 0 && !radioHideShow.isSelected()) {
-            //an textfield va show lai passwordfield
             pfPassword_Login.setVisible(true);
             tfShowPasswordLogin.setVisible(false);
-
-        } else if (index == 2 && radioHideShowChange.isSelected()) {
-
-            // show password va an passwordfield
+        } else if ((index == 2 ||index ==3 )&& radioHideShowChange.isSelected()) {
             tfShowPasswordCP1.setVisible(true);
             pfPassword1_change.setVisible(false);
             tfShowPasswordCP2.setVisible(true);
             pfPassword2_change.setVisible(false);
-
-        } else if (index == 2 && !radioHideShowChange.isSelected()) {
-
+        } else if ((index == 2 ||index ==3)&& !radioHideShowChange.isSelected()) {
             //an textfield va show lai passwordfield
             tfShowPasswordCP1.setVisible(false);
             pfPassword1_change.setVisible(true);
@@ -303,10 +297,8 @@ public class LoginController implements Initializable {
     }
 
     private void loginButtonOnAction()  {
-      if(CheckForFill()) Login(tfUsername_Login.getText().toString(),pfPassword_Login.getText().toString());
+      if(CheckForFill()) Login(tfUsername_Login.getText(),pfPassword_Login.getText());
     }
-
-
 
     private void Login(String username,String password) {
         int valid = employeeDAO.CheckValidate(username, password);
@@ -314,6 +306,7 @@ public class LoginController implements Initializable {
             paneProgress.setVisible(false);
             if (valid == 1) {
                 showAlert("Notification","Welcome! Please change your password");
+                index = 3 ;
                 loginPane.toBack();
                 forgetPane.toBack();
             } else if (valid == 2) {
@@ -364,14 +357,12 @@ public class LoginController implements Initializable {
             if (pfPassword2_change.getText().isBlank()) {
                 showAlert("Warning","You must fill confirm new password");
                 return false;
-
             }
             if (!pfPassword2_change.getText().equals(pfPassword1_change.getText())) {
                 showAlert("Warning",
                         "Wrong password re-entered, please check again");
                 return false;
             }
-
         }
         return true;
     }

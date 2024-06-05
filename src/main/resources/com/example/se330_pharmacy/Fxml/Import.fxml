@@ -26,6 +26,7 @@
                                 <TableColumn fx:id="col_idProduct" minWidth="44.66665840148926" prefWidth="68.66669654846191" text="Mã SP" />
                                 <TableColumn fx:id="col_nameProduct" minWidth="122.8" prefWidth="250.0" text="Tên sản phẩm" />
                                 <TableColumn fx:id="col_priceProduct" minWidth="80.00006103515625" prefWidth="80.00006103515625" text="Giá" />
+                        <TableColumn fx:id="col_quantityProduct" minWidth="80.00006103515625" prefWidth="80.00006103515625" text="Số lượng" />
                                 <TableColumn fx:id="col_descriptionProduct" minWidth="122.8" prefWidth="250.0" text="Mô tả" />
                                 <TableColumn fx:id="col_originProduct" minWidth="94.6666259765625" prefWidth="94.6666259765625" text="Nguồn gốc" />
                                 <TableColumn fx:id="col_unitProduct" minWidth="0.0" prefWidth="136.6666259765625" text="Đơn vị" />

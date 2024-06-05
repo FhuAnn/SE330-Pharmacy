@@ -424,7 +424,7 @@ public class ProductController implements Initializable {
         SetTFMiniDisable(false);
         clearTFMini();
         btnMini.setText("Thêm");
-        btnMini.setText("add");
+        btnMini.setId("add");
         lblBigUnitMini.setVisible(true);
         tf_bigUnit.setVisible(true);
         lbl_Coef.setVisible(true);
