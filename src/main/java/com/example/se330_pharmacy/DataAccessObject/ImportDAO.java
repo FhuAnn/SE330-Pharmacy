@@ -158,5 +158,18 @@ public class ImportDAO {
         }
         return list;
     }
+    public boolean updateProduct(int quantity, int productID) {
+        String sql = "UPDATE Product SET big_unit = big_unit + ? WHERE product_id = ?";
+
+        try (PreparedStatement stmt = connectDB.databaseLink.prepareStatement(sql)) {
+
+            stmt.setInt(1, quantity);
+            stmt.setInt(2, productID);
+            return stmt.executeUpdate() >0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
 
