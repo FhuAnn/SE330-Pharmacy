@@ -21,10 +21,12 @@ Green Pharmacy không chỉ là công cụ quản lý, mà còn là người b�
 ## Các chức năng
 1. Đăng nhập
 
+![image](https://github.com/FhuAnn/SE330-Pharmacy/assets/127644891/d44dda83-4ac0-46bb-addb-df101f35bb0c)
 
 
 2. Quên mật khẩu
 
+![image](https://github.com/FhuAnn/SE330-Pharmacy/assets/127644891/a507478f-8b66-4fde-a216-e503f857e02c)
 
 
 3. Đổi mật khẩu
@@ -33,43 +35,42 @@ Green Pharmacy không chỉ là công cụ quản lý, mà còn là người b�
 
 4. Phân tích doanh thu
 
+![image](https://github.com/FhuAnn/SE330-Pharmacy/assets/127644891/bd893297-92df-4864-817f-11404d72d5fd)
 
 
 5. Bán hàng
 
+![image](https://github.com/FhuAnn/SE330-Pharmacy/assets/127644891/7fe6df24-d1af-42bd-b203-da4d32851ec5)
 
 
-6. Quản lý kho
+6. Quản lý sản phẩm
 
+![image](https://github.com/FhuAnn/SE330-Pharmacy/assets/127644891/f9e6ba6d-dfef-4d94-9093-b52faa7baa10)
 
 
 7. Quản lý nhân viên
 
+![image](https://github.com/FhuAnn/SE330-Pharmacy/assets/127644891/27855be7-45c9-44b1-b0f9-f9142a96d7ed)
 
 
-8. Quản lý nhà cung cấp
+8. Quản lý nhập kho
+
+![image](https://github.com/FhuAnn/SE330-Pharmacy/assets/127644891/cb3ee9aa-79eb-4a8e-b4ad-d606c7a08786)
 
 
+9. Quản lý xuất kho
 
-9. Quản lý nhập kho
-
-
-
-10. Quản lý xuất kho
+![image](https://github.com/FhuAnn/SE330-Pharmacy/assets/127644891/ac47a157-6b7d-4649-bfd0-7ec29be39569)
 
 
+10. Quản lý hóa đơn
 
-11. Quản lý hóa đơn
-
-
-
-12. Quản lý phiếu lương
+![image](https://github.com/FhuAnn/SE330-Pharmacy/assets/127644891/126360f2-55a2-45b8-b61b-4ab6e778ba03)
 
 
+11. Quản lý phiếu lương
 
-13. Đăng xuất
-
-
+![image](https://github.com/FhuAnn/SE330-Pharmacy/assets/127644891/806db433-a93a-4df0-9144-830d2fca88af)
 
 
 ## Framework và công nghệ
