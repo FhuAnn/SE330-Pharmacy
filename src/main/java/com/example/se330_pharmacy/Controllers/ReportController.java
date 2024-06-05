@@ -64,6 +64,10 @@ public class ReportController implements Initializable {
     public Text numberProductOfDay;
     public Text valueRevenueMonth;
     public Text valueRevenueToday;
+    public Text valueImportMonth;
+    public Text valueImportToday;
+    public Text valueExportMonth;
+    public Text valueExportToday;
     public CheckBox checkboxAuto;
     private Timeline timeline;
     public TextField tfSearch;
@@ -210,8 +214,12 @@ public class ReportController implements Initializable {
                             numberBillOfToday.setText(reportDAO.GetNumberOfBillToday(day,month,year));
                             numberProductOfMonth.setText(reportDAO.GetNumberOfProductMonth(month,year));
                             numberProductOfDay.setText(reportDAO.GetNumberOfProductToday(day,month,year));
-                            valueRevenueMonth.setText(reportDAO.GetRevenueFromSaleMonth(month,year)+" VND");
-                            valueRevenueToday.setText(reportDAO.GetRevenueFromSaleToday(day,month,year)+" VND");
+                            valueRevenueMonth.setText(("+ "+reportDAO.GetRevenueFromSaleMonth(month,year)+" VND"));
+                            valueRevenueToday.setText(("+ "+reportDAO.GetRevenueFromSaleToday(day,month,year)+" VND"));
+                            valueImportMonth.setText("- "+reportDAO.GetRevenueImportMonth(month,year)+" VND");
+                            valueImportToday.setText("- "+reportDAO.GetRevenueImportDay(day,month,year)+" VND");
+                            valueExportMonth.setText("+ "+reportDAO.GetExpendExportMonth(month,year)+" VND");
+                            valueExportToday.setText("+ "+reportDAO.GetExpendExportDay(day,month,year)+" VND");
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
