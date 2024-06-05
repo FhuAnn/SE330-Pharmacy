@@ -144,14 +144,6 @@ public class ReceiptController implements Initializable {
         col_nguoiTra.setCellValueFactory(new PropertyValueFactory<>("tenNguoiTra"));
     }
 
-    /*private void LoadListReceipt() {
-        ObservableList<Receipt> receipts = receiptDAO.GetPaySlipData();
-        tblReceipt.setItems(receipts);
-        if(receipts.isEmpty())
-        {
-            showAlert("Warning","Danh sách trống!");
-        }
-    }*/
     private void showAlert(String tilte,String string) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(tilte);
