@@ -187,7 +187,7 @@ public class EmployeeController implements Initializable {
                 if(sequence==JOptionPane.YES_OPTION) {
                     Employee newEmployee = new Employee(name, citizenId, address, phoneNum, email, position, username);
                     if(employeeDAO.addEmployee(newEmployee)>0) {
-                        SendDefaultPassword(newEmployee.employeeEmail);
+                        SendDefaultPassword(newEmployee.getEmployeeEmail());
                         loadEmployeeData();
                         clearAddEmployeeFields();
                         cb_position.setVisible(true);

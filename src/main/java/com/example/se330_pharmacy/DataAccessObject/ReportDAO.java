@@ -118,6 +118,22 @@ public class ReportDAO {
         String sqlQuery = "SELECT SUM(billvalue) as sl from bill Where EXTRACT (DAY FROM datebill) = "+day+" and EXTRACT( MONTH FROM datebill) =" + month + " and EXTRACT (YEAR FROM datebill) = " + year + "";
         return String.valueOf(connect.getData(sqlQuery).getInt("sl"));
     }
+    public String GetRevenueImportMonth(int month,int year) throws SQLException {
+        String sqlQuery = "SELECT SUM(totalmoney) as sl FROM importform WHERE  EXTRACT( MONTH FROM formdate) =" + month + " and EXTRACT (YEAR FROM formdate) = " + year + " ";
+        return String.valueOf(connect.getData(sqlQuery).getInt("sl"));
+    }
+    public String GetRevenueImportDay(int day,int month,int year) throws SQLException {
+        String sqlQuery = "SELECT SUM(totalmoney) as sl FROM importform WHERE  EXTRACT (DAY FROM formdate) =" + day + " and EXTRACT( MONTH FROM formdate) =" + month + " and EXTRACT (YEAR FROM formdate) = " + year + " ";
+        return String.valueOf(connect.getData(sqlQuery).getInt("sl"));
+    }
+    public String GetExpendExportMonth(int month,int year) throws SQLException {
+        String sqlQuery = "SELECT SUM(totalmoney) as sl FROM exportform WHERE EXTRACT( MONTH FROM exportdate) =" + month + " and EXTRACT (YEAR FROM exportdate) = " + year + " ";
+        return String.valueOf(connect.getData(sqlQuery).getInt("sl"));
+    }
+    public String GetExpendExportDay(int day,int month,int year) throws SQLException {
+        String sqlQuery = "SELECT SUM(totalmoney) as sl FROM exportform WHERE  EXTRACT (DAY FROM exportdate) =" + day + " and EXTRACT( MONTH FROM exportdate) =" + month + " and EXTRACT (YEAR FROM exportdate) = " + year + " ";
+        return String.valueOf(connect.getData(sqlQuery).getInt("sl"));
+    }
     public String GetNumberOfProductMonth(int month, int year) throws SQLException {
         String sqlQuery = "SELECT SUM(dt.quantities) as sl from bill b, detailbill dt Where b.bill_id = dt.bill_id and EXTRACT( MONTH FROM datebill) =" + month + " and EXTRACT (YEAR FROM datebill) = " + year + "";
         return String.valueOf(connect.getData(sqlQuery).getInt("sl"));
@@ -134,4 +150,6 @@ public class ReportDAO {
         String sqlQuery = "SELECT COUNT(bill_id) as sl from bill Where EXTRACT (DAY FROM datebill) =" + day + " and EXTRACT (Month FROM datebill) = " + month + " and EXTRACT (YEAR FROM datebill) = " + year + "";
         return String.valueOf(connect.getData(sqlQuery).getInt("sl"));
     }
+
+
 }
