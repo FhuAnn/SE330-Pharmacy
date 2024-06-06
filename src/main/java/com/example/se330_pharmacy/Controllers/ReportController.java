@@ -359,5 +359,4 @@ public class ReportController implements Initializable {
                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 
-
 }

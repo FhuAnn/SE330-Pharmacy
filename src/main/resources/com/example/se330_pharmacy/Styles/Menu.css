@@ -157,3 +157,19 @@
     -fx-scale-x: 1.2;
     -fx-scale-y: 1.2;
 }
+#pane-profile-cat:hover
+{
+    -fx-cursor: hand;
+}
+#pane-profile-cat:hover #profile-cat_black
+{
+    -fx-opacity: 0;
+}
+#pane-profile-cat:hover #profile-cat_green
+{
+    -fx-opacity: 100;
+}
+#pane-profile-cat:pressed
+{
+    -fx-background-color: #CAF191 ;
+}

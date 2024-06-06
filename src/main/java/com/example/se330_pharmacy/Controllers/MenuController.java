@@ -177,5 +177,11 @@ public class MenuController {
         return loader;
     }
 
-
+    public void ProfileEmploy_Clicked(MouseEvent mouseEvent) {
+        String id = String.valueOf(this.employee.getEmployeeId());
+        String name = this.employee.getEmployeeName();
+        String username = this.employee.getEmployeeUsername();
+        String pos = this.employee.getEmployeePosition();
+        Model.getInstance().getViewFactory().showProfileWindow(id,name,username,pos);
+    }
 }
