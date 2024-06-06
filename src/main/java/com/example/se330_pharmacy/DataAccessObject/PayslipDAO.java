@@ -81,22 +81,19 @@ public class PayslipDAO {
     }
     public boolean UpdatePaySlip(Payslip payslip)
     {
-        String query = "UPDATE payslip SET employee_id = ? , content = ?, createdate = ?,totalpay = ?,note =? ,status = ? WHERE payslip_id = ?";
+        LocalDateTime localDateTime = LocalDateTime.parse(LocalDateTime.now().format(formatter),formatter);
+        String query = "UPDATE payslip SET  createdate = ?,totalpay = ?,note =?  WHERE payslip_id = ?";
         try(PreparedStatement statement = connectDB.databaseLink.prepareStatement(query)) {
-            statement.setInt(1,payslip.getEmployee_id());
-            statement.setString(2,payslip.getContent());
-            statement.setObject(3,payslip.getCreateDate());
-            statement.setDouble(4,payslip.getTotalPay());
-            statement.setString(5,payslip.getNote());
-            statement.setString(6,payslip.getStatus());
-            statement.setInt(7,payslip.getPayslip_id());
-            int affRow = statement.executeUpdate();
-            if(affRow ==0 ) return false;
+            statement.setObject(1,localDateTime);
+            statement.setDouble(2,payslip.getTotalPay());
+            statement.setString(3,payslip.getNote());
+            statement.setInt(4,payslip.getPayslip_id());
+            return connectDB.handleData(statement);
         } catch (SQLException e)
         {
             e.printStackTrace();
+            return false;
         }
-        return true;
     }
     public boolean isReceiptOfPayslip(int _id){
         String query = "SELECT 1 FROM payslip WHERE receipt_id = ? ";

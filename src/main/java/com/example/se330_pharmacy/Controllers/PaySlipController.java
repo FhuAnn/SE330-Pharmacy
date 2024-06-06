@@ -119,7 +119,7 @@ public class PaySlipController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 tlt_Employee.setVisible(false);
-                if(!tblPaySlip.getSelectionModel().isEmpty()) Model.getInstance().getViewFactory().showAddPayslipWindow(tblPaySlip.getSelectionModel().getSelectedItem(),PaySlipController.this);
+                if(!tblPaySlip.getSelectionModel().isEmpty()&&tblPaySlip.getSelectionModel().getSelectedItem().getStatus().equals("InComplete")) Model.getInstance().getViewFactory().showAddPayslipWindow(tblPaySlip.getSelectionModel().getSelectedItem(),PaySlipController.this);
             }
         });
     }
