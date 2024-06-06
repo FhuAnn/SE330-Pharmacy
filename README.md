@@ -76,11 +76,15 @@ Green Pharmacy không chỉ là công cụ quản lý, mà còn là người b�
 ## Framework và công nghệ
 1. Công nghệ:
 
+Chúng tôi sử dụng Scene Builder để thiết kế giao diện chính của ứng dụng, sử dụng CSS để tùy chỉnh màu sắc, phông chữ và bố cục của các bảng và nút bấm và JavaFX giúp dễ dàng quản lý sự kiện khi người dùng tương tác với các thành phần giao diện.
 
+Lợi ích của việc sử dụng các công nghệ này:
 
-2. Framework:
+JavaFX cung cấp một nền tảng mạnh mẽ và linh hoạt cho việc phát triển ứng dụng GUI.
 
-Một số framwork mà đồ án sử dụng:
+Scene Builder giúp tăng tốc quá trình phát triển giao diện và giảm thiểu lỗi.
+
+CSS mang lại sự linh hoạt trong việc thiết kế giao diện và giúp ứng dụng trở nên chuyên nghiệp hơn.
 
 
 
