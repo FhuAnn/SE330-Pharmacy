@@ -25,7 +25,7 @@ public class ReceiptDAO {
                 "LEFT JOIN Employee emp2 ON rp.employee_id = emp2.employee_id " +
                 "WHERE rp.personcharge_id IS NULL OR (rp.personcharge_id = emp1.employee_id " +
                 "AND rp.employee_id = emp2.employee_id)";
-        try (ResultSet resultSet = connectDB.getData(query))
+        try (ResultSet resultSet = connectDB.getResultSet(query))
         {
             while (resultSet.next())
             {

@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -32,6 +33,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+    public HBox container;
     public TextField tf_username_forgot;
     public PasswordField pfPassword1_change;
     public PasswordField pfPassword2_change;
@@ -72,9 +74,10 @@ public class LoginController implements Initializable {
     private String storedOTP;
     private int time_remaining = 50;
     private Timeline timeline;
+    private double xOffset = 0;
+    private double yOffset =0;
     private final EmployeeDAO employeeDAO = new EmployeeDAO();
     public ConnectDB connectDB = ConnectDB.getInstance();
-
     @FXML
     void backToLogin(MouseEvent event) {
         index =0;
@@ -272,6 +275,16 @@ public class LoginController implements Initializable {
         pfPassword2_change.textProperty().addListener((observable,oldValue, newValue )-> {
             tfShowPasswordCP2.setText(newValue);
         } );
+        container.setOnMousePressed(mouseEvent -> {
+            xOffset = mouseEvent.getSceneX();
+            yOffset = mouseEvent.getSceneY();
+        });
+
+        container.setOnMouseDragged(mouseEvent -> {
+            Stage stage = (Stage) container.getScene().getWindow();
+            stage.setX(mouseEvent.getScreenX()-xOffset);
+            stage.setY(mouseEvent.getScreenY()-yOffset);
+        });
     }
 
     private void showPassword() {

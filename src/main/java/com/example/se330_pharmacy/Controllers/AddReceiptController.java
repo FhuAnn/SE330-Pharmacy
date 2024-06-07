@@ -63,7 +63,7 @@ public class AddReceiptController implements Initializable {
             lbl_totalPay_red.setText("- "+_payslip.getTotalPay());
             lbl_totalPay_red.setVisible(true);
             lbl_totalPay_green.setVisible(false);
-            ta_content.setText("Thanh toán lương tháng "+lbl_thangLuong.getText()+ " cho nhân viên: "+ _payslip.getReceipt_id() +_payslip.getEmployee_id()+"-"+_payslip.getTenNhanVien());
+            ta_content.setText("Thanh toán lương tháng "+lbl_thangLuong.getText()+ " cho nhân viên: "+ _payslip.getPayslip_id() +_payslip.getEmployee_id()+"-"+_payslip.getTenNhanVien());
         } else {// goi tu Receipt
             receipt= _receipt;
             idCharger=_idCharger;
@@ -143,39 +143,41 @@ public class AddReceiptController implements Initializable {
     }
 
     private void ExportOrSave() {
-        if(CheckFilled() && ShowYesNoAlert("lưu hoá đơn có mã " +receipt.getReceipt_id())==JOptionPane.YES_OPTION) {
-            if(btnExport.getText().equals("Xuất")) {
-                Receipt receipt = new Receipt();
-                receipt.setEmployee_id(payslip.getEmployee_id());
-                receipt.setContent(ta_content.getText());
-                receipt.setTotalPay(payslip.getTotalPay());
-                receipt.setNote(ta_note.getText());
-                receipt.setStatus(cbStatusReceipt.getValue());
-                receipt.setPersoncharge_id(idCharger);
+
+            if(CheckFilled()&& btnExport.getText().equals("Xuất")) {
+                    Receipt receipt = new Receipt();
+                    receipt.setEmployee_id(payslip.getEmployee_id());
+                    receipt.setContent(ta_content.getText());
+                    receipt.setTotalPay(payslip.getTotalPay());
+                    receipt.setNote(ta_note.getText());
+                    receipt.setStatus(cbStatusReceipt.getValue());
+                    receipt.setPersoncharge_id(idCharger);
                     int receipt_id_return = receiptDAO.AddReceiptToDB(receipt);
-                    if(receipt_id_return>0) {
-                        if(payslipDAO.UpdatePayslipCompleted(payslip.getPayslip_id(),receipt_id_return)) {
+                    if (receipt_id_return > 0) {
+                        if (payslipDAO.UpdatePayslipCompleted(payslip.getPayslip_id(), receipt_id_return)) {
                             paySlipController_init.LoadListPayslip();
-                            showAlert("Warning","Thêm dữ liệu thành công");
+                            showAlert("Warning", "Thêm dữ liệu thành công");
                             Model.getInstance().getViewFactory().closeStage((Stage) btnExport.getScene().getWindow());
                         }
                     }
             }
             else { // nếu là Lưu
-                if(!ta_note.getText().isEmpty()||!cbStatusReceipt.getValue().equals("Incomplete")) {
-                    receipt.setNote(ta_note.getText());
-                    receipt.setStatus(cbStatusReceipt.getValue());
-                    receipt.setPersoncharge_id(idCharger);
-                    if(receiptDAO.UpdateReceiptToDB(receipt)) {
-                        receiptController_init.LoadListReceipt();
-                        Model.getInstance().getViewFactory().closeStage((Stage) btnExport.getScene().getWindow());
-                        showAlert("Warning","Cập nhật dữ liệu thành công");
-                    } else {
-                        showAlert("Warning","Error");
+                if(CheckFilled() && ShowYesNoAlert("lưu hoá đơn có mã " +receipt.getReceipt_id())==JOptionPane.YES_OPTION) {
+                    if(!ta_note.getText().isEmpty()||!cbStatusReceipt.getValue().equals("Incomplete")) {
+                        receipt.setNote(ta_note.getText());
+                        receipt.setStatus(cbStatusReceipt.getValue());
+                        receipt.setPersoncharge_id(idCharger);
+                        if(receiptDAO.UpdateReceiptToDB(receipt)) {
+                            receiptController_init.LoadListReceipt();
+                            Model.getInstance().getViewFactory().closeStage((Stage) btnExport.getScene().getWindow());
+                            showAlert("Warning","Cập nhật dữ liệu thành công");
+                        } else {
+                            showAlert("Warning","Error");
+                        }
                     }
-                }
+                } else {}
+
             }
-        } else {}
     }
 
     private boolean CheckFilled() { // tra ve 0 khi khong ton tai textfield nao duoc fill
@@ -183,7 +185,7 @@ public class AddReceiptController implements Initializable {
         if(ta_content.getText().isEmpty()) {
             showAlert("Warning","Chưa nhập đầy đủ thông tin!");
             return false;
-        };
+        }
         if(cbStatusReceipt.getValue()==null) {
             showAlert("Warning","Chưa nhập đầy đủ thông tin!");
             return false;

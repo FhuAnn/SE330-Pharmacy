@@ -97,7 +97,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <MenuButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="51.0" prefWidth="243.0" styleClass="button" text="Kế toán">
+            <MenuButton fx:id="btnAccountant" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="51.0" prefWidth="243.0" styleClass="button" text="Kế toán">
               <items>
                 <MenuItem fx:id="btnPayslip" mnemonicParsing="false" onAction="#btnPayslipClicked" text="Phiếu lương" />
                 <MenuItem fx:id="btnReceipt" mnemonicParsing="false" onAction="#btnReceiptClicked" text="Hóa đơn" />
