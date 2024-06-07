@@ -265,6 +265,7 @@ public class EmployeeController implements Initializable {
         btnAddEmployee.setDisable(false);
         btnDeleteEmployee.setDisable(true);
         btnEditEmployee.setDisable(true);
+        cb_position.setDisable(true);
         cb_position.setVisible(true);
         tf_addPosition.setVisible(false);
         btnAddEmployee.setText("Thêm");
