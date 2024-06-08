@@ -86,6 +86,14 @@
                   <Insets />
                </VBox.margin>
             </Button>
+            <Button id="menu_button" fx:id="btnSupplier" mnemonicParsing="false" onMouseClicked="#btnSupplierClicked" prefHeight="54.0" prefWidth="243.0" text="Nhà cung cấp">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
             <Button id="menu_button" fx:id="btnReport" layoutX="11.0" layoutY="413.0" mnemonicParsing="false" onAction="#btnReportClicked" prefHeight="54.0" prefWidth="243.0" text="Báo cáo">
                <font>
                   <Font size="19.0" />

@@ -5,6 +5,7 @@ import com.example.se330_pharmacy.Models.Supplier;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -29,4 +30,52 @@ public class SupplierDAO {
         }
         return suppliers;
     }
+
+    public void insertSupplier(Supplier supplier, Runnable onSuccess) {
+        String sqlInsert = "INSERT INTO partner (partnername, address, phonenumber, email) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connectDB.databaseLink.prepareStatement(sqlInsert)) {
+            pstmt.setString(1, supplier.getPartnername());
+            pstmt.setString(2, supplier.getAddress());
+            pstmt.setString(3, supplier.getPhonenumber());
+            pstmt.setString(4, supplier.getEmail());
+            pstmt.executeUpdate();
+            if (onSuccess != null) {
+                onSuccess.run();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void updateSupplier(Supplier supplier, Runnable onSuccess) {
+        String sqlUpdate = "UPDATE partner SET partnername = ?, address = ?, phonenumber = ?, email = ? WHERE partner_id = ?";
+        try (PreparedStatement pstmt = connectDB.databaseLink.prepareStatement(sqlUpdate)) {
+            pstmt.setString(1, supplier.getPartnername());
+            pstmt.setString(2, supplier.getAddress());
+            pstmt.setString(3, supplier.getPhonenumber());
+            pstmt.setString(4, supplier.getEmail());
+            pstmt.setInt(5, supplier.getPartner_id());
+            pstmt.executeUpdate();
+            if (onSuccess != null) {
+                onSuccess.run();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteSupplier(Supplier supplier, Runnable onSuccess) {
+        String sqlDelete = "DELETE FROM partner WHERE partner_id = ?";
+        try (PreparedStatement pstmt = connectDB.databaseLink.prepareStatement(sqlDelete)) {
+            pstmt.setInt(1, supplier.getPartner_id());
+            pstmt.executeUpdate();
+            if (onSuccess != null) {
+                onSuccess.run();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

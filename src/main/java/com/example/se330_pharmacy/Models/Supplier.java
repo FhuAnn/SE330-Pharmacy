@@ -18,6 +18,13 @@ public class Supplier {
         this.email = email;
     }
 
+    public Supplier( String partnername, String address, String phonenumber, String email) {
+        this.partnername = partnername;
+        this.address = address;
+        this.phonenumber = phonenumber;
+        this.email = email;
+    }
+
     public int getPartner_id() {
         return partner_id;
     }
