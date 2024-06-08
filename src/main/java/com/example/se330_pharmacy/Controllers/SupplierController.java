@@ -77,7 +77,7 @@ public class SupplierController implements Initializable {
             selected = null;
             clearField();
         }
-        else if (btnAdd.getText().equals("Thêm") && !areFieldsFilled()) {
+        else if (btnAdd.getText().equals("Thêm") && !areFieldsFilled() && tfSuppliierName.isDisable()) {
             tfSuppliierName.setDisable(false);
             tfPhone.setDisable(false);
             tfSupplierEmail.setDisable(false);
