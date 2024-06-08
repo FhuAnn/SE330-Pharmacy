@@ -39,13 +39,14 @@ public class AddPayslipController implements Initializable { // su dung chung ch
     public TextField tf_phieuLuongId;
     public Text lbl_id;
     Payslip payslip_init;
+    String editedString ;
     int index;
     PayslipDAO payslipDAO;
     PaySlipController paySlipController;
     public void initData(Payslip _payslip,PaySlipController _paySlipController)
     {
         paySlipController=_paySlipController;
-        if(_payslip!=null)
+        if(_payslip!=null)  // sua
         {
             lbl_id.setVisible(true);
             tf_phieuLuongId.setVisible(true);
@@ -53,19 +54,29 @@ public class AddPayslipController implements Initializable { // su dung chung ch
             payslip_init=_payslip;
             btnAdd.setDisable(false);
             btnAdd.setText("Lưu");
-
-            tf_phieuLuongId.setText(String.valueOf(payslip_init.getPayslip_id()));
+            tf_maNhanVien.setDisable(true);
+            ta_content.setDisable(true);
+            tf_tongTra.setDisable(false);
+            tf_ghiChu.setDisable(false);
             tf_maNhanVien.setText(String.valueOf(payslip_init.getEmployee_id()));
             tf_tongTra.setText(String.valueOf(payslip_init.getTotalPay()));
+            tf_phieuLuongId.setText(String.valueOf(payslip_init.getPayslip_id()));
             ta_content.setText(payslip_init.getContent());
             tf_ghiChu.setText(payslip_init.getNote());
             cbStatus.setValue(payslip_init.getStatus());
             dp_date.setValue(payslip_init.getCreateDate().toLocalDate());
-        } else {
+            editedString = tf_ghiChu.getText()+tf_tongTra.getText();
+        } else {  // them
             lbl_id.setVisible(false);
             tf_phieuLuongId.setVisible(false);
+            tf_maNhanVien.setDisable(false);
+            tf_ghiChu.setDisable(false);
+            ta_content.setDisable(false);
+            tf_tongTra.setDisable(false);
+            cbStatus.setValue("InComplete");
             dp_date.setValue(LocalDate.now());
             btnAdd.setText("Thêm");
+            btnAdd.setDisable(false);
             ta_content.setText("Thanh toán lương tháng ?");
         }
     }
@@ -90,7 +101,9 @@ public class AddPayslipController implements Initializable { // su dung chung ch
         btnAdd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    if(CheckFilled()) AddToDatabase();
+                    if(CheckFilled()) {
+                        AddToDatabase();
+                    }
                     else showAlert("Warning","Chưa điền đầy đủ thông tin!");
             }
         });
@@ -106,6 +119,7 @@ public class AddPayslipController implements Initializable { // su dung chung ch
     private boolean CheckFilled() {
         if(tf_maNhanVien.getText().isEmpty()) return false;
         if(ta_content.getText().isEmpty()) return false;
+        if(tf_tongTra.getText().isEmpty()) return false;
         return true;
     }
 
@@ -129,15 +143,19 @@ public class AddPayslipController implements Initializable { // su dung chung ch
             } else {}
         }
         else {
-            int sequence =  ShowYesNoAlert("Cập nhật phiếu lương có tên "+payslip_init.getPayslip_id()+"-"+payslip_init.getTenNhanVien()+" ?");
-            if(sequence == JOptionPane.YES_OPTION) {
-                if (payslipDAO.UpdatePaySlip(payslip_init)) {
-                    showAlert("Warning", "Cập nhật cơ sở dữ liệu thành công!");
-                    paySlipController.LoadListPayslip();
-                    Stage stage = (Stage) btnCancel.getScene().getWindow();
-                    Model.getInstance().getViewFactory().closeStage(stage);
+            if(!editedString.equals(tf_ghiChu.getText()+tf_tongTra.getText())) {
+                int sequence = ShowYesNoAlert("cập nhật phiếu lương có tên " + payslip_init.getPayslip_id() + "-" + payslip_init.getTenNhanVien());
+                if (sequence == JOptionPane.YES_OPTION) {
+                    payslip_init.setNote(tf_ghiChu.getText());
+                    payslip_init.setTotalPay(Integer.parseInt(tf_tongTra.getText()));
+                    if (payslipDAO.UpdatePaySlip(payslip_init)) {
+                        showAlert("Warning", "Cập nhật cơ sở dữ liệu thành công!");
+                        paySlipController.LoadListPayslip();
+                    }
                 }
             }
+            Stage stage = (Stage) btnCancel.getScene().getWindow();
+            Model.getInstance().getViewFactory().closeStage(stage);
         }
     }
 
@@ -163,6 +181,6 @@ public class AddPayslipController implements Initializable { // su dung chung ch
         JFrame frame = new JFrame("Table Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
-        return JOptionPane.showConfirmDialog(frame, "Are you sure you want to "+string+" this row?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        return JOptionPane.showConfirmDialog(frame, "Có phải bạn muốn "+string+" ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
 }

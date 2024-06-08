@@ -1,6 +1,7 @@
 package com.example.se330_pharmacy.Controllers;
 
 import com.example.se330_pharmacy.DataAccessObject.ReceiptDAO;
+import com.example.se330_pharmacy.Models.Employee;
 import com.example.se330_pharmacy.Models.Model;
 import com.example.se330_pharmacy.Models.Payslip;
 import com.example.se330_pharmacy.Models.Receipt;
@@ -35,6 +36,10 @@ public class ReceiptController implements Initializable {
     public Button btnEdit;
     ReceiptDAO receiptDAO;
     ObservableList<Receipt> receipts;
+    Employee employee_init;
+    public void initData(Employee _employee) {
+        employee_init = _employee;
+    }
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -82,8 +87,8 @@ public class ReceiptController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Receipt receipt = tblReceipt.getSelectionModel().getSelectedItem();
-                if(receipt!=null && !receipt.getStatus().equals("Completed")) {
-                    Model.getInstance().getViewFactory().showAddReceiptWindow(null,0,null,null,null,ReceiptController.this,receipt);
+                if(receipt!=null) {
+                    Model.getInstance().getViewFactory().showAddReceiptWindow(null,employee_init.getEmployeeId(),employee_init.getEmployeeName(),employee_init.getEmployeePosition(),null,ReceiptController.this,receipt);
                 }
             }
         });
@@ -139,14 +144,6 @@ public class ReceiptController implements Initializable {
         col_nguoiTra.setCellValueFactory(new PropertyValueFactory<>("tenNguoiTra"));
     }
 
-    /*private void LoadListReceipt() {
-        ObservableList<Receipt> receipts = receiptDAO.GetPaySlipData();
-        tblReceipt.setItems(receipts);
-        if(receipts.isEmpty())
-        {
-            showAlert("Warning","Danh sách trống!");
-        }
-    }*/
     private void showAlert(String tilte,String string) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(tilte);

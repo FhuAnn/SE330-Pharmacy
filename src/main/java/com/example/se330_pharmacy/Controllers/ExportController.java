@@ -401,7 +401,6 @@ public class ExportController implements Initializable {
                 }
             }
             CreateReceipt(_employee.getEmployeeId(),sum);
-
             message = "Đã tạo biểu mẫu xuất thành công. Bạn có muốn in mẫu này?";
             return true;
         } else {

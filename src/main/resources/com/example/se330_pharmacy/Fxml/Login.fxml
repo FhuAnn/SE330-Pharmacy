@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="816.0" stylesheets="@../Styles/Login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.se330_pharmacy.Controllers.LoginController">
+<HBox fx:id="container" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="816.0" stylesheets="@../Styles/Login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.se330_pharmacy.Controllers.LoginController">
    <children>
       <Pane prefHeight="522.0" prefWidth="403.0" style="-fx-background-color: linear-gradient(to bottom,#4B7813,#8BC634)" styleClass="login_logo_container">
          <children>
@@ -212,8 +212,8 @@
                         </ImageView>
                         <Pane prefHeight="32.0" prefWidth="215.0">
                            <children>
-                              <PasswordField fx:id="pfPassword_Login" depthTest="DISABLE" onKeyTyped="#passwordFieldKeyTyped" prefHeight="32.0" prefWidth="211.0" promptText="Password" styleClass="password-field" />
                               <TextField fx:id="tfShowPasswordLogin" prefHeight="32.0" prefWidth="211.0" promptText="Password" styleClass="inputText" visible="false" />
+                              <PasswordField fx:id="pfPassword_Login" depthTest="DISABLE" onKeyTyped="#passwordFieldKeyTyped" prefHeight="32.0" prefWidth="211.0" promptText="Password" styleClass="password-field" />
                            </children>
                         </Pane>
                      </children>

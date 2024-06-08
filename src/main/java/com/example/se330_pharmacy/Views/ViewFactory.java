@@ -22,7 +22,6 @@ import java.io.IOException;
 
 public class ViewFactory {
 
-    Stage stageSetting = null;
     Stage stageMenu = null;
     Stage stageAddReceiptAccountant = null;
     Stage stageAddPayslipAccountant = null;
@@ -46,12 +45,12 @@ public class ViewFactory {
         Scale scale = new Scale(w, h, 0, 0);
         root.getTransforms().add(scale);
         Scene scene = new Scene(root);
-        Stage menuStage = new Stage(StageStyle.UNDECORATED);
-        menuStage.setScene(scene);
-        menuStage.setMaximized(true);
+        stageMenu = new Stage(StageStyle.UNDECORATED);
+        stageMenu.setScene(scene);
+        stageMenu.setMaximized(true);
         MenuController menuController = loader.getController();
         menuController.initData(employee);
-        menuStage.show();
+        stageMenu.show();
     }
 
     public void showAddReceiptWindow(Payslip payslip, int _idCharger, String _employnameCharger, String _vitricharger, PaySlipController paySlipController, ReceiptController receiptController, Receipt receipt) {
@@ -92,6 +91,20 @@ public class ViewFactory {
         stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
         return stage;
     }
+    public void showProfileWindow (String id,String name,String username,String pos)
+    {
+        if(stageProfile==null)
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/se330_pharmacy/Fxml/Profile.fxml"));
+            stageProfile=createStage(loader);
+            ProfileController profileController = loader.getController();
+            profileController.initData(id,name,username,pos);
+        }
+        else
+        {
+            stageProfile.toFront();
+        }
+    }
     public void closeStage(Stage stage)
     {
         stage.close();
@@ -105,10 +118,12 @@ public class ViewFactory {
         //khi 1 stage nào đó đóng thì cập nhật tình hình các stage khác
         if(stageAddReceiptAccountant!=null && !stageAddReceiptAccountant.isShowing()) stageAddReceiptAccountant=null;  // nếu khác null nhưng ko còn show thì cập nhật về null
         if(stageAddPayslipAccountant!=null && !stageAddPayslipAccountant.isShowing()) stageAddPayslipAccountant=null;
+        if(stageProfile!=null && !stageProfile.isShowing()) stageProfile=null;
         //if(stageSetting!=null && !stageSetting.isShowing()) stageSetting=null;
         //if(stageProfile!=null &&!stageProfile.isShowing()) stageProfile=null;
     }
-
-
-//ua//ualogin
+    public void minimizeStage(Stage stage)
+    {
+        stage.setIconified(true);
+    }
 }

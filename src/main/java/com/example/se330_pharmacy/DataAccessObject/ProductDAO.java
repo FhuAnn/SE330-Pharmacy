@@ -92,17 +92,17 @@ public class ProductDAO {
     }
     public ObservableList<Product> searchProduct(String searchString) {
         ObservableList<Product> products = FXCollections.observableArrayList();
-        String query = "SELECT product_id , productname, price_import, product.small_unit , unit.small_unit, " +
-                "product.big_unit, unit.big_unit, unit.value, description, origin, pty.typename  FROM product,unit, producttype pty WHERE product.unit_id = unit.unit_id AND product.producttype_id = pty.producttype_id " +
-                "AND unaccent(productname) ILIKE unaccent(?) ";
+        String query = "SELECT pro.product_id , pro.productname, pro.price_import, pro.small_unit , unit.small_unit, " +
+                "pro.big_unit, unit.big_unit, unit.value, pro.description,pro.origin, pty.typename  FROM product pro,unit, producttype pty WHERE pro.unit_id = unit.unit_id AND pro.producttype_id = pty.producttype_id " +
+                "AND  ( unaccent(pro.productname) ILIKE unaccent(?) ";
         boolean isIdSearch = false;
         try {
             int id = Integer.parseInt(searchString);
-            query += " AND pro.product_id = ?";
+            query += " OR pro.product_id = ?";
             isIdSearch = true;
         } catch(NumberFormatException e){
         }
-
+        query+=")";
         try (PreparedStatement statement = connectDB.getPreparedStatement(query)) {
             statement.setString(1,"%"+searchString+"%");
             if (isIdSearch) {

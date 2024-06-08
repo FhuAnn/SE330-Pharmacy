@@ -9,10 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -53,6 +50,7 @@ public class MenuController {
     @FXML
     private  Pane mainPane;
 
+    public MenuButton btnAccountant;
     public Pane paneProgress;
     @FXML
     private Text titleTextField;
@@ -60,13 +58,32 @@ public class MenuController {
 
     public void initData(Employee _employee) {
         employee=_employee;
+        btnSale.setDisable(true);
+        btnEmployee.setDisable(true);
+        btnImport.setDisable(true);
+        btnExport.setDisable(true);
+        btnAccountant.setDisable(true);
+        btnReport.setDisable(true);
+        btnProduct.setDisable(true);
+        switch (employee.getEmployeePosition().trim()){
+            case "Bán hàng": btnSale.setDisable(false); break;
+            case "Kế toán" : btnAccountant.setDisable(false); break;
+            case "Quản lí kho": btnImport.setDisable(false); btnExport.setDisable(false); break;
+            case "Chủ tiệm":
+                btnSale.setDisable(false);
+                btnEmployee.setDisable(false);
+                btnImport.setDisable(false);
+                btnExport.setDisable(false);
+                btnAccountant.setDisable(false);
+                btnReport.setDisable(false);
+                btnProduct.setDisable(false); break;
+        }
     }
 
     @FXML
     void btnEmployeeClicked(ActionEvent event) throws IOException {
         titleTextField.setText("Nhân viên");
         setMainPane("/com/example/se330_pharmacy/Fxml/Employee.fxml");
-        titleTextField.setText("Employee");
     }
 
     @FXML
@@ -115,7 +132,9 @@ public class MenuController {
     @FXML
     void btnReceiptClicked(ActionEvent event) throws IOException {
         titleTextField.setText("Hóa đơn");
-        setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_Receipt.fxml");
+        FXMLLoader loader = setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_Receipt.fxml");
+        ReceiptController receiptController = loader.getController();
+        receiptController.initData(employee);
     }
 
     @FXML
@@ -183,5 +202,11 @@ public class MenuController {
         return loader;
     }
 
-
+    public void ProfileEmploy_Clicked(MouseEvent mouseEvent) {
+        String id = String.valueOf(this.employee.getEmployeeId());
+        String name = this.employee.getEmployeeName();
+        String username = this.employee.getEmployeeUsername();
+        String pos = this.employee.getEmployeePosition();
+        Model.getInstance().getViewFactory().showProfileWindow(id,name,username,pos);
+    }
 }

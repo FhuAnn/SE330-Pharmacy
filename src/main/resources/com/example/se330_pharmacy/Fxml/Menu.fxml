@@ -105,7 +105,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <MenuButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="51.0" prefWidth="243.0" styleClass="button" text="Kế toán">
+            <MenuButton fx:id="btnAccountant" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="51.0" prefWidth="243.0" styleClass="button" text="Kế toán">
               <items>
                 <MenuItem fx:id="btnPayslip" mnemonicParsing="false" onAction="#btnPayslipClicked" text="Phiếu lương" />
                 <MenuItem fx:id="btnReceipt" mnemonicParsing="false" onAction="#btnReceiptClicked" text="Hóa đơn" />
@@ -164,6 +164,20 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane id="pane-profile-cat" layoutX="1287.0" layoutY="56.0" onMouseClicked="#ProfileEmploy_Clicked" prefHeight="53.0" prefWidth="57.0">
+               <children>
+                  <ImageView id="profile-cat_green" fitHeight="45.0" fitWidth="67.0" layoutX="6.0" layoutY="4.0" onMouseClicked="#ProfileEmploy_Clicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/cat_profile_green.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView id="profile-cat_black" fitHeight="45.0" fitWidth="67.0" layoutX="6.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/cat_profile.png" />
+                     </image>
                   </ImageView>
                </children>
             </Pane>

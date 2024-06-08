@@ -424,7 +424,7 @@ public class ProductController implements Initializable {
         SetTFMiniDisable(false);
         clearTFMini();
         btnMini.setText("Thêm");
-        btnMini.setText("add");
+        btnMini.setId("add");
         lblBigUnitMini.setVisible(true);
         tf_bigUnit.setVisible(true);
         lbl_Coef.setVisible(true);
@@ -537,7 +537,7 @@ public class ProductController implements Initializable {
         tblProduct.setItems(lists);
     }
     private boolean isValidInput(String input) {
-        String regex = ".*[a-zA-Z\u00C0-\u1FFF\u2C00-\uD7FF]+.*";
+        String regex = ".*[a-zA-Z\\d\\u00C0-\\u1FFF\\u2C00-\\uD7FF]+.*";
         return input.matches(regex);
     }
     private boolean checkInformationUnit() {

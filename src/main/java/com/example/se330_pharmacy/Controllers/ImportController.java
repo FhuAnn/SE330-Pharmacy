@@ -3,6 +3,12 @@ package com.example.se330_pharmacy.Controllers;
 import com.example.se330_pharmacy.DataAccessObject.ProductDAO;
 import com.example.se330_pharmacy.DataAccessObject.ReceiptDAO;
 import com.example.se330_pharmacy.DataAccessObject.SupplierDAO;
+import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -12,6 +18,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -23,6 +32,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.text.Normalizer;
 import java.time.LocalDate;
@@ -42,6 +55,7 @@ public class ImportController implements Initializable {
     public TableColumn<Product,String> col_originProduct;
     public TableColumn<Product,String> col_unitProduct;
     public TableColumn<Product,String> col_typeProduct;
+    public TableColumn<Product,Integer> col_quantityProduct;
     public TableView<Import> tbl_DetailImportForm;
     public TableColumn<Import,Integer> col_idDetail;
     public TableColumn<Import,String> col_nameDetail;
@@ -118,6 +132,7 @@ public class ImportController implements Initializable {
         col_originProduct.setCellValueFactory(new PropertyValueFactory<>("productOrigin"));
         col_unitProduct.setCellValueFactory(new PropertyValueFactory<>("productBigUnit"));
         col_typeProduct.setCellValueFactory(new PropertyValueFactory<>("productType"));
+        col_quantityProduct.setCellValueFactory(new PropertyValueFactory<>("productBigUnitQuantities"));
 
         col_idDetail.setCellValueFactory(new PropertyValueFactory<>("productId"));
         col_nameDetail.setCellValueFactory(new PropertyValueFactory<>("productName"));
@@ -201,8 +216,13 @@ public class ImportController implements Initializable {
                         tfProductQuantities.setText(newValue.replaceAll("[^\\d]", ""));
                         showAlert("Warning","Chỉ nhập được nhập số!");
                     } else {
-                        int total = Integer.parseInt(newValue)* Integer.parseInt(tfProductPrice.getText());
-                        tfProductTotal.setText(String.valueOf(total));
+                        try {
+                            int total = Integer.parseInt(newValue)* Integer.parseInt(tfProductPrice.getText());
+                            tfProductTotal.setText(String.valueOf(total));
+                        } catch (NumberFormatException e) {
+                            tfProductTotal.setText("Tổng tiền");
+                        }
+
                     }
                 }
             }
@@ -363,8 +383,11 @@ public class ImportController implements Initializable {
                 if(id>0) {
                     if(AddDetailImportToDB(id)){
                         if(CreateReceipt(id,totalPay))
-                            showAlert("Warning","Thông tin nhập hàng được ghi nhận!");
+                            showAlert("Notification","Thông tin nhập hàng được ghi nhận!");
+                        if(ShowYesNoAlert("in hoá đơn")==JOptionPane.YES_OPTION) printBill();
+                        else {}
                         clearInformation();
+                        loadProducts();
                         tbl_DetailImportForm.getItems().clear();
                     } else System.out.println("Error");
                 }
@@ -383,6 +406,7 @@ public class ImportController implements Initializable {
         for(Import import_: listImport){
             import_.setImportId(id);
             if(!importDAO.AddDetailtoDB(import_)) return false;
+            if(!importDAO.updateProduct(import_.getQuantity(),import_.getProductId())) return false;
         }
         return true;
     }
@@ -468,5 +492,86 @@ public class ImportController implements Initializable {
     private boolean isValidInput(String input) {
         String regex = ".*[a-zA-Z\\d\\u00C0-\\u1FFF\\u2C00-\\uD7FF]+.*";
         return input.matches(regex);
+    }
+    private void printBill() {
+        Document document = new Document();
+
+        String fileName = "Import_Bill_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".pdf";
+        String directoryPath = "Bill/";
+        String filePath = directoryPath + fileName;
+
+        try {
+            // Create directories if they don't exist
+            File directory = new File(directoryPath);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+
+            String fontPath = "notosans-regular.ttf";
+            BaseFont baseFont = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+            Font boldFont = new Font(baseFont, 15, Font.BOLD);
+            Font regularFont = new Font(baseFont, 13, Font.BOLD);
+
+            document.add(new Paragraph("Green Pharmacy", boldFont));
+            document.add(new Paragraph("Address: 136, Linh Trung, Thủ Đức, TP Thủ Đức", regularFont));
+            document.add(new Paragraph("Phone: 1900 1555           Employee: " + employee_init.getEmployeeId(), regularFont));
+            document.add(new Paragraph("IMPORT BILL", boldFont));
+
+            PdfPTable table = new PdfPTable(5);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10f);
+
+            float[] columnWidths = {2f, 1f, 1f, 1f, 1f};
+            table.setWidths(columnWidths);
+
+            // Table headers
+            table.addCell(new PdfPCell(new Phrase("Product ID", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Product Name", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Price", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Quantity", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Total", boldFont)));
+
+            // Table data
+            for (Import product : tbl_DetailImportForm.getItems()) {
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(product.getProductId()), regularFont)));
+                table.addCell(new PdfPCell(new Phrase(product.getProductName(), regularFont)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(product.getImportPrice()), regularFont)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(product.getQuantity()), regularFont)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(product.getTotalPrice()), regularFont)));
+            }
+
+            document.add(table);
+
+            float total = getTotalImport();
+            document.add(new Paragraph("Total: " + String.format("%,.0f", total), boldFont));
+            document.add(new Paragraph("Date: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), regularFont));
+
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to generate PDF bill");
+        } finally {
+            document.close();
+
+            // Open the generated PDF file
+            try {
+                File file = new File(filePath);
+                Desktop.getDesktop().open(file);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                showAlert("Error", "Failed to open PDF file");
+            }
+        }
+    }
+    private float getTotalImport() {
+        float total = 0;
+        for (Import product : tbl_DetailImportForm.getItems()) {
+            total += product.getTotalPrice();
+        }
+        return total;
     }
 }

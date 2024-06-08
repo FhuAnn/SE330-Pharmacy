@@ -20,6 +20,7 @@ public class EmployeeDAO {
 
     Employee employee = new Employee();
     ConnectDB connectDB = ConnectDB.getInstance();
+    String defaultpassword;
     public EmployeeDAO() {
     }
 
@@ -87,7 +88,7 @@ public class EmployeeDAO {
     public String getEmail(String username) throws SQLException {
         String username_result =null;
         String query = "SELECT email FROM employee WHERE username = '" + username +"'";
-        ResultSet resultSet = connectDB.getData(query);
+        ResultSet resultSet = connectDB.getResultSet(query);
         if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không
         {
             username_result = resultSet.getString("email");
@@ -99,7 +100,7 @@ public class EmployeeDAO {
         newPassword = GetHash(newPassword);
         String querry;
         PreparedStatement preparedStatement = null;
-        if (index == 0)
+        if (index == 3)
         {
             querry = "UPDATE Employee SET Password = ?, DefaultPassword = NULL  WHERE Username = ? ";
             preparedStatement = connectDB.databaseLink.prepareStatement(querry);
@@ -113,12 +114,7 @@ public class EmployeeDAO {
             preparedStatement.setString(1,newPassword);
             preparedStatement.setString(2,username);
         }
-        if (connectDB.handleData(preparedStatement))
-        {
-            return true;
-        }
-        else
-            return false;
+        return connectDB.handleData(preparedStatement);
     }
     final String LOWER_CASE = "abcdefghijklmnopqursuvwxyz";
     final String  UPPER_CASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -149,8 +145,7 @@ public class EmployeeDAO {
     {
         String username =null;
         String query = "SELECT username FROM employee WHERE username = '" + _username +"'";
-        ResultSet resultSet = connectDB.getData(query);
-        try
+        try(ResultSet resultSet = connectDB.getResultSet(query))
         {
             if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không
             {
@@ -164,50 +159,25 @@ public class EmployeeDAO {
         }
         return null;
     }
-    public boolean checkID(int id)
-    {
-        String query = "SELECT * FROM employee WHERE employee_id = '" + id +"'";
-        ResultSet resultSet = connectDB.getData(query);
-        try
-        {
-            if(resultSet.next()) // kiểm tra xem resultSet có dữ liệu hay không
-            {
-                return true;
-            }
-        }
-        catch (SQLException e )
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean addEmployee(Employee employee) {
-        String query = "INSERT INTO employee (employname, phonenumber, citizen_id, username, password, position, defaultpassword, address, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        String defaultPassword = GeneratePassword(true,true,true,true,8);
+    public int addEmployee(Employee employee) {
+        String query = "INSERT INTO employee (employname, phonenumber, citizen_id, username, password, position, defaultpassword, address, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING employee_id";
+        defaultpassword = GeneratePassword(true,false,true,false,8);
+        String defaultPasswordHash= GetHash(defaultpassword);
         try (PreparedStatement statement = connectDB.getPreparedStatement(query)) {
-            statement.setString(1, employee.getEmployeeUsername());
+            statement.setString(1, employee.getEmployeeName());
             statement.setString(2, employee.getEmployeePhoneNumber());
             statement.setString(3, employee.getEmployeeCitizenId());
             statement.setString(4, employee.getEmployeeUsername());
             statement.setString(5, "");
             statement.setString(6, employee.getEmployeePosition());
-            statement.setString(7, defaultPassword);
+            statement.setString(7, defaultPasswordHash);
             statement.setString(8, employee.getEmployeeAddress());
             statement.setString(9, employee.getEmployeeEmail());
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows > 0) {
-                try (ResultSet rs = statement.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        employee.setEmployeeId(rs.getInt(1));
-                    }
-                }
-                return true;
-            }
+            return connectDB.getId(statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     public boolean updateEmployee(Employee employee) {
@@ -220,8 +190,7 @@ public class EmployeeDAO {
             statement.setString(5, employee.getEmployeePosition());
             statement.setString(6, employee.getEmployeeEmail());
             statement.setInt(7, employee.getEmployeeId());
-            int aff =  statement.executeUpdate();
-            if (aff > 0) return true;
+            return connectDB.handleData(statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -232,8 +201,7 @@ public class EmployeeDAO {
         String query = "DELETE FROM employee WHERE employee_id = ?";
         try (PreparedStatement statement = connectDB.getPreparedStatement(query)) {
             statement.setInt(1, employeeId);
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected>0) return true;
+            return connectDB.handleData(statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -261,5 +229,13 @@ public class EmployeeDAO {
             e.printStackTrace();
         }
         return employees;
+    }
+
+    public String getDefaultpassword() {
+        return defaultpassword;
+    }
+
+    public void setDefaultpassword(String defaultpassword) {
+        this.defaultpassword = defaultpassword;
     }
 }
