@@ -1,6 +1,5 @@
 package com.example.se330_pharmacy.Controllers;
 
-import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Employee;
 import com.example.se330_pharmacy.Models.Model;
 import javafx.application.Platform;
@@ -48,16 +47,16 @@ public class MenuController {
     private Button btnSale;
 
     @FXML
-    private  Pane mainPane;
+    private Pane mainPane;
 
     public MenuButton btnAccountant;
     public Pane paneProgress;
     @FXML
     private Text titleTextField;
-    public Employee employee ;
+    public Employee employee;
 
     public void initData(Employee _employee) {
-        employee=_employee;
+        employee = _employee;
         btnSale.setDisable(true);
         btnEmployee.setDisable(true);
         btnImport.setDisable(true);
@@ -65,10 +64,17 @@ public class MenuController {
         btnAccountant.setDisable(true);
         btnReport.setDisable(true);
         btnProduct.setDisable(true);
-        switch (employee.getEmployeePosition().trim()){
-            case "Bán hàng": btnSale.setDisable(false); break;
-            case "Kế toán" : btnAccountant.setDisable(false); break;
-            case "Quản lí kho": btnImport.setDisable(false); btnExport.setDisable(false); break;
+        switch (employee.getEmployeePosition().trim()) {
+            case "Bán hàng":
+                btnSale.setDisable(false);
+                break;
+            case "Kế toán":
+                btnAccountant.setDisable(false);
+                break;
+            case "Quản lí kho":
+                btnImport.setDisable(false);
+                btnExport.setDisable(false);
+                break;
             case "Chủ tiệm":
                 btnSale.setDisable(false);
                 btnEmployee.setDisable(false);
@@ -76,7 +82,8 @@ public class MenuController {
                 btnExport.setDisable(false);
                 btnAccountant.setDisable(false);
                 btnReport.setDisable(false);
-                btnProduct.setDisable(false); break;
+                btnProduct.setDisable(false);
+                break;
         }
     }
 
@@ -118,7 +125,7 @@ public class MenuController {
     @FXML
     void btnPayslipClicked(ActionEvent event) throws IOException {
         titleTextField.setText("Phiếu lương");
-        FXMLLoader loader= setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_PaySlip.fxml");
+        FXMLLoader loader = setMainPane("/com/example/se330_pharmacy/Fxml/Accountant_PaySlip.fxml");
         PaySlipController paySlipController = loader.getController();
         paySlipController.initData(employee);
     }
@@ -144,12 +151,12 @@ public class MenuController {
         SaleController saleController = loader.getController();
         saleController.initData(employee);
     }
-    
+
     @FXML
     void btnReportClicked(ActionEvent event) {
         titleTextField.setText("Báo cáo");
         paneProgress.setVisible(true);
-        new Thread(()->{
+        new Thread(() -> {
             try {
                 Thread.sleep(700);
                 Platform.runLater(() -> {
@@ -171,10 +178,10 @@ public class MenuController {
 
     @FXML
     void closeMenu(MouseEvent event) {
-        Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage s = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("DangXuat");
-        confirmationAlert.setContentText("Ban muon dang xuat?");
+        confirmationAlert.setTitle("Đăng Xuất");
+        confirmationAlert.setContentText("Bạn có muốn đăng xuất không?");
 
         ButtonType okButton = new ButtonType("OK");
         ButtonType cancelButton = ButtonType.CANCEL;
@@ -184,13 +191,24 @@ public class MenuController {
         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
         if (result.isPresent() && result.get() == okButton) {
-            Model.getInstance().getViewFactory().closeStage(s);
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/se330_pharmacy/Fxml/Login.fxml"));
+                Parent loginRoot = loader.load();
+                Stage loginStage = new Stage();
+                loginStage.setScene(new javafx.scene.Scene(loginRoot));
+                loginStage.show();
+
+                // Đóng cửa sổ hiện tại
+                s.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @FXML
     void minimizeMenu(MouseEvent event) {
-        Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage s = (Stage) ((Node) event.getSource()).getScene().getWindow();
         s.setIconified(true);
     }
 
@@ -207,6 +225,6 @@ public class MenuController {
         String name = this.employee.getEmployeeName();
         String username = this.employee.getEmployeeUsername();
         String pos = this.employee.getEmployeePosition();
-        Model.getInstance().getViewFactory().showProfileWindow(id,name,username,pos);
+        Model.getInstance().getViewFactory().showProfileWindow(id, name, username, pos);
     }
 }
