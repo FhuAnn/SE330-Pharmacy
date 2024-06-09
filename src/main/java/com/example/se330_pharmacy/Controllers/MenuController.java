@@ -191,18 +191,9 @@ public class MenuController {
         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
         if (result.isPresent() && result.get() == okButton) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/se330_pharmacy/Fxml/Login.fxml"));
-                Parent loginRoot = loader.load();
-                Stage loginStage = new Stage();
-                loginStage.setScene(new javafx.scene.Scene(loginRoot));
-                loginStage.show();
-
-                // Đóng cửa sổ hiện tại
-                s.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Model.getInstance().getViewFactory().showLoginWindow();
+            // Đóng cửa sổ hiện tại
+            s.close();
         }
     }
 

@@ -112,15 +112,12 @@ public class ViewFactory {
         {
             if(stageAddReceiptAccountant!=null) stageAddReceiptAccountant.close();
             if(stageAddPayslipAccountant!=null) stageAddPayslipAccountant.close();
-            //if(stageSetting!=null) stageSetting.close();
-            //if(stageProfile!=null) stageProfile.close();
+            if(stageProfile!=null) stageProfile.close();
         }
         //khi 1 stage nào đó đóng thì cập nhật tình hình các stage khác
         if(stageAddReceiptAccountant!=null && !stageAddReceiptAccountant.isShowing()) stageAddReceiptAccountant=null;  // nếu khác null nhưng ko còn show thì cập nhật về null
         if(stageAddPayslipAccountant!=null && !stageAddPayslipAccountant.isShowing()) stageAddPayslipAccountant=null;
         if(stageProfile!=null && !stageProfile.isShowing()) stageProfile=null;
-        //if(stageSetting!=null && !stageSetting.isShowing()) stageSetting=null;
-        //if(stageProfile!=null &&!stageProfile.isShowing()) stageProfile=null;
     }
     public void minimizeStage(Stage stage)
     {
