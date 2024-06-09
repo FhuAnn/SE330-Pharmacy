@@ -7,12 +7,10 @@ import com.example.se330_pharmacy.Models.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -20,25 +18,16 @@ public class ExportDAO {
     final private ConnectDB connectDB = ConnectDB.getInstance();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public ExportDAO() {
-
-    }
+    public ExportDAO() {}
 
     public String addData(String employee, String reason, String totalPrice) {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        // Lấy ngày hiện tại
-        LocalDate currentDate = LocalDate.now();
-        // Định dạng ngày hiện tại theo định dạng "dd-MM-yyyy"
-        String formattedDate = currentDate.format(dateFormat);
         String sql = "INSERT INTO ExportForm (Employee_id, ExportReason, ExportDate, TotalMoney) " +
                 "VALUES (?, ?, ?, ?) RETURNING exportform_id";
 
         try (PreparedStatement stmt = connectDB.databaseLink.prepareStatement(sql)) {
-
             stmt.setInt(1, Integer.parseInt(employee));
             stmt.setString(2, reason);
-            stmt.setString(3, formattedDate);
+            stmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now())); // Set the current timestamp
             stmt.setInt(4, Integer.parseInt(totalPrice));
 
             ResultSet rs = stmt.executeQuery();
@@ -54,10 +43,9 @@ public class ExportDAO {
     }
 
     public void addDetailData(int productID, String exportID, int quantity, double price, double totalPrice) {
-        String sql = "INSERT INTO DetailExportForm (Product_id, Exportform_id, Price, Quantity,  total) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO DetailExportForm (Product_id, Exportform_id, Price, Quantity, total) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connectDB.databaseLink.prepareStatement(sql)) {
-
             stmt.setInt(1, productID);
             stmt.setInt(2, Integer.parseInt(exportID));
             stmt.setDouble(3, price);
@@ -74,7 +62,6 @@ public class ExportDAO {
         String sql = "UPDATE Product SET big_unit = big_unit - ? WHERE Product_id = ?";
 
         try (PreparedStatement stmt = connectDB.databaseLink.prepareStatement(sql)) {
-
             stmt.setInt(1, quantity);
             stmt.setInt(2, productID);
 
@@ -111,10 +98,13 @@ public class ExportDAO {
     public ObservableList<DetailExport> getExportById(int id) {
         ObservableList<DetailExport> detailExports = FXCollections.observableArrayList();
 
-        String query = STR."SELECT pro.product_id, productname, dtex.price, dtex.quantity, unit.big_unit, dtex.total from product pro, unit, detailexportform dtex  where dtex.product_id = pro.product_id and pro.unit_id = unit.unit_id and dtex.exportform_id = \{id}";
+        String query = "SELECT pro.product_id, productname, dtex.price, dtex.quantity, unit.big_unit, dtex.total " +
+                "FROM product pro, unit, detailexportform dtex " +
+                "WHERE dtex.product_id = pro.product_id AND pro.unit_id = unit.unit_id AND dtex.exportform_id = ?";
 
-        try (PreparedStatement statement = connectDB.databaseLink.prepareStatement(query);
-                ResultSet rs = statement.executeQuery()) {
+        try (PreparedStatement statement = connectDB.databaseLink.prepareStatement(query)) {
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
                 DetailExport detailExport = new DetailExport();
@@ -135,22 +125,20 @@ public class ExportDAO {
     }
 
     public boolean autoCreateReceipt(int employeeId, String content, int totalPay, String status, String note) {
-            LocalDateTime dateTime = LocalDateTime.parse(LocalDateTime.now().format(formatter),formatter);
-            String sqlQuery = "INSERT INTO receipt (employee_id, content, createDate, totalpay, status, note) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
-            try {
-                PreparedStatement preparedStatement = connectDB.databaseLink.prepareStatement(sqlQuery);
-                preparedStatement.setInt(1, employeeId);
-                preparedStatement.setString(2, content);
-                preparedStatement.setObject(3, dateTime);
-                preparedStatement.setInt(4, totalPay);
-                preparedStatement.setString(5, status);
-                preparedStatement.setString(6, note);
-                return preparedStatement.executeUpdate() > 0;
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return false;
-            }
+        LocalDateTime dateTime = LocalDateTime.parse(LocalDateTime.now().format(formatter), formatter);
+        String sqlQuery = "INSERT INTO receipt (employee_id, content, createDate, totalpay, status, note) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connectDB.databaseLink.prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1, employeeId);
+            preparedStatement.setString(2, content);
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(dateTime));
+            preparedStatement.setInt(4, totalPay);
+            preparedStatement.setString(5, status);
+            preparedStatement.setString(6, note);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
-
+    }
 }
