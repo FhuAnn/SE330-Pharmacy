@@ -117,6 +117,8 @@ public class ProductController implements Initializable {
                     } catch (Exception e ) {
                         lblValue.setVisible(false);
                         lblOn.setVisible(false);
+                        lblValue.setText("1");
+                        lblBigUnit.setText(selectedValue);
                         lblBigUnit.setVisible(false);
                         lblSmallUnit.setText(selectedValue);
                         lblSmallUnit.setVisible(true);
