@@ -38,7 +38,7 @@ public class ExportDAO {
 
             stmt.setInt(1, Integer.parseInt(employee));
             stmt.setString(2, reason);
-            stmt.setString(3, formattedDate);
+            stmt.setObject(3, formattedDate);
             stmt.setInt(4, Integer.parseInt(totalPrice));
 
             ResultSet rs = stmt.executeQuery();

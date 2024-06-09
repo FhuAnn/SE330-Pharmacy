@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 public class Payslip {
     int payslip_id;
-    int receipt_id;
     int employee_id;
     String content;
     LocalDateTime createDate;
@@ -14,7 +13,7 @@ public class Payslip {
     String note;
     String status;
 
-
+    int receipt_id;
     String tenNhanVien;
     String ViTriLamViec;
     public Payslip() {

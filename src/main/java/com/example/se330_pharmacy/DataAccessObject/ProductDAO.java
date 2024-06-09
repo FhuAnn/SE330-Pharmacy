@@ -1,5 +1,6 @@
 package com.example.se330_pharmacy.DataAccessObject;
 
+import com.example.se330_pharmacy.ForeignKeyViolationException;
 import com.example.se330_pharmacy.Models.ConnectDB;
 import com.example.se330_pharmacy.Models.Product;
 import javafx.collections.FXCollections;
@@ -199,13 +200,17 @@ public class ProductDAO {
         }
     }
 
-    public boolean deleteProduct(int id) {
+    public boolean deleteProduct(int id) throws ForeignKeyViolationException {
             String sqlQuery = "DELETE FROM product WHERE product_id = ?";
             try (PreparedStatement preparedStatement = connectDB.getPreparedStatement(sqlQuery)) {
                 preparedStatement.setInt(1,id);
                 return preparedStatement.executeUpdate() > 0;
             } catch (SQLException e) {
-                e.printStackTrace();
+                if (e.getSQLState().equals("23503")) { // Mã lỗi cho vi phạm khóa ngoại
+                    throw new ForeignKeyViolationException("Không thể xóa sản phẩm vì dữ liệu sản phẩm có mã "+id+" được sử dụng ");
+                } else {
+                    e.printStackTrace();
+                }
                 return false;
             }
     }

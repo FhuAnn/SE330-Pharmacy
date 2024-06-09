@@ -334,11 +334,16 @@ public class ProductController implements Initializable {
             if (!tfProductId.getText().isEmpty()) {
                 int sequence = ShowYesNoAlert("xoá sản phẩm "+tfProductName.getText());
                 if(sequence==JOptionPane.YES_OPTION) {
-                    if(productDAO.deleteProduct(Integer.parseInt(tfProductId.getText()))) {
-                        showAlert("Notification","Xoá sản phẩm "+tfProductName.getText()+" thành công!");
-                        clearInformation();
-                        loadProducts();
-                    } else showAlert("Warning","Thất bại!");
+                    try {
+                        if(productDAO.deleteProduct(Integer.parseInt(tfProductId.getText()))) {
+                            showAlert("Notification","Xoá sản phẩm "+tfProductName.getText()+" thành công!");
+                            clearInformation();
+                            loadProducts();
+                        } else showAlert("Warning","Thất bại!");
+                    } catch (ForeignKeyViolationException e ){
+                        showAlert("Warning",e.getMessage());
+                    }
+
                 }
             }
     }
