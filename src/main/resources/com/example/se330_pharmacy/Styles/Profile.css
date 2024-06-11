@@ -14,13 +14,13 @@
 /*label*/
 .txt
 {
-    -fx-font-style: bold;
+    -font-style: bold;
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 20px;
 }
 .lbl
 {
-    -fx-font-style: bold;
+    -font-style: bold;
     -fx-font-family: "Segoe UI Semibold";
     -fx-alignment: center;
     -fx-font-size: 20px;

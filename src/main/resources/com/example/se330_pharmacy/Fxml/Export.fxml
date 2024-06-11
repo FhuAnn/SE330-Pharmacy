@@ -98,13 +98,14 @@
                      <children>
                         <TableView fx:id="tvProductTable" layoutX="-4.0" layoutY="1.0" prefHeight="458.0" prefWidth="860.0">
                            <columns>
-                              <TableColumn fx:id="tcProductId" minWidth="122.8" prefWidth="75.0" text="Mã sản phẩm" />
-                              <TableColumn fx:id="tcProductName" minWidth="122.8" prefWidth="75.0" text="Tên sản phẩm" />
-                              <TableColumn fx:id="tcProductPrice" minWidth="122.8" prefWidth="75.0" text="Giá" />
-                              <TableColumn fx:id="tcProductDesc" minWidth="122.8" prefWidth="75.0" text="Mô tả" />
-                              <TableColumn fx:id="tcProductOrigin" minWidth="122.8" prefWidth="75.0" text="Nguồn gốc" />
-                              <TableColumn fx:id="tcProductUnit" minWidth="122.8" prefWidth="75.0" text="Đơn vị" />
-                              <TableColumn fx:id="tcProductType" minWidth="0.0" prefWidth="121.0" text="Loại" />
+                              <TableColumn fx:id="tcProductId" minWidth="98.00000190734863" prefWidth="105.33333778381348" text="Mã sản phẩm" />
+                              <TableColumn fx:id="tcProductName" minWidth="122.8" prefWidth="169.99998474121094" text="Tên sản phẩm" />
+                              <TableColumn fx:id="tcQuantity" minWidth="72.666748046875" prefWidth="72.666748046875" text="Số lượng" />
+                              <TableColumn fx:id="tcProductPrice" minWidth="106.6666259765625" prefWidth="106.6666259765625" text="Giá" />
+                              <TableColumn fx:id="tcProductDesc" minWidth="122.8" prefWidth="140.66665649414062" text="Mô tả" />
+                              <TableColumn fx:id="tcProductOrigin" minWidth="114.0" prefWidth="116.666748046875" text="Nguồn gốc" />
+                              <TableColumn fx:id="tcProductUnit" minWidth="105.3333740234375" prefWidth="113.3333740234375" text="Đơn vị" />
+                              <TableColumn fx:id="tcProductType" minWidth="0.0" prefWidth="160.6666259765625" text="Loại" />
                            </columns>
                         </TableView>
                      </children>

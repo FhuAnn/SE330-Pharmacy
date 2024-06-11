@@ -48,7 +48,7 @@ public class ProductDAO {
 
     public ObservableList<Product> getAllProductExport() {
         ObservableList<Product> products = FXCollections.observableArrayList();
-        String query = "SELECT product.product_id , productname, price_import, product.description ,product.origin,  unit.big_unit ,producttype.typename FROM product,unit,producttype " +
+        String query = "SELECT product.product_id , productname, price_import, product.description ,product.origin,  unit.big_unit ,producttype.typename,product.big_unit FROM product,unit,producttype " +
                 "WHERE product.unit_id = unit.unit_id AND product.producttype_id = producttype.producttype_id ORDER BY product.product_id asc";
 
         try (PreparedStatement preparedStatement = connectDB.databaseLink.prepareStatement(query);
@@ -63,6 +63,7 @@ public class ProductDAO {
                 product.setProductOrigin(rs.getString(5));
                 product.setProductBigUnit(rs.getString(6));
                 product.setProductType(rs.getString(7));
+                product.setProductBigUnitQuantities(rs.getInt(8));
                 products.add(product);
             }
         } catch (Exception e) {

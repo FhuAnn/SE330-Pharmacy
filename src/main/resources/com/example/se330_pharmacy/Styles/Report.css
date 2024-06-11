@@ -350,7 +350,7 @@ Customize left and right arrow
     -fx-text-fill: #000000;
 }
 #right {
-    -fx-background-color: linear-gradient(to right,#8C60F6,#D099F4);
+    -fx-background-color: linear-gradient(to right, #9668f6,#D099F4);
     -fx-effect: dropshadow(three-pass-box, rgb(50, 11, 143), 5, 0.2, 0, 2);
 }
 #revenue

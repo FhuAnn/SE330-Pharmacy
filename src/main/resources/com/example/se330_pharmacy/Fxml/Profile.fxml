@@ -65,7 +65,7 @@
                      </HBox.margin></Text>
                   <Label fx:id="employee_id_lbl" styleClass="lbl" text="null">
                      <HBox.margin>
-                        <Insets left="100.0" />
+                        <Insets left="50.0" />
                      </HBox.margin></Label>
                </children>
                <VBox.margin>
@@ -80,7 +80,7 @@
                      </HBox.margin></Text>
                   <Label fx:id="employname_lbl" styleClass="lbl" text="null">
                      <HBox.margin>
-                        <Insets left="98.0" />
+                        <Insets left="46.0" />
                      </HBox.margin></Label>
                </children>
             </HBox>
@@ -92,7 +92,7 @@
                      </HBox.margin></Text>
                   <Label fx:id="username_lbl" alignment="CENTER" styleClass="lbl" text="null">
                      <HBox.margin>
-                        <Insets left="125.0" />
+                        <Insets left="82.0" />
                      </HBox.margin></Label>
                </children>
             </HBox>
@@ -104,7 +104,7 @@
                      </HBox.margin></Text>
                   <Label fx:id="position_lbl" styleClass="lbl" text="null">
                      <HBox.margin>
-                        <Insets left="100.0" />
+                        <Insets left="50.0" />
                      </HBox.margin></Label>
                </children>
             </HBox>

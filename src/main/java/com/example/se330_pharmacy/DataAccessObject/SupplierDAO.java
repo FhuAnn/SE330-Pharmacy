@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class SupplierDAO {
     ConnectDB connectDB =ConnectDB.getInstance();
     public ObservableList<Supplier> getSuppliers() {
-        String sqlQuery = "SELECT partner_id, partnername,address, phonenumber,email FROM partner";
+        String sqlQuery = "SELECT partner_id, partnername,address, phonenumber,email FROM partner ORDER BY partner_id ASC";
         ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
         try (ResultSet rs = connectDB.getPreparedStatement(sqlQuery).executeQuery()) {
             while(rs.next()) {

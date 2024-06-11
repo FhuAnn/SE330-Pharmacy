@@ -45,19 +45,15 @@ public class ReportController implements Initializable {
     public TableColumn<Report, String> col_date;
     public TableColumn<Report, String> col_name;
     public TableColumn<Report, String> col_value;
-
     public TableView<Report> tbl_reportTop;
     public TableColumn<Report, Integer> col_idTop;
     public TableColumn<Report, String> col_nameTop;
     public TableColumn<Report, String> col_numberTOP;
     public TableColumn<Report, Integer> col_totalTop;
-
     public TableView<Bill> tbl_reportMedicine;
     public TableColumn<Bill, Integer> col_idMedicine;
     public TableColumn<Bill, String> col_nameMedicine;
     public TableColumn<Bill, Integer> col_number;
-
-
     public Text numberBillOfMonth;
     public Text numberBillOfToday;
     public Text numberProductOfMonth;

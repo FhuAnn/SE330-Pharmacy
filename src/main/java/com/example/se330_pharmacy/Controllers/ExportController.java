@@ -42,6 +42,7 @@ public class ExportController implements Initializable {
     private static final int FIXED_QUANTITY = 20;
     private ProductDAO productDAO = new ProductDAO();
     private ExportDAO exportDAO = new ExportDAO();
+    Product selected;
     @FXML
     private Button btnAdd;
 
@@ -66,6 +67,7 @@ public class ExportController implements Initializable {
     @FXML
     private TableColumn<ExportItem, String> tcExportItemName;
 
+
     @FXML
     private TableColumn<ExportItem, Long> tcExportItemPrice;
 
@@ -80,6 +82,8 @@ public class ExportController implements Initializable {
 
     @FXML
     private TableColumn<Product, Integer> tcProductId;
+    @FXML
+    private TableColumn<Product,String> tcQuantity;
 
     @FXML
     private TableColumn<Product, String> tcProductName;
@@ -506,7 +510,14 @@ public class ExportController implements Initializable {
 
     private void updateTotalValue() {
         try {
+
             int quantity = Integer.parseInt(tfProductQuantities.getText());
+            if (selected.getProductBigUnitQuantities() < quantity) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Số lượng trong kho nhỏ hơn số lượng lấy!");
+                alert.showAndWait();
+                tfProductQuantities.clear();
+                return;
+            }
             long price = Long.parseLong(tfProductPrice.getText());
             long totalValue = quantity * price;
             tfProductTotal.setText(String.valueOf(totalValue));
@@ -519,7 +530,7 @@ public class ExportController implements Initializable {
     private void setUpProductTableRowClicked() {
         tvProductTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-                Product selected = tvProductTable.getSelectionModel().getSelectedItem();
+                selected = tvProductTable.getSelectionModel().getSelectedItem();
 
                 List<Product> productQuantity = productDAO.getAllProductBigQuantity();
                 boolean select = false;
@@ -549,6 +560,7 @@ public class ExportController implements Initializable {
 
         tcProductId.setCellValueFactory(new PropertyValueFactory<>("productId"));
         tcProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        tcQuantity.setCellValueFactory(new PropertyValueFactory<>("productBigUnitQuantities"));
         tcProductPrice.setCellValueFactory(new PropertyValueFactory<>("productImportPrice"));
         tcProductDesc.setCellValueFactory(new PropertyValueFactory<>("productDescription"));
         tcProductOrigin.setCellValueFactory(new PropertyValueFactory<>("productOrigin"));
