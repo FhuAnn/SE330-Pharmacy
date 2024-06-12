@@ -215,7 +215,8 @@ public class ImportController implements Initializable {
                     if (!newValue.matches("\\d*")) {
                         tfProductQuantities.setText(newValue.replaceAll("[^\\d]", ""));
                         showAlert("Warning","Chỉ nhập được nhập số!");
-                    } else {
+                    }
+                    else {
                         try {
                             int total = Integer.parseInt(newValue)* Integer.parseInt(tfProductPrice.getText());
                             tfProductTotal.setText(String.valueOf(total));
@@ -340,7 +341,10 @@ public class ImportController implements Initializable {
         String price = tfProductPrice.getText();
         String quantity = tfProductQuantities.getText();
         String total = tfProductTotal.getText();
-        if(!id.isEmpty() && !productname.isEmpty() && !price.isEmpty() && !quantity.isEmpty() && !total.isEmpty()) {
+        if(Integer.parseInt(quantity)==0) {
+            tfProductQuantities.clear();
+            showAlert("Warning","Chỉ nhập được nhập số > 0!");
+        }else if(!id.isEmpty() && !productname.isEmpty() && !price.isEmpty() && !quantity.isEmpty() && !total.isEmpty()) {
             Import detailImport_ = new Import(Integer.parseInt(id),productname,Integer.parseInt(price),Integer.parseInt(quantity),Integer.parseInt(total));
             tbl_DetailImportForm.getItems().add(detailImport_);
             lbl_noContent.setVisible(true);
@@ -371,7 +375,7 @@ public class ImportController implements Initializable {
             int sequence = ShowYesNoAlert("nhập hàng");
             if(sequence==JOptionPane.YES_OPTION) {
                 String string = lblTotalPay.getText();
-                String[] splits =string.split(" ");
+                String[] splits = string.split(" ");
                 int totalPay = Integer.parseInt(splits[0]);
 
                 Import import_ = new Import(

@@ -141,7 +141,7 @@ public class ImportDAO {
     }
     public ObservableList<Import> getDetailFromImportId(int importId) {
         ObservableList<Import> list = FXCollections.observableArrayList();
-        String query = "SELECT pro.product_id, pro.productname,dtl.importprice, dtl.quantity,dtl.totalprice FROM product pro, importform im, detailimportform dtl WHERE im.importform_id = "+importId+" AND dtl.importform_id = im.importform_id AND pro.product_id = dtl.product_id";
+        String query = "SELECT pro.product_id, pro.productname,dtl.importprice, dtl.quantity,dtl.totalprice FROM existedproduct pro, importform im, detailimportform dtl WHERE im.importform_id = "+importId+" AND dtl.importform_id = im.importform_id AND pro.product_id = dtl.product_id";
         try(PreparedStatement statement = connectDB.getPreparedStatement(query)){
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()){

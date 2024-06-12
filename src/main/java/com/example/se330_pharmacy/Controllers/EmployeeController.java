@@ -80,27 +80,48 @@ public class EmployeeController implements Initializable {
         ObservableList<String> statusList = FXCollections.observableArrayList("Bán hàng", "Kế toán","Quản lí kho");
         cb_position.setItems(statusList);
         addSelectionListener(); // Add this line to handle selection changes
-        SetTextChanged();
+        validateInput();
     }
-
-    private void SetTextChanged() {
+    private void validateInput() {
         tf_addPhoneNum.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                tf_addPhoneNum.setText(newValue.replaceAll("[^\\d]", ""));
-                showAlert("Warning","Chỉ được nhập số");
-            } else {
-                if (!newValue.isEmpty() && newValue.charAt(0) != '0') tf_addPhoneNum.setText(oldValue);
-            }
+            // Loại bỏ bất kỳ ký tự không phải là số
+            String formattedPhoneNumber = newValue.replaceAll("[^\\d]", "");
 
+            // Kiểm tra điều kiện:
+            // 1. Bắt đầu bằng 0.
+            // 2. Chiều dài tối đa là 10 ký tự.
+            if (formattedPhoneNumber.length() == 0 || formattedPhoneNumber.startsWith("0")) {
+                if (formattedPhoneNumber.length() <= 10) {
+                    tf_addPhoneNum.setText(formattedPhoneNumber);
+                } else {
+                    // Nếu chiều dài vượt quá 10 ký tự, cắt chuỗi thành 10 ký tự đầu tiên
+                    tf_addPhoneNum.setText(formattedPhoneNumber.substring(0, 10));
+                }
+            } else {
+                // Nếu không bắt đầu bằng 0, giữ nguyên giá trị cũ
+                tf_addPhoneNum.setText(oldValue);
+            }
         });
         tf_addcitizenId.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                tf_addcitizenId.setText(newValue.replaceAll("[^\\d]", ""));
-                showAlert("Warning", "Chỉ được nhập số");
+            // Loại bỏ bất kỳ ký tự không phải là số
+            String formattedPhoneNumber = newValue.replaceAll("[^\\d]", "");
+
+            // Kiểm tra điều kiện:
+            // 1. Bắt đầu bằng 0.
+            // 2. Chiều dài tối đa là 10 ký tự.
+            if (formattedPhoneNumber.length() == 0 || formattedPhoneNumber.startsWith("0")) {
+                if (formattedPhoneNumber.length() <= 12) {
+                    tf_addcitizenId.setText(formattedPhoneNumber);
+                } else {
+                    // Nếu chiều dài vượt quá 10 ký tự, cắt chuỗi thành 10 ký tự đầu tiên
+                    tf_addcitizenId.setText(formattedPhoneNumber.substring(0, 12));
+                }
+            } else {
+                // Nếu không bắt đầu bằng 0, giữ nguyên giá trị cũ
+                tf_addcitizenId.setText(oldValue);
             }
         });
     }
-
     private void setOnOffAddDeleteBtn() {
         btnDeleteEmployee.setDisable(true); // Bắt đầu bằng việc vô hiệu hóa nút Delete
 
@@ -265,7 +286,7 @@ public class EmployeeController implements Initializable {
         btnAddEmployee.setDisable(false);
         btnDeleteEmployee.setDisable(true);
         btnEditEmployee.setDisable(true);
-        cb_position.setDisable(true);
+        cb_position.setDisable(false);
         cb_position.setVisible(true);
         tf_addPosition.setVisible(false);
         btnAddEmployee.setText("Thêm");

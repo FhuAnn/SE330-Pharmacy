@@ -100,7 +100,7 @@ public class ExportDAO {
         ObservableList<DetailExport> detailExports = FXCollections.observableArrayList();
 
         String query = "SELECT pro.product_id, productname, dtex.price, dtex.quantity, unit.big_unit, dtex.total " +
-                "FROM product pro, unit, detailexportform dtex " +
+                "FROM existedproduct pro, unit, detailexportform dtex " +
                 "WHERE dtex.product_id = pro.product_id AND pro.unit_id = unit.unit_id AND dtex.exportform_id = ?";
 
         try (PreparedStatement statement = connectDB.databaseLink.prepareStatement(query)) {
