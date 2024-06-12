@@ -91,11 +91,11 @@ public class ReportController implements Initializable {
         tfSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.isEmpty()) {
                 selectionModel = tabpaneReportMain.getSelectionModel();
-//                if(selectionModel.getSelectedItem()==tabStatus) {
-//                    tbl_reportStatus.setItems(searchStatus(tfSearch.getText()));
-//                } else {
-//                    tbl_reportTop.setItems(searchEmployeeTop(tfSearch.getText()));
-//                }
+                if(selectionModel.getSelectedItem()==tabStatus) {
+                    tbl_reportStatus.setItems(searchStatus(tfSearch.getText()));
+                } else {
+                    tbl_reportTop.setItems(searchEmployeeTop(tfSearch.getText()));
+                }
             } else {
                 tbl_reportStatus.setItems(reportStatus);
                 tbl_reportTop.setItems(reportTop);
@@ -143,7 +143,7 @@ public class ReportController implements Initializable {
                 loadReportData();
             }
         });
-//        LoadProductBarChart();
+        LoadProductBarChart();
     }
 
 
@@ -207,6 +207,159 @@ public class ReportController implements Initializable {
         }).start();
 
     }
+
+    public void handleProductBarChar(ActionEvent event) {
+        LoadProductBarChart();
+    }
+
+    public void handleProductPieChar(ActionEvent event) {
+        //Create date
+        LoadProductPieChart();
+    }
+    public void handleEmployeePieChar(ActionEvent event) {
+        LoadEmployeePieChar();
+    }
+    public void handleRevenueBarChar(ActionEvent event) {
+        try {
+            LoadRevenueBarChar();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void handleUpdateChar(ActionEvent event) {
+        LoadChar();
+    }
+    private void LoadChar() {
+        Node node =  borderPane.getCenter();
+        if(node.getId().equals("productBart")) {
+            LoadProductBarChart();
+        } else if(node.getId().equals("productPie")) {
+            LoadProductPieChart();
+        } else if (node.getId().equals("revenueBar")) {
+            try {
+                LoadRevenueBarChar();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else if(node.getId().equals("employeePie")) {
+            LoadEmployeePieChar();
+        }
+    }
+    private void LoadProductBarChart() {
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Sản phẩm");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Số lượng đã bán");
+
+        BarChart barChart = new BarChart(xAxis,yAxis);
+
+        XYChart.Series data = new XYChart.Series();
+        data.setName("Những sản phẩm hàng đầu");
+
+        //provide data
+        /*int count=0;*/
+        for(Bill bill : reportMedicine) {
+            data.getData().add(new XYChart.Data(bill.getProductName(),bill.getQuantities()));
+            /*if(++count==10) break;*/
+        }
+        barChart.getData().add(data);
+
+        //add to border pane
+        barChart.setId("productBart");
+        borderPane.setCenter(barChart);
+    }
+    private void LoadProductPieChart() {
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for(Bill bill : reportMedicine) {
+            pieChartData.add(new PieChart.Data(bill.getProductName(), bill.getQuantities()));
+        }
+
+        //Create PieChsrt object
+        PieChart pieChart = new PieChart(pieChartData);
+        pieChart.setTitle("Biểu đồ các sản phẩm đã bán");
+        pieChart.setClockwise(true);
+        pieChart.setLabelLineLength(50);
+        pieChart.setLabelsVisible(true);
+        pieChart.setStartAngle(180);
+
+        pieChart.setId("productPie");
+        borderPane.setCenter(pieChart);
+    }
+    private void LoadRevenueBarChar() throws SQLException {
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Tháng");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Thu nhập(VND)");
+
+
+        BarChart barChart = new BarChart(xAxis,yAxis);
+
+        XYChart.Series data = new XYChart.Series();
+        data.setName("Biểu đồ thống kê theo tháng");
+
+        //provide data
+        /*int count=0;*/
+        for(int i =1 ;i <=12;i++) {
+            data.getData().add(new XYChart.Data("Tháng "+i, reportDAO.GetRevenueFromSaleMonth(i,dp_date.getValue().getYear())));
+            /*if(++count==10) break;*/
+        }
+        barChart.getData().add(data);
+
+        //add to border pane
+        barChart.setId("revenueBar");
+        borderPane.setCenter(barChart);
+    }
+    private void LoadEmployeePieChar() {
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for(Report report : reportTop) {
+            pieChartData.add(new PieChart.Data(report.getEmploynameTop(), report.getTotalTop()));
+        }
+
+        //Create PieChsrt object
+        PieChart pieChart = new PieChart(pieChartData);
+        pieChart.setTitle("Biểu đồ cơ cấu đóng góp của các thành viên");
+        pieChart.setClockwise(true);
+        pieChart.setLabelLineLength(50);
+        pieChart.setLabelsVisible(true);
+        pieChart.setStartAngle(180);
+
+        pieChart.setId("employeePie");
+        borderPane.setCenter(pieChart);
+    }
+    private static String normalizeString(String str) {
+        return Normalizer.normalize(str, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+    }
+
+
+    private ObservableList<Report>  searchEmployeeTop(String searchString) {
+        String lowerCase = normalizeString(searchString.toLowerCase());
+        ObservableList<Report> patients = tbl_reportTop.getItems();
+        ObservableList<Report> listResult = FXCollections.observableArrayList(
+                patients.stream()
+                        .filter(report ->
+                                normalizeString(String.valueOf(report.getIdEmployTop()).toLowerCase()).startsWith(lowerCase) ||
+                                        normalizeString(report.getEmploynameTop().toLowerCase()).contains(lowerCase))
+                        .collect(Collectors.toList())
+        );
+        return listResult;
+    }
+
+    private ObservableList<Report> searchStatus(String searchString) {
+        String lowerCase = normalizeString(searchString.toLowerCase());
+        ObservableList<Report> patients = tbl_reportStatus.getItems();
+        ObservableList<Report> listResult = FXCollections.observableArrayList(
+                patients.stream()
+                        .filter(report ->
+                                normalizeString(String.valueOf(report.getIdBillStatus()).toLowerCase()).startsWith(lowerCase) ||
+                                        normalizeString(report.getEmploynameStatus().toLowerCase()).contains(lowerCase))
+                        .collect(Collectors.toList())
+        );
+        return listResult;
+    }
+
 
 
 }
