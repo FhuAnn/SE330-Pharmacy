@@ -177,9 +177,12 @@ public class ProductDAO {
         int typeid = getTypeString(newProduct.getProductType());
         int uni = getUnitId(newProduct.getProductCoef(), newProduct.getProductSmallUnit(), newProduct.getProductBigUnit());
 
-        String sqlQuery = "INSERT INTO product (productname, price_import, description, origin, producttype_id, unit_id,big_unit,small_unit) " +
+        String productQuery = "INSERT INTO product (productname, price_import, description, origin, producttype_id, unit_id,big_unit,small_unit) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = connectDB.getPreparedStatement(sqlQuery)) {
+        String existedProductQuery = "INSERT INTO existedproduct (productname, price_import, description, origin, producttype_id, unit_id,big_unit,small_unit) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connectDB.getPreparedStatement(productQuery);
+             PreparedStatement preparedStatementExistedProduct = connectDB.getPreparedStatement(existedProductQuery)) {
 
             preparedStatement.setString(1, newProduct.getProductName());
             preparedStatement.setFloat(2, newProduct.getProductImportPrice());
@@ -187,14 +190,25 @@ public class ProductDAO {
             preparedStatement.setString(4, newProduct.getProductOrigin());
             preparedStatement.setInt(5, typeid);
             preparedStatement.setInt(6, uni);
-            if (newProduct.getProductBigUnit().equals(newProduct.getProductSmallUnit())) {
-                preparedStatement.setNull(7, Types.INTEGER);
-            } else {
-                preparedStatement.setInt(7, 0);
-            }
-            preparedStatement.setInt(8, 0);
 
-            return preparedStatement.executeUpdate() > 0;
+            preparedStatementExistedProduct.setString(1, newProduct.getProductName());
+            preparedStatementExistedProduct.setFloat(2, newProduct.getProductImportPrice());
+            preparedStatementExistedProduct.setString(3, newProduct.getProductDescription());
+            preparedStatementExistedProduct.setString(4, newProduct.getProductOrigin());
+            preparedStatementExistedProduct.setInt(5, typeid);
+            preparedStatementExistedProduct.setInt(6, uni);
+            if (newProduct.getProductBigUnit().equals(newProduct.getProductSmallUnit())) {
+                preparedStatement.setNull(8, Types.INTEGER);
+                preparedStatementExistedProduct.setNull(8, Types.INTEGER);
+            } else {
+                preparedStatementExistedProduct.setInt(8, 0);
+                preparedStatement.setInt(8, 0);
+            }
+            preparedStatementExistedProduct.setInt(7, 0);
+            preparedStatement.setInt(7, 0);
+
+
+            return preparedStatement.executeUpdate() > 0 && preparedStatementExistedProduct.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -202,18 +216,18 @@ public class ProductDAO {
     }
 
     public boolean deleteProduct(int id) throws ForeignKeyViolationException {
-            String sqlQuery = "DELETE FROM product WHERE product_id = ?";
-            try (PreparedStatement preparedStatement = connectDB.getPreparedStatement(sqlQuery)) {
-                preparedStatement.setInt(1,id);
-                return preparedStatement.executeUpdate() > 0;
-            } catch (SQLException e) {
-                if (e.getSQLState().equals("23503")) { // Mã lỗi cho vi phạm khóa ngoại
-                    throw new ForeignKeyViolationException("Không thể xóa sản phẩm vì dữ liệu sản phẩm có mã "+id+" được sử dụng ");
-                } else {
-                    e.printStackTrace();
-                }
-                return false;
+        String sqlQuery = "DELETE FROM product WHERE product_id = ?";
+        try (PreparedStatement preparedStatement = connectDB.getPreparedStatement(sqlQuery)) {
+            preparedStatement.setInt(1,id);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            if (e.getSQLState().equals("23503")) { // Mã lỗi cho vi phạm khóa ngoại
+                throw new ForeignKeyViolationException("Không thể xóa sản phẩm vì dữ liệu sản phẩm có mã "+id+" được sử dụng ");
+            } else {
+                e.printStackTrace();
             }
+            return false;
+        }
     }
 
     public boolean updateProduct(Product product) {

@@ -106,10 +106,10 @@
                </VBox.margin>
             </Button>
             <MenuButton fx:id="btnAccountant" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="51.0" prefWidth="243.0" styleClass="button" text="Kế toán">
-              <items>
-                <MenuItem fx:id="btnPayslip" mnemonicParsing="false" onAction="#btnPayslipClicked" text="Phiếu lương" />
-                <MenuItem fx:id="btnReceipt" mnemonicParsing="false" onAction="#btnReceiptClicked" text="Hóa đơn" />
-              </items>
+               <items>
+                  <MenuItem fx:id="btnPayslip" mnemonicParsing="false" onAction="#btnPayslipClicked" text="Phiếu lương" />
+                  <MenuItem fx:id="btnReceipt" mnemonicParsing="false" onAction="#btnReceiptClicked" text="Hóa đơn" />
+               </items>
                <VBox.margin>
                   <Insets top="2.0" />
                </VBox.margin>
@@ -130,7 +130,7 @@
       </VBox>
       <Pane layoutX="245.0" prefHeight="120.0" prefWidth="1356.0" styleClass="top-container">
          <children>
-            <Text fx:id="titleTextField" layoutX="68.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="tlt" text="Home">
+            <Text fx:id="titleTextField" layoutX="68.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="tlt" text="Trang chủ">
                <font>
                   <Font name=".VnArial Bold" size="35.0" />
                </font>
@@ -186,6 +186,35 @@
       <Pane fx:id="mainPane" layoutX="245.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1356.0">
          <children>
             <ImageView fitHeight="780.0" fitWidth="1356.0" layoutX="33.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
+            <AnchorPane layoutX="1.0" layoutY="-5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="786.0" prefWidth="1356.0" styleClass="container-report" stylesheets="@../../../../../../../../SE330.1/src/main/resources/com/example/privateclinic/Styles/Report.css">
+               <children>
+                  <Text fill="#2c4a05" layoutX="451.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-fill: #5A8F15;" text="Nhà thuốc">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="36.0" />
+                     </font>
+                  </Text>
+                  <Pane layoutX="560.0" layoutY="235.0" prefHeight="262.0" prefWidth="312.0" style="-fx-background-color: D0D0D066; -fx-background-radius: 50;" visible="false">
+                     <children>
+                        <ProgressIndicator layoutX="130.0" layoutY="97.0" prefHeight="53.0" prefWidth="102.0" />
+                     </children>
+                  </Pane>
+                  <ImageView fitHeight="563.0" fitWidth="563.0" layoutX="406.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/GreenHOME.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#2c4a05" layoutX="640.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-fill: #5A8F15;" text="UIT PHARMACY">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="48.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#2c4a05" layoutX="1055.0" layoutY="852.0" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-fill: #5A8F15;" text="\@Green UIT group">
+                     <font>
+                        <Font name="Segoe UI Semibold" size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
          </children></Pane>
       <Pane fx:id="paneProgress" layoutX="767.0" layoutY="300.0" prefHeight="262.0" prefWidth="312.0" styleClass="pane_progress" visible="false">
          <children>

@@ -208,7 +208,7 @@ public class SaleController implements Initializable {
     private TableColumn<Bill, Integer> tcBillId;
 
     @FXML
-    private TableColumn<Bill, Float> tcBillValue;
+    private TableColumn<Bill, String> tcBillValue;
 
     @FXML
     private TableColumn<DetailBill, String> tcDetailProductName;
@@ -644,26 +644,26 @@ public class SaleController implements Initializable {
     }
 
     private void setUpProductSearch() {
-            ObservableList<Product> allProducts = productDAO.getAllProduct();
-            FilteredList<Product> filteredList = new FilteredList<>(allProducts);
+        ObservableList<Product> allProducts = productDAO.getAllProduct();
+        FilteredList<Product> filteredList = new FilteredList<>(allProducts);
 
-            tfSearchByIdAndName.textProperty().addListener((observable, oldValue, newValue) -> {
-                String searchText = newValue.trim().toLowerCase();
+        tfSearchByIdAndName.textProperty().addListener((observable, oldValue, newValue) -> {
+            String searchText = newValue.trim().toLowerCase();
 
-                if (searchText.isEmpty()) {
-                    // Nếu SearchField trống, hiển thị lại tất cả sản phẩm
-                    tvProduct.setItems(allProducts);
-                } else {
-                    // Nếu có nội dung trong SearchField, lọc danh sách sản phẩm
-                    filteredList.setPredicate(product -> {
-                        String lowerCaseFilter = searchText.toLowerCase();
-                        return String.valueOf(product.getProductId()).contains(lowerCaseFilter) ||
-                                product.getProductName().toLowerCase().contains(lowerCaseFilter);
-                    });
+            if (searchText.isEmpty()) {
+                // Nếu SearchField trống, hiển thị lại tất cả sản phẩm
+                tvProduct.setItems(allProducts);
+            } else {
+                // Nếu có nội dung trong SearchField, lọc danh sách sản phẩm
+                filteredList.setPredicate(product -> {
+                    String lowerCaseFilter = searchText.toLowerCase();
+                    return String.valueOf(product.getProductId()).contains(lowerCaseFilter) ||
+                            product.getProductName().toLowerCase().contains(lowerCaseFilter);
+                });
 
-                    tvProduct.setItems(filteredList);
-                }
-            });
+                tvProduct.setItems(filteredList);
+            }
+        });
     }
 
     private void setUpCartRowClick() {
@@ -1053,4 +1053,3 @@ public class SaleController implements Initializable {
     }
 
 }
-

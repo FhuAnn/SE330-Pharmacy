@@ -207,6 +207,12 @@ public class ExportController implements Initializable {
         exportItem.setExportItemQuantity(Integer.parseInt(tfProductQuantities.getText()));
         exportItem.setExportItemTotal(Long.parseLong(tfProductTotal.getText()));
 
+        if(tfProductQuantities.getText().equals("0")) {
+            tfProductQuantities.clear();
+            showAlert("Warning","Chỉ nhập được nhập số > 0!");
+            return;
+        }
+
         if (!isEdit) {
             for (ExportItem item : exportList) {
                 if (item.getExportItemId() == exportItem.getExportItemId() && exportItem.getExportItemPrice() == item.getExportItemPrice()) {
@@ -596,5 +602,13 @@ public class ExportController implements Initializable {
     private boolean CreateReceipt(int id,int totalPay) {
         String content ="Export ID: " + id, status = "InComplete", note = LocalDate.now().toString();
         return exportDAO.autoCreateReceipt(_employee.getEmployeeId(),content,totalPay,status,note);
+    }
+
+    private void showAlert(String tilte,String string) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(tilte);
+        alert.setHeaderText(null);
+        alert.setContentText(string);
+        alert.showAndWait();
     }
 }

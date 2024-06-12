@@ -35,7 +35,7 @@ public class DetailBillDAO {
     public ObservableList<DetailBill> getDetailBill(String billId) {
         ObservableList<DetailBill> detailBillList = FXCollections.observableArrayList();
         String sqlQuery = "SELECT Bill_id as BillID, pro.ProductName as \"Product Name\", Quantities, Unit_Name as Unit, dtl.Price " +
-                "FROM DetailBill dtl, Product pro " +
+                "FROM DetailBill dtl, existedproduct pro " +
                 "WHERE Bill_id =" + billId + " AND pro.Product_id = dtl.Product_id";
 
         try (Statement stmt = connectDB.databaseLink.createStatement(); ResultSet rs = stmt.executeQuery(sqlQuery)) {
