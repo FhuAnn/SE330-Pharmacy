@@ -73,7 +73,7 @@ public class EmployeeController implements Initializable {
         loadEmployeeData();
         setOnOffAddDeleteBtn();
         btnDeleteEmployee.setOnAction(event -> handleDeleteAction());
-        btnAddEmployee.setOnAction(event -> handleAddAction());
+//        btnAddEmployee.setOnAction(event -> handleAddAction());
         btnEditEmployee.setOnAction(event -> handleEditAction()); // Add this line to handle edit action
         btnCancel.setOnAction(event -> handleCancel());
         tfEmployee.setOnKeyPressed(event -> handleSearchKeyPressed(event));
@@ -158,84 +158,7 @@ public class EmployeeController implements Initializable {
         }
     }
 
-    private void handleAddAction() { // add and save
-        String name = tf_addName.getText();
-        String citizenId = tf_addcitizenId.getText();
-        String address = tf_addAddress.getText();
-        String phoneNum = tf_addPhoneNum.getText();
-        String email = tf_addEmail.getText();
-        String position = cb_position.getValue();
-        String username = tf_addEmail.getText();
-        if (!name.isEmpty() && !citizenId.isEmpty() && !address.isEmpty() && !phoneNum.isEmpty() && checkEmail() && cb_position.getValue()!=null) {
-            if(btnAddEmployee.getText().equals("Lưu")) {
-                int id = Integer.parseInt(tf_maNV.getText());
-                int sequence = ShowYesNoAlert("lưu "+name+"");
-                if(sequence==JOptionPane.YES_OPTION) {
-                    Employee employee = new Employee(id,name, citizenId, address, phoneNum, email, position, username);
-                    if (employeeDAO.updateEmployee(employee)) {
-                        btnAddEmployee.setText("Thêm");
-                        loadEmployeeData();
-                        clearAddEmployeeFields();
-                        cb_position.setVisible(false);
-                        tf_addPosition.setVisible(true);
-                    } else {
-                        showAlert("Warning", "Error!");
-                    }
-                } else {}
-            } else {
-                int sequence = ShowYesNoAlert("thêm "+name+"");
-                if(sequence==JOptionPane.YES_OPTION) {
-                    Employee newEmployee = new Employee(name, citizenId, address, phoneNum, email, position, username);
-                    if(employeeDAO.addEmployee(newEmployee)>0) {
-                        SendDefaultPassword(newEmployee.getEmployeeEmail());
-                        loadEmployeeData();
-                        clearAddEmployeeFields();
-                        cb_position.setVisible(true);
-                        tf_addPosition.setVisible(false);
-                    }
-                } else {}
-            }
-        } else {
-            showAlert("Warning","Kiểm tra lại thông tin!");
-        }
-    }
 
-    private void SendDefaultPassword(String email) {
-        String defaultpassword = employeeDAO.getDefaultpassword();
-        String fromEmail = "kiseryouta2003@gmail.com";
-        String password = "qcqa slmu vkbr edha";
-        String subject = "OTP code";
-        String body = "Your default password for Pharmacy account is " + defaultpassword;
-
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(fromEmail, password);
-            }
-        });
-
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(fromEmail, "Green Pharmacy"));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-            message.setSubject(subject);
-            message.setText(body);
-
-            Transport.send(message);
-            Platform.runLater(() -> {
-            showAlert("Warning"," Mật khẩu mặc định là "+defaultpassword+" đã gửi về email: "+email+" !");
-            employeeDAO.setDefaultpassword(null);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert("Warning","Failed to send OTP: " + e.getMessage());
-        }
-    }
 
     private boolean checkEmail() {
         if(tf_addEmail.getText().isEmpty()) return false;
