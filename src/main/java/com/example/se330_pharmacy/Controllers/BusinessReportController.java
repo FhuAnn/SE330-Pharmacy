@@ -12,30 +12,24 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.Normalizer;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class ReportController implements Initializable {
+public class BusinessReportController implements Initializable {
 
     public DatePicker dp_date;
     public TabPane tabpaneReportMain;
@@ -117,7 +111,7 @@ public class ReportController implements Initializable {
                         @Override
                         public void handle(ActionEvent event) {
                             time_remaining--;
-                           checkboxAuto.setText("Làm mới tự động sau " + (int)(time_remaining - 2)+ " s");
+                            checkboxAuto.setText("Làm mới tự động sau " + (int)(time_remaining - 2)+ " s");
                             // lbl_send_otp.setX();
                             if (time_remaining == 5) {
                                 checkboxAuto.setText("Đang làm mới.....");
@@ -171,31 +165,31 @@ public class ReportController implements Initializable {
             try {
                 Thread.sleep(1000);
                 Platform.runLater(() -> {
-                        LocalDate date = dp_date.getValue();
-                        int day = date.getDayOfMonth();
-                        int month = date.getMonthValue();
-                        int year =date.getYear();
-                        reportStatus = reportDAO.getReportStatus(month,year);
-                        reportTop=reportDAO.getReportTop(month,year);
-                        reportMedicine= reportDAO.GetTop10ProductData(month,year);
+                    LocalDate date = dp_date.getValue();
+                    int day = date.getDayOfMonth();
+                    int month = date.getMonthValue();
+                    int year =date.getYear();
+                    reportStatus = reportDAO.getReportStatus(month,year);
+                    reportTop=reportDAO.getReportTop(month,year);
+                    reportMedicine= reportDAO.GetTop10ProductData(month,year);
 //                        LoadChar();
-                        tbl_reportStatus.setItems(reportStatus);
-                        tbl_reportTop.setItems(reportTop);
-                        tbl_reportMedicine.setItems(reportMedicine);
-                        try {
-                            numberBillOfMonth.setText(reportDAO.GetNumberOfBillMonth(month,year));
-                            numberBillOfToday.setText(reportDAO.GetNumberOfBillToday(day,month,year));
-                            numberProductOfMonth.setText(reportDAO.GetNumberOfProductMonth(month,year));
-                            numberProductOfDay.setText(reportDAO.GetNumberOfProductToday(day,month,year));
-                            valueRevenueMonth.setText(("+ "+reportDAO.GetRevenueFromSaleMonth(month,year)+" VND"));
-                            valueRevenueToday.setText(("+ "+reportDAO.GetRevenueFromSaleToday(day,month,year)+" VND"));
-                            valueImportMonth.setText("- "+reportDAO.GetRevenueImportMonth(month,year)+" VND");
-                            valueImportToday.setText("- "+reportDAO.GetRevenueImportDay(day,month,year)+" VND");
-                            valueExportMonth.setText("+ "+reportDAO.GetExpendExportMonth(month,year)+" VND");
-                            valueExportToday.setText("+ "+reportDAO.GetExpendExportDay(day,month,year)+" VND");
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
+                    tbl_reportStatus.setItems(reportStatus);
+                    tbl_reportTop.setItems(reportTop);
+                    tbl_reportMedicine.setItems(reportMedicine);
+                    try {
+                        numberBillOfMonth.setText(reportDAO.GetNumberOfBillMonth(month,year));
+                        numberBillOfToday.setText(reportDAO.GetNumberOfBillToday(day,month,year));
+                        numberProductOfMonth.setText(reportDAO.GetNumberOfProductMonth(month,year));
+                        numberProductOfDay.setText(reportDAO.GetNumberOfProductToday(day,month,year));
+                        valueRevenueMonth.setText(("+ "+reportDAO.GetRevenueFromSaleMonth(month,year)+" VND"));
+                        valueRevenueToday.setText(("+ "+reportDAO.GetRevenueFromSaleToday(day,month,year)+" VND"));
+                        valueImportMonth.setText("- "+reportDAO.GetRevenueImportMonth(month,year)+" VND");
+                        valueImportToday.setText("- "+reportDAO.GetRevenueImportDay(day,month,year)+" VND");
+                        valueExportMonth.setText("+ "+reportDAO.GetExpendExportMonth(month,year)+" VND");
+                        valueExportToday.setText("+ "+reportDAO.GetExpendExportDay(day,month,year)+" VND");
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
